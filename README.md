@@ -20,6 +20,7 @@ Jaakko Junttila & Karoliina Kauhanen
 - Peer evaluators: XXX
 
 ## Resources
+Bendersky E. (2012, August 2). Parsing expressions by precedence climbing. https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing
 Combeau, M. (2022, October 22). Creating and Killing Child Processes in C. https://www.codequoi.com/en/creating-and-killing-child-processes-in-c/
 Combeau, M. (2022, October 31). Pipe: an Inter-Process Communication Method. https://www.codequoi.com/en/pipe-an-inter-process-communication-method/
 Combeau, M. (2022, November 11). Sending and Intercepting a Signal in C. https://www.codequoi.com/en/sending-and-intercepting-a-signal-in-c/
