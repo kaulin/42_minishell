@@ -13,7 +13,8 @@
 #include "minishell.h"
 
 /*
-Function gives the prompt and reads the users input to string
+Function gives the prompt and reads the users input to string. 
+Readline allocates space for string automatically but doesn't free it.
 */
 
 int main(void)//(int argc, char **argv, char**envp)
