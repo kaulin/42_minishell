@@ -14,9 +14,18 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h> 
+# include <signal.h> //
+# include <sys/ioctl.h>
+# include <termios.h> //contains the definitions used by the terminal I/O interfaces
 
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+void    sigint_handler(int signal);
 
 #endif
