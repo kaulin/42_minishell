@@ -17,11 +17,22 @@ Function gives the prompt and reads the users input to string.
 Readline allocates space for string automatically but doesn't free it.
 */
 
-int main(void)//(int argc, char **argv, char**envp)
+int main(int argc, char **argv, char **envp)
 {
-    char *string;
+    char *input;
 
-    string = readline("Minishell > ");
-    printf("%s\n", string);
-    return (0);
+    (void)argc;//Ignore arguments
+    (void)argv;
+    while (1) 
+    {
+        signal(SIGINT, sigint_handler); //Handle Ctr+C
+        signal(SIGQUIT, SIG_IGN); //Ignore Ctr+\
+        input = readline("Minishell > ");
+        if (input == NULL) //In case of Ctrl+D (EOF)
+            break;
+        // if (input[0] != '\0')
+        //     add_history(input);
+        free(input);
+    }
+    return 0;
 }
