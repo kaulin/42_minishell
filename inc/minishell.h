@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/13 11:20:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:11:46 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
+typedef struct s_command
+{
+	char	*path;
+	char	*cmd;
+	pid_t	pid;
+}	t_command;
 
 void    sigint_handler(int signal);
 

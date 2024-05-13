@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/13 11:11:47 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/13 12:54:57 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
 
 SRC_DIR		:= srcs/
-SRC			:= main.c
+SRC			:= main.c \
+			signal.c
 SRCS		:= $(addprefix $(SRC_DIR), $(SRC))
 
 OBJ_DIR		:= objs/

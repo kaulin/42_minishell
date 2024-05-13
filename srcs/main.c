@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/10 15:54:54 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:56:59 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int main(int argc, char **argv, char **envp)
 
     (void)argc;//Ignore arguments
     (void)argv;
+	(void)envp;
+	signal(SIGINT, sigint_handler); //Handle Ctr+C
+	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
     while (1) 
     {
-        signal(SIGINT, sigint_handler); //Handle Ctr+C
-        signal(SIGQUIT, SIG_IGN); //Ignore Ctr+\
         input = readline("Minishell > ");
         if (input == NULL) //In case of Ctrl+D (EOF)
             break;
