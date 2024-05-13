@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/13 12:54:57 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/13 16:01:56 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,10 @@ else ifeq ($(CURRENT_OS), Darwin)
 	LIBS += -L $(READLINE_DIR)/lib
 endif
 
+READLINE_DIR = ~/.brew/opt/readline
+INCS		+= -I $(READLINE_DIR)/include
+LIBS		+= -L $(READLINE_DIR)/lib
+
 NAME		:= minishell
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
@@ -58,23 +62,32 @@ all: $(NAME)
 
 # TODO: Add -lft
 $(NAME): $(LIBFT_PATH) $(OBJ_DIR) $(OBJS)
-	@printf "Linking\n"
+	@printf "Linking executable\n"
 	@$(CC) $(CFLAGS) $(OBJS) $(INCS) $(LIBS) $(LIBFT_PATH) -lreadline -o $@
+	@printf "Done\n"
 
+# Runs make in the libft directory
 $(LIBFT_PATH): $(LIBFT)
 $(LIBFT):	
-	@printf "Making libft\n" && make -C $(LIBFT_DIR)
+	@printf "Making libft\n"
+	@make -C $(LIBFT_DIR)
 
+# Make objs directory
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INCS) && printf "Compiling: $(notdir $<)\n"
 
+# Compile object files from sources, recompile also on Makefile changes
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile
+	@printf "Compiling: $(notdir $<)\n"
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCS)
+
+# Remove object files
 clean:
 	@printf "Performing clean\n"
 	@rm -rf $(OBJ_DIR)
 	@make -C $(LIBFT_DIR) clean
 
+# Remove program and created libraries
 fclean: clean
 	@printf "Performing full clean\n"
 	@rm -rf $(NAME)
