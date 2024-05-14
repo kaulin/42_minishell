@@ -54,3 +54,4 @@ dkms.conf
 # Added
 minishell
 objs/*
+local/*
