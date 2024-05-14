@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/14 10:34:18 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:38:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,22 @@ typedef struct s_data
 
 typedef struct s_cmd
 {
-	char			*path;
-	char			*cmd_str;
+	char			*path; // path to command
+	char			*cmd_str; // command name (can be full path), flags and arguments
+	char			*infile; // infile for specific cmd, NULL if not set
+	int				heredoc_flag;
+	char			*outfile; // outfile for specific cmd, NULL if not set
+	int				append_flag;
 	pid_t			pid;
-	struct s_cmd	*next;
+	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
+
+// cmd_list.h
+// init node
+// set node values
+// add node back
+// remove node
+// clear list
 
 // data.c
 void	clean_data(t_data *data);
