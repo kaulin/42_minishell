@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/14 10:31:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:58:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int main(int argc, char **argv, char **envp)
 	char *input;
 
 	(void)argc;//Ignore arguments
-	(void)argv;
-	(void)envp;
+	(void)argv;//Ignore arguments
 	init_data(&data, envp);
 	signal(SIGINT, sigint_handler); //Handle Ctr+C
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
@@ -37,6 +36,7 @@ int main(int argc, char **argv, char **envp)
 		//	add_history(input);
 		if (parse(input, &data))
 			break ;
+		// execute commands from data->cmd_list, wait for possible children to complete and exit pipe with last command's exit code
 		free(input);
 	}
 	clean_data(&data);
