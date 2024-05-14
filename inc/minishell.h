@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/13 13:11:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:34:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,30 @@
 # define STDOUT 1
 # define STDERR 2
 
-typedef struct s_command
+typedef struct s_data
 {
-	char	*path;
-	char	*cmd;
-	pid_t	pid;
-}	t_command;
+	char			**envp;
+	struct s_cmd	*cmd_list;
+	int				status;
+	char			*error_msg;
+}	t_data;
 
-void    sigint_handler(int signal);
+typedef struct s_cmd
+{
+	char			*path;
+	char			*cmd_str;
+	pid_t			pid;
+	struct s_cmd	*next;
+}	t_cmd;
+
+// data.c
+void	clean_data(t_data *data);
+void	init_data(t_data *data, char **envp);
+
+// parser.c
+int	parse(char *input, t_data *data);
+
+// signal.c
+void	sigint_handler(int signal);
 
 #endif
