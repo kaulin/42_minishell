@@ -12,11 +12,11 @@
 
 # include "minishell.h"
 /*
-◦ echo with option -n
+◦ Echo with option -n
     - Used to print text/variables to the terminal(syntax: echo 'sample text')
 	- If there is no text to print echo prints a new line
     - With -n do not output a trailing newline.
-	-Can echo fail somehow?
+	-Can this command fail somehow?
 */
 
 void    print_cmd(char **cmds, int flag)//this prints the rest of the input
@@ -50,7 +50,7 @@ int check_flag(char *arg)//this checks if there is a -n flag (also -nn.. is acce
     return (0);
 }
 
-int    echo_builtin(char **cmd)//Do i get a struct that has separated the command cmd[0], flag cmd[1], and the printable part cmd[2]
+int    echo_builtin(char **cmd)//Argument form must be desided. Example here is command cmd[0], flag cmd[1], and the printable part cmd[2]
 {
     int flag;
 
