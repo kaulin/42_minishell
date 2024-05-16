@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/16 14:17:36 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:20:08 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Displays the current working directory path.
 
 int pwd_builtin(t_data *data)
 {
+	(void)data;
     char *cwd;
     char buffer[PATH_MAX]; // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
 
