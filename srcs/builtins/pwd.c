@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/13 14:29:19 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:17:36 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int pwd_builtin(t_data *data)
         return (EXIT_SUCCESS);
     }
     else
-        return (EXIT_ERROR);
+        return (EXIT_FAILURE);
     //should we free the cwd?
 }
