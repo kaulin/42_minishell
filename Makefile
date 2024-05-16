@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/16 15:41:14 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/16 16:22:01 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,15 @@ CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
 
 # Sources
-SRC_DIR	:= srcs/
+SRC_DIR		:= srcs/
 MAIN_SRC	:= main.c \
 			cmd_list.c \
 			data.c \
 			signal.c
 MAIN_SRCS	:= $(addprefix $(SRC_DIR), $(MAIN_SRC))
 #
-BINS_DIR		:= $(SRC_DIR)builtins/
-BINS_SRC		:= cd.c \
+BINS_DIR	:= $(SRC_DIR)builtins/
+BINS_SRC	:= cd.c \
 			echo.c \
 			env.c \
 			exit.c \
