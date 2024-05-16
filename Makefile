@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/16 13:53:01 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/16 15:41:14 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,29 +23,27 @@ MAIN_SRC	:= main.c \
 			signal.c
 MAIN_SRCS	:= $(addprefix $(SRC_DIR), $(MAIN_SRC))
 #
-BI_DIR		:= $(SRC_DIR)builtins/
-BI_SRC		:= cd.c \
+BINS_DIR		:= $(SRC_DIR)builtins/
+BINS_SRC		:= cd.c \
 			echo.c \
 			env.c \
 			exit.c \
 			export.c \
 			pwd.c \
 			unset.c
-BI_SRCS		:= $(addprefix $(BI_DIR), $(BI_SRC))
+BINS_SRCS	:= $(addprefix $(BINS_DIR), $(BINS_SRC))
 #
 PARSER_DIR	:= $(SRC_DIR)parser/
 PARSER_SRC	:= parser.c \
-			parsers_utils.c
+			parser_utils.c
 PARSER_SRCS	:= $(addprefix $(PARSER_DIR), $(PARSER_SRC))
 #
-VPATH		+= $(SRC_DIR):$(BI_DIR):$(PARSER_DIR)
+VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
 
 # Objects
 BUILD_DIR	:= build/
-MAIN_OBJS	:= $(addprefix $(OBJ_DIR), $(MAIN_SRC:.c=.o))
-BI_OBJS		:= $(addprefix $(OBJ_DIR), $(BI_SRC:.c=.o))
-PARSER_OBJS	:= $(addprefix $(OBJ_DIR), $(PARSER_SRC:.c=.o))
-OBJS		:= $(MAIN_OBJS) $(BI_OBJS) $(PARSER_OBJS)
+OBJ			:= $(MAIN_SRC:.c=.o) $(BI_SRC:.c=.o) $(PARSER_SRC:.c=.o)
+OBJS		:= $(addprefix $(BUILD_DIR), $(OBJS)) 
 
 # Libraries & headers
 RL_DIR := ~/.brew/opt/readline# Hardcoded for now
@@ -58,7 +56,7 @@ LIBFT_PATH	:= $(LIBFT_DIR)$(LIBFT)
 #
 INCS		+= -I inc/ -I $(LIBFT_DIR)
 
-# Links executablle TODO: Add -lft
+# Links executable TODO: Add -lft
 all: $(NAME)
 $(NAME): $(LIBFT_PATH) $(BUILD_DIR) $(OBJS)
 	@printf "Linking executable\n"
@@ -71,15 +69,14 @@ $(LIBFT):
 	@printf "Making libft\n"
 	@make -C $(LIBFT_DIR)
 
-# Make objs directory
+# Make build directory for objects
 $(BUILD_DIR):
 	@mkdir $(BUILD_DIR)
-	echo $(OBJS)
 
 # Compile object files from sources, recompile also on Makefile changes
-%.o: %.c Makefile
+$(BUILD_DIR)%.o: %.c Makefile
 	@printf "Compiling: $(notdir $<)\n"
-	$(CC) $(CFLAGS) $(INCS) -c $< -o $(BUILD_DIR)$@
+	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 # Remove object files
 clean:
