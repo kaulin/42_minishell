@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/16 14:28:59 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:40:16 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ Each name refers to a variable; if there is no variable by that name, a function
 Readonly variables and functions may not be unset.
 The memory for envp is managed by the operating system, and reallocation/deallocation is not required.
 */
+
+int error_message(char **cmds, char *message)//this is temporary
+{
+    printf("%s: %s\n", *cmds, message);
+    exit (1);
+}
 
 int unset(t_data *data, char *variable)
 {
