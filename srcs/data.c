@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/14 10:32:09 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:13:09 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	clean_data(t_data *data)
 {
-//	if (data->cmd_list)
-//		clean_cmd_list(data->cmd_list);
+	if (data->cmd_list)
+		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
 }
