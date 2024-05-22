@@ -12,25 +12,49 @@
 
 # include "minishell.h"
 
-/* cd with only a relative or absolute path
+/*
+    Sets the OLDPWD to the current working directory(PWD before the change).
+    Sets the value of PWD to the new directory(new path)
+*/
+int update_pwd(t_data *data, char *path)
+{
 
-cd [-L|[-P [-e]] [-@] [directory]
-Change the current working directory to directory. If directory is not supplied, the value of the HOME shell variable is used. If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory, with alternative directory names in CDPATH separated by a colon (‘:’). If directory begins with a slash, CDPATH is not used.
+}
 
-The -P option means to not follow symbolic links: symbolic links are resolved while cd is traversing directory and before processing an instance of ‘..’ in directory.
+/*
+    Change the current working directory to directory given using chdir.
+    Chdir changes the current working directory by passing the new path to the function. 
+*/
+int change_directory(t_data *data, char *path)
+{
+    if (chdir(path) != 0)//This doesn't change the PWD variable?
+        //return error message
+    else
+        update_pwd(data, path);   
+    return (EXIT_SUCCESS);
+}
 
-By default, or when the -L option is supplied, symbolic links in directory are resolved after cd processes an instance of ‘..’ in directory.
+/*
+CD with only a relative or absolute path
+*/
 
-If ‘..’ appears in directory, it is processed by removing the immediately preceding pathname component, back to a slash or the beginning of directory.
+int cd_builtin(t_data *data, char **cmds)
+{
+    char *path;
 
-If the -e option is supplied with -P and the current working directory cannot be successfully determined after a successful directory change, cd will return an unsuccessful status.
-
-On systems that support it, the -@ option presents the extended attributes associated with a file as a directory.
-
-If directory is ‘-’, it is converted to $OLDPWD before the directory change is attempted.
-
-If a non-empty directory name from CDPATH is used, or if ‘-’ is the first argument, and the directory change is successful, the absolute pathname of the new working directory is written to the standard output.
-
-If the directory change is successful, cd sets the value of the PWD environment variable to the new directory name, and sets the OLDPWD environment variable to the value of the current working directory before the change.
-
-The return status is zero if the directory is successfully changed, non-zero otherwise.*/
+    if (cmds[2])//if there are more than 2 arguments, give errormessage "minishell: cd: too many arguments"
+        return (EXIT_FAILURE);
+    if (!cmds[1])//if no directory is given the value of the HOME shell variable is used.
+    {
+        path = getenv("HOME")//get the value of HOME variable
+        change_directory(data, path);
+    }
+    else//if directory is supplied
+    {
+        if ('-')//Change directory to the previous directory(OLDPWD)
+        if ('~')//return to home directory. DO WE NEED TO HANDLE '-' & '~'?
+        if ()//If there is a '.' There will be no change of directory
+        if ()//if there is a ".." it will change the directory up one directory
+        else //change into the directory given
+    }
+}
