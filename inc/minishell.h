@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/14 15:38:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:35:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_cmd
 {
 	char			*path; // path to command
 	char			*cmd_str; // command name (can be full path), flags and arguments
+	char			**cmd_arr; // cmd_str broken into array with split
 	char			*infile; // infile for specific cmd, NULL if not set
 	int				heredoc_flag;
 	char			*outfile; // outfile for specific cmd, NULL if not set
