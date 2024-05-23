@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 14:13:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/13 14:26:49 by kkauhane         ###   ########.fr       */
+/*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
+/*   Updated: 2024/05/23 15:52:00 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,80 @@ They cannot contain special characters such as @, #, !, -, or spaces.
 Environmental variables normally contain only uppercase letters and '_'. Stick with that?
 */
 
-int set_variable(t_data *data, char **key_value)
+// int set_variable(t_data *data, char *key, char *value)
+// {
+// 	char **copy;
+// 	size_t  len;
+// 	int i;
+
+// 	i = 0;
+// 	len = ft_strlen(key);
+// 	copy = data->envp;
+// 	while (*data->envp)//copy the envp until the end and then add the new variable
+// 	{
+// 		*copy = *data->envp;
+// 		i++;
+// 	}
+// 	*copy[i] = (char *)malloc(len + ft_strlen())//we need to allocate enought
+// 	return (EXIT_SUCCESS);
+// }
+
+int check_key(t_data *data, char *key, char *value)
 {
+	int	len;
+	char *var_copy;
+	int i;
 
+	len = ft_strlen(key);
+	i = 0;
+	while (data->envp[i])//go through the environmental variables
+	{
+		if (ft_strncmp(data->envp[i], key, len) == 0 && (data->envp[i])[len] == '=')
+		{
+			if (value == NULL)
+				return (EXIT_SUCCESS);
+			else //if there is a match and a value, we reallocate and replace the value with the new value
+			{
+				//free(*data->envp);//free the old key_value_pair;
+				var_copy = ft_strjoin(key, value);//this allocates for var_copy and frees key
+				//free(value);
+				data->envp[i] = var_copy;
+				return (EXIT_SUCCESS);
+			}
+		}
+		i++;
+	}
+	//set_variable(data, key, value);//if we get to the end we need to allocate for a new variable and set it
+	return (EXIT_SUCCESS);
 }
-
-int check_key(t_data *data, char *key)
-{
-
-}
-
-char    **check_value(char *arg)
-{
-    char *pointer;
-    char **key_value;
-
-    pointer = ft_strchr(arg, '=');//check for '=' if there is one split it into two and return it?
-   // if (pointer == 0)
-    return(key_value);
-}
-
 int export_builtin(t_data *data, char **cmds)
 {
-    int i;
-    char **key_value;
+	int i;
+	char *key;
+	char *value;
+	char *pointer;
 
-    i = 1;
-    if (!cmds[i])
-        env_builtin(data);//If no names are supplied, a list of names of all variables is displayed
-    while (cmds[i])//go through the arguments and check each one and set them, in case of error return EXIT_FAILURE
-    {
-        key_value = check_value(cmds[i]);//check if there is a '=' and separate the name from the possible value
-        check_key(key_value[1]);//check if there is a variable of that name and set the value given.If there isn't check if the name given is valid
-        set_variable();// and then set the variable and it's value
-        i++;
-    }
+	i = 1;
+	value = NULL;
+	key = NULL;
+	if (!cmds[i])//If no names are supplied, a list of names of all variables is displayed
+	{
+		env_builtin(data);
+		return (EXIT_SUCCESS);
+	}
+	while (cmds[i])//go through the arguments and check each one and set them, in case of error return EXIT_FAILURE
+	{
+		pointer = ft_strchr(cmds[i], '=');
+		if (pointer == NULL)//if there isn't a '=' copy the name of the variable to key
+			key = ft_strdup(cmds[i]);
+		else
+		{
+			value = ft_strdup(pointer);
+			key = (char *)malloc(ft_strlen(cmds[i]) - ft_strlen(value) + 1);
+			ft_strlcpy(key, cmds[i], (ft_strlen(cmds[i]) - ft_strlen(value) + 1));
+		}
+		check_key(data, key, value);//these have been allocated already
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }
