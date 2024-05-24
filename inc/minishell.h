@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/23 12:35:42 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:46:22 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,12 @@ typedef struct s_cmd
 	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
 
-// cmd_list.h
-// init node
-// set node values
-// add node back
-// remove node
-// clear list
-
 // data.c
 void	clean_data(t_data *data);
 void	init_data(t_data *data, char **envp);
 
 // parser.c
-int	parse(char *input, t_data *data);
+int		parse(char *input, t_data *data);
 
 // signal.c
 void	sigint_handler(int signal);
