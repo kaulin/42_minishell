@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/27 16:55:05 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:56:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,14 @@ int		parse(char *input, t_data *data);
 void	sigint_handler(int signal);
 
 // builtins
-
+int check_if_builtin(t_data *data, char **cmds);
+int cd_builtin(t_data *data, char **cmds);
+int pwd_builtin(t_data *data);
+int	echo_builtin(char **cmd);
+int env_builtin(t_data *data, char **cmds);
+int	env_in_order(t_data *data);
+int unset_builtin(t_data *data, char **cmds);
+int export_builtin(t_data *data, char **cmds);
+int check_key(t_data *data, char *cmd);
 
 #endif
