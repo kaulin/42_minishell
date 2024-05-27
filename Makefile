@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
+#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/16 16:22:01 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/27 16:55:05 by kkauhane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ MAIN_SRC	:= main.c \
 MAIN_SRCS	:= $(addprefix $(SRC_DIR), $(MAIN_SRC))
 #
 BINS_DIR	:= $(SRC_DIR)builtins/
-BINS_SRC	:= cd.c \
+BINS_SRC	:= check_builtins.c \
+			cd.c \
 			echo.c \
 			env.c \
 			exit.c \
