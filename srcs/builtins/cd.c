@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/13 14:28:25 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:22:51 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int change_directory(t_data *data, char *path)
 CD with only a relative or absolute path
 */
 
-int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from the parsing?
+int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from the struct?
 {
 	char	*path;
 	int		i;
@@ -77,7 +77,7 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
-	if (!cmds[1])//if no directory is given the value of the HOME shell variable is used.
+	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)//if no directory is given or '~' is given, the value of the HOME shell variable is used.
 	{
 		path = getenv("HOME");//get the value of the HOME variable
 		if (!path || *path == '\0' || *path == ' ')//tabs?
@@ -86,16 +86,22 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 			return (EXIT_FAILURE);
 		}
 	}
-	else//if path is supplied
-		path = cmds[1];
-	// {
-	// 	if ('-')////Change directory to the previous directory(OLDPWD)
-	// 	if ('~')//return to home directory. DO WE NEED TO HANDLE '-' & '~'?
-	// 	if ()//If there is a '.' There will be no change of directory
-	// 	if ()//if there is a ".." it will change the directory up one directory
-	// 	else //change into the directory given
-	// 	change_directory(data, cmpd[1]);
-	// }
+	else//if some kind of path is supplied
+	{
+		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD)
+		{
+			path = getenv("OLDPWD");
+			if (!path)
+			{
+				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
+				return (EXIT_FAILURE);
+			}
+		}
+	// // 	if ()//If there is a '.' There will be no change of directory
+	// // 	if ()//if there is a ".." it will change the directory up one directory
+		else
+			path = cmds[1];
+	}
 	change_directory(data, path);
 	return (EXIT_SUCCESS);
 }
