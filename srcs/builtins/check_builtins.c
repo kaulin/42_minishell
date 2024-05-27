@@ -18,19 +18,19 @@ This checks if the command is one of the builtins
 
 int check_if_builtin(t_data *data, char **cmds)
 {
-    if (ft_strncmp("echo", cmds[0], 5) == 0)
-        echo_builtin(cmds);
-    if (ft_strncmp("cd", cmds[0], 3) == 0)
-        cd_builtin();
-    if (ft_strncmp("env", cmds[0], 4) == 0)
-        env_builtin(data);
-    if (ft_strncmp("exit", cmds[0], 5) == 0)
-        exit_builtin();
-    if (ft_strncmp("export", cmds[0], 7) == 0)
-        export_builtin();
-    if (ft_strncmp("pwd", cmds[0], 4) == 0)
-        pwd_builtin(data);
-    if (ft_strncmp("unset", cmds[0], 6) == 0)
-        unset_builtin(data, cmds);
-    return (0);
+	if (ft_strncmp("echo", cmds[0], 5) == 0)
+	echo_builtin(cmds);
+	if (ft_strncmp("cd", cmds[0], 3) == 0)
+	cd_builtin(data, cmds);
+	if (ft_strncmp("env", cmds[0], 4) == 0)
+	env_builtin(data, cmds);
+	//if (ft_strncmp("exit", cmds[0], 5) == 0)
+	//	exit_builtin();
+	if (ft_strncmp("export", cmds[0], 7) == 0)
+	export_builtin(data, cmds);
+	if (ft_strncmp("pwd", cmds[0], 4) == 0)
+	pwd_builtin(data);
+	if (ft_strncmp("unset", cmds[0], 6) == 0)
+	unset_builtin(data, cmds);
+	return (0);
 }
