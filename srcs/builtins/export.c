@@ -21,39 +21,67 @@ They cannot contain special characters such as @, #, !, -, or spaces.
 Environmental variables normally contain only uppercase letters and '_'. Stick with that?
 */
 
-int set_variable(t_data *data, char **key_value)
+int set_variable(t_data *data, char *cmd)
 {
+	char	**copy;
+	int		i;
 
+	i = 0;
+	while (data->envp[i])
+		i++;
+	copy = (char **)malloc((i + 2) * sizeof(char *));
+	if (!copy)
+		return (EXIT_FAILURE);
+	i = 0;
+	while (data->envp[i])//copy the envp until the end and then add the new variable
+	{
+		copy[i] = data->envp[i];
+		i++;
+	}
+	copy[i] = (char *)malloc(ft_strlen(cmd) + 1);//allocate the new variable
+	if (!copy[i])
+		return (EXIT_FAILURE);
+	copy[i] = cmd;
+	copy[++i] = NULL;
+	data->envp = copy;
+	return (EXIT_SUCCESS);
 }
 
-int check_key(t_data *data, char *key)
+int check_key(t_data *data, char *cmd)//what if we give this one string
 {
+	int		len;
+	int		i;
 
-}
-
-char    **check_value(char *arg)
-{
-    char *pointer;
-    char **key_value;
-
-    pointer = ft_strchr(arg, '=');//check for '=' if there is one split it into two and return it?
-   // if (pointer == 0)
-    return(key_value);
+	len = 0;
+	i = 0;
+	while (cmd[len] != '=' && cmd[len] != '\0')//get the length of the variable
+		len++;
+	while (data->envp[i])//go through the environmental variables
+	{
+		if (ft_strncmp(data->envp[i], cmd, len) == 0 && (data->envp[i])[len] == '=')
+		{
+			if (cmd[len] == '\0')//if there is no value we return
+				return (EXIT_SUCCESS);
+			data->envp[i] = cmd;//if there is a match and a value, we replace the old string with the new one. No need to free anything?
+			return (EXIT_SUCCESS);
+		}
+		i++;
+	}
+	set_variable(data, cmd);//if we get to the end we need to allocate for a new variable and set it
+	return (EXIT_SUCCESS);
 }
 
 int export_builtin(t_data *data, char **cmds)
 {
-    int i;
-    char **key_value;
+	int		i;
 
-    i = 1;
-    if (!cmds[i])
-        env_builtin(data);//If no names are supplied, a list of names of all variables is displayed
-    while (cmds[i])//go through the arguments and check each one and set them, in case of error return EXIT_FAILURE
-    {
-        key_value = check_value(cmds[i]);//check if there is a '=' and separate the name from the possible value
-        check_key(key_value[1]);//check if there is a variable of that name and set the value given.If there isn't check if the name given is valid
-        set_variable();// and then set the variable and it's value
-        i++;
-    }
+	i = 1;
+	if (!cmds[i])//If no names are supplied, a list of names of all variables is displayed in alphabetical order
+		return (env_in_order(data));
+	while (cmds[i])//go through the arguments and check each one and set them, in case of error return EXIT_FAILURE
+	{
+		check_key(data, cmds[i]);//these have been allocated already
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }
