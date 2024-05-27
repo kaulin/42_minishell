@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/24 10:46:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:55:05 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,8 @@ int		parse(char *input, t_data *data);
 
 // signal.c
 void	sigint_handler(int signal);
+
+// builtins
+
 
 #endif
