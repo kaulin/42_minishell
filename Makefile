@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/27 16:55:05 by kkauhane         ###   ########.fr        #
+#    Updated: 2024/05/28 09:41:29 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ BINS_SRCS	:= $(addprefix $(BINS_DIR), $(BINS_SRC))
 #
 PARSER_DIR	:= $(SRC_DIR)parser/
 PARSER_SRC	:= parser.c \
-			parser_utils.c
+			parser_utils.c \
+			token_list.c \
+			token_utils.c
 PARSER_SRCS	:= $(addprefix $(PARSER_DIR), $(PARSER_SRC))
 #
 VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
