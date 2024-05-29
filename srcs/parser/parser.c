@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/28 15:29:59 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:00:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	parse(char *input, t_data *data)
 			parser.quote_start = NULL;
 			if (!parser.substring)
 				return (1); // clean return
-			if (parser.quote_start == '\"')
+			if (*parser.quote_start == '\"')
 				expand_variables(&parser.substring, data);
 			parser.new_token = tokenize(parser.substring, *(input + 1));
 			token_add_back(parser.token_list, parser.new_token);
