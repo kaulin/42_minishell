@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/28 15:21:15 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:02:08 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ typedef struct s_parser
 
 // parser_utils.c
 void		init_parser(t_parser *parser);
+int			is_quote_char(char c);
 int			is_whitespace(char c);
-char		*expand_variables(char *str, t_data *data);
+void		skip_whitespace(char **ptr);
+char		*expand_variables(char **str, t_data *data);
 
 // token_list.c
 t_token		*tokenize(char *content, char next);
@@ -58,7 +60,7 @@ void		token_delone(t_token *token);
 void		token_clear(t_token **token_list);
 
 // token_utils.c
-int			merge_tokens(t_token *token);
+int			merge_tokens(t_token **token);
 void		define_tokens(t_token *token);
 
 #endif
