@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/27 17:22:51 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:32:02 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	Sets the value of PWD to the new directory(new path)
 */
 
-int update_pwd(t_data *data)
+int update_pwd(t_data *data, char *path)//aina kun vaihdamme osoitetta ensin pitaa oaivittaa old = pwd ja sitten pwd = cwd
 {
 	char *old_pwd;
 	char *new_pwd;
@@ -35,10 +35,9 @@ int update_pwd(t_data *data)
 	check_key(data, old_pwd);
 	value = getcwd(value, PATH_MAX);//can this fail?
 	temp = ft_strjoin("PWD", "=");
-	new_pwd = ft_strjoin(temp, value);
+	new_pwd = ft_strjoin(temp, path);
 	free(temp);
 	check_key(data, new_pwd);
-	//free(key_value_pair);//do we ever free this?
 	return (EXIT_SUCCESS);
 }
 
@@ -55,7 +54,7 @@ int change_directory(t_data *data, char *path)
 		return (EXIT_FAILURE);
 	}
 	else
-		update_pwd(data);
+		update_pwd(data, path);
 	return (EXIT_SUCCESS);
 }
 
@@ -72,33 +71,33 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 	i = 0;
 	while (cmds[i])
 		i++;
-	if (i > 2)//if there are more than 2 arguments, give errormessage "minishell: cd: too many arguments"
+	if (i > 2)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)//if no directory is given or '~' is given, the value of the HOME shell variable is used.
 	{
-		path = getenv("HOME");//get the value of the HOME variable
+		path = getenv("HOME");
 		if (!path || *path == '\0' || *path == ' ')//tabs?
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR);
 			return (EXIT_FAILURE);
 		}
 	}
-	else//if some kind of path is supplied
+	else
 	{
-		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD)
+		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD). DOES NOT WORK
 		{
 			path = getenv("OLDPWD");
+			printf("%s\n", path);
 			if (!path)
 			{
 				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
 				return (EXIT_FAILURE);
 			}
 		}
-	// // 	if ()//If there is a '.' There will be no change of directory
-	// // 	if ()//if there is a ".." it will change the directory up one directory
+	// 	if ()//if there is a ".." it will change the directory up one directory
 		else
 			path = cmds[1];
 	}
