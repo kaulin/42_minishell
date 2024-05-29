@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 11:02:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:22:33 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_parser
 }	t_parser;
 
 // parser_utils.c
+int			check_quotes(char *str);
 void		init_parser(t_parser *parser);
 int			is_quote_char(char c);
 int			is_whitespace(char c);

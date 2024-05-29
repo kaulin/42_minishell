@@ -6,15 +6,42 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 11:03:31 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:51:37 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 /*
+Checks whether the given string contains unclosed single or double quotes. 
+Returns 1 if there are unclosed quotes.
+*/
+int	check_quotes(char *str)
+{
+	char	*quote;
+
+	quote = NULL;
+	while (*str)
+	{
+		if (!quote)
+		{
+			if (is_quote_char(*str))
+				quote = str;
+		}
+		else
+			if (*str == *quote)
+				quote = NULL;
+		str++;
+	}
+	if (quote)
+		return (*quote);
+	return (0);
+}
+
+/*
 CLEANER FUNCTION NEEDED
 */
+
 void	init_parser(t_parser *parser)
 {
 	parser->substring = NULL;

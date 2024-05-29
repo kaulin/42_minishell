@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 11:00:23 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:51:11 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	parse(char *input, t_data *data)
 {
 	t_parser parser;
 
+	if (check_quotes(input))
+	{
+		printf("Unclosed quotes!\n");
+		return (1);
+	}
 	init_parser(&parser);
 	while (*input)
 	{
@@ -38,6 +43,12 @@ int	parse(char *input, t_data *data)
 	}
 	if (merge_tokens(parser.token_list))
 		return (1); // clean return
+	/*
+	After tokenization:
+	- define token types
+	- separate into commands based on |
+	- assing into command structs and their variables
+	*/
 	return (0);
 }
 
