@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/28 15:36:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:03:31 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ CLEANER FUNCTION NEEDED
 */
 void	init_parser(t_parser *parser)
 {
-	t_parser parser;
 	parser->substring = NULL;
 	parser->quote_start = NULL;
 	parser->string_start = NULL;
@@ -51,6 +50,8 @@ string, or NULL if errors occur.
 */
 char	*expand_variables(char **str, t_data *data)
 {
+	(void)str;
+	(void)data;
 /*
 	char	*original;
 	char	*tail;
