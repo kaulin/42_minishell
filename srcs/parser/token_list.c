@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/24 10:48:05 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:20:08 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Creates a new token struct and initialises its str with the parameter sting. 
 A pointer to the new_token is returned, unless there is a malloc 
 */
-t_token	*token_new(char *content)
+t_token	*tokenize(char *content, char next)
 {
 	t_token	*new_token;
 
@@ -24,8 +24,11 @@ t_token	*token_new(char *content)
 	if (!new_token)
 		return (NULL);
 	new_token->str = content;
-	define_token(new_token);
+	new_token->type = 0;
 	new_token->next = NULL;
+	new_token->merge_flag = 0;
+	if (next && !is_whitespace(next))
+		new_token->merge_flag = 1;
 	return (new_token);
 }
 

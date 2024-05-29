@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/27 16:55:05 by kkauhane         ###   ########.fr        #
+#    Updated: 2024/05/29 10:27:44 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ MAIN_SRC	:= main.c \
 			cmd_list.c \
 			data.c \
 			signal.c
-MAIN_SRCS	:= $(addprefix $(SRC_DIR), $(MAIN_SRC))
 #
 BINS_DIR	:= $(SRC_DIR)builtins/
 BINS_SRC	:= check_builtins.c \
@@ -32,19 +31,19 @@ BINS_SRC	:= check_builtins.c \
 			export.c \
 			pwd.c \
 			unset.c
-BINS_SRCS	:= $(addprefix $(BINS_DIR), $(BINS_SRC))
 #
 PARSER_DIR	:= $(SRC_DIR)parser/
 PARSER_SRC	:= parser.c \
-			parser_utils.c
-PARSER_SRCS	:= $(addprefix $(PARSER_DIR), $(PARSER_SRC))
+			parser_utils.c \
+			token_list.c \
+			token_utils.c
 #
 VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
 
 # Objects
 BUILD_DIR	:= build/
 OBJ			:= $(MAIN_SRC:.c=.o) $(BI_SRC:.c=.o) $(PARSER_SRC:.c=.o)
-OBJS		:= $(addprefix $(BUILD_DIR), $(OBJS)) 
+OBJS		:= $(addprefix $(BUILD_DIR), $(OBJ)) 
 
 # Libraries & headers
 RL_DIR := ~/.brew/opt/readline# Hardcoded for now
