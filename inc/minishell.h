@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/27 16:56:08 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:57:37 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ typedef struct s_cmd
 void	clean_data(t_data *data);
 void	init_data(t_data *data, char **envp);
 
+// cmd_list.c
+t_cmd	*cmd_new(char *content);
+void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
+void	cmd_delone(t_cmd *cmd);
+void	cmd_clear(t_cmd **cmd_list);
+
 // parser.c
 int		parse(char *input, t_data *data);
 
@@ -59,14 +65,14 @@ int		parse(char *input, t_data *data);
 void	sigint_handler(int signal);
 
 // builtins
-int check_if_builtin(t_data *data, char **cmds);
-int cd_builtin(t_data *data, char **cmds);
-int pwd_builtin(t_data *data);
+int	check_if_builtin(t_data *data, char **cmds);
+int	cd_builtin(t_data *data, char **cmds);
+int	pwd_builtin(t_data *data);
 int	echo_builtin(char **cmd);
-int env_builtin(t_data *data, char **cmds);
+int	env_builtin(t_data *data, char **cmds);
 int	env_in_order(t_data *data);
-int unset_builtin(t_data *data, char **cmds);
-int export_builtin(t_data *data, char **cmds);
-int check_key(t_data *data, char *cmd);
+int	unset_builtin(t_data *data, char **cmds);
+int	export_builtin(t_data *data, char **cmds);
+int	check_key(t_data *data, char *cmd);
 
 #endif
