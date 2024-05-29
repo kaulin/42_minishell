@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/16 15:20:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:31:53 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@
 Displays the current working directory path.
 */
 
-int pwd_builtin(t_data *data)
+int pwd_builtin(char **cmds)
 {
-	(void)data;
-    char *cwd;
-    char buffer[PATH_MAX]; // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
+	char *cwd;
+	char buffer[PATH_MAX]; // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
 
-    cwd = getcwd(buffer, PATH_MAX);
-    if (cwd)
-    {
-        printf("%s\n", cwd);
-        return (EXIT_SUCCESS);
-    }
-    else
-        return (EXIT_FAILURE);
-    //should we free the cwd?
+	if (cmds[1])
+	{
+		ft_putstr_fd("minishell: pwd: ", STDERR);
+		ft_putstr_fd(cmds[1], STDERR);
+		ft_putendl_fd(": invalid option", STDERR);
+		return (EXIT_FAILURE);
+	}
+	cwd = getcwd(buffer, PATH_MAX);
+	if (cwd)
+	{
+		printf("%s\n", cwd);
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
 }
+//spaces to tabs and removed the argument and the commen
