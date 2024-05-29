@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 15:11:55 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/08 13:08:46 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:34:15 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,5 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	newstr[i] = '\0';
-	free(s1);
 	return (newstr);
 }
