@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/16 14:23:52 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:38:46 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int env_builtin(t_data *data, char **cmds)
 	}
 	if (!data->envp)
 	{
-		ft_putendl_fd("Error", STDERR);
+		ft_putendl_fd("Error", STDERR);//error message?
 		return (EXIT_FAILURE);
 	}
 	while (data->envp[i])
