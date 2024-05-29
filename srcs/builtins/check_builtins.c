@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/27 17:09:52 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:13:45 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int check_if_builtin(t_data *data, char **cmds)
 	if (ft_strncmp("export", cmds[0], 7) == 0)
 	export_builtin(data,cmds);
 	if (ft_strncmp("pwd", cmds[0], 4) == 0)
-	pwd_builtin(data);
+	pwd_builtin();
 	if (ft_strncmp("unset", cmds[0], 6) == 0)
 		unset_builtin(data, cmds);
 	return (0);
