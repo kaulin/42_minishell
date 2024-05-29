@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/27 14:51:57 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:04:14 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static int	merge_token(t_token *token)
 	return (0);
 }
 
-int	merge_tokens(t_token *token)
+int	merge_tokens(t_token **token)
 {
-	while (token)
+	while (*token)
 	{
-		if (merge_token(token))
+		if (merge_token(*token))
 			return (1);
-		token = token->next;
+		*token = (*token)->next;
 	}
 	return (0);
 }
