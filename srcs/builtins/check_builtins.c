@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 14:22:19 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:44:10 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,3 @@ int check_if_builtin(t_data *data, char **cmds)
 		unset_builtin(data, cmds);
 	return (0);
 }
-//removed arg from pwd
