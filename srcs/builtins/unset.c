@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 15:04:27 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:10:29 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,48 @@ The memory for envp is managed by the operating system, and reallocation/dealloc
 
 int unset(t_data *data, char *variable)
 {
-	size_t	len;
-	char	**pointer;
-	int	i;
+	int i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(variable);
-	pointer = data->envp;
-	while (*data->envp)
+	while (data->envp[i])
 	{
-		if (ft_strncmp(*data->envp, variable, len) == 0 && (*data->envp)[len] == '=')
-			data->envp++;
-		pointer[i] = *data->envp;
-		i++;
-		data->envp++;
+		// if (ft_strncmp(data->envp[i], variable, len) == 0 && data->envp[i][len] == '=')// || data->envp[i][len] == '\0'))//this finds the variable, what if there is no value
+		// {
+		// 	//free(data->envp[i]);
+		// 	//data->envp[i] =  NULL;
+			
+		// 	printf("%s\n", data->envp[++i]);
+		// 	//*data->envp = ++(*data->envp);
+		// }
+		printf("%s\n", data->envp[i]);
+		i++;//we go forward until we find the variable
 	}
-	pointer[i] = NULL;
-	data->envp = pointer;
 	return (EXIT_SUCCESS);
 }
+
+// int unset(t_data *data, char *variable)
+// {
+// 	size_t	len;
+// 	char	**pointer;
+// 	int	i;
+
+// 	i = 0;
+// 	len = ft_strlen(variable);
+// 	pointer = data->envp;
+// 	while (*data->envp)
+// 	{
+// 		if (ft_strncmp(*data->envp, variable, len) == 0 && (*data->envp)[len] == '=')
+// 			data->envp++;
+// 		pointer[i] = *data->envp;
+// 		i++;
+// 		data->envp++;
+// 	}
+// 	pointer[i] = NULL;
+// 	data->envp = pointer;
+// 	return (EXIT_SUCCESS);
+// }
 
 int unset_builtin(t_data *data, char **cmds)
 {
