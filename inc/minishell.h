@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 15:41:18 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:48:58 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 typedef struct s_data
 {
 	char			**envp;
+	int				envp_count;
 	struct s_cmd	*cmd_list;
 	int				status;
 	char			*error_msg;
