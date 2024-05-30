@@ -6,11 +6,39 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 14:51:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:20:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+char	*tokenize(char *input, t_parser *parser, t_data *data)
+{
+	parser->start = input;
+	if (is_quote_char(*input))
+	{
+		parser->quote = input++;
+		while (*input != *parser->quote)
+			input++;
+		input++;
+	}
+	else
+	{
+		while (*input && (!is_quote_char(*input) || !is_whitespace(*input)))
+			input++;
+	}
+	parser->substring = ft_substr(parser->start, 0, input - parser->start - 1);
+	if (!parser->substring)
+		return (NULL);
+	expand(parser->substring, data);
+	if (!parser->substring)
+		return (NULL);
+	parser->new_token = token_new(parser->substring, *input);
+	if (!parser->new_token)
+		return (1);
+	token_add_back(parser->token_list, parser->new_token);
+	return (input);
+}
 
 int	parse(char *input, t_data *data)
 {
@@ -21,36 +49,29 @@ int	parse(char *input, t_data *data)
 		printf("Unclosed quotes!\n");
 		return (1);
 	}
-	init_parser(&parser);
+	parser_init(&parser);
 	while (*input)
 	{
-		skip_whitespace(&input);
-		if (!parser.quote_start && is_quote_char(*input))
-			parser.quote_start = input;
-		else if (parser.quote_start && *input == *parser.quote_start)
+		if (is_whitespace(*input))
+			input++;
+		else
 		{
-			parser.substring = ft_substr(parser.quote_start, 1, input - parser.quote_start);
-			parser.quote_start = NULL;
-			if (!parser.substring)
-				return (1); // clean return
-			if (*parser.quote_start == '\"')
-				expand_variables(&parser.substring, data);
-			parser.new_token = tokenize(parser.substring, *(input + 1));
-			token_add_back(parser.token_list, parser.new_token);
-
-
+			input = start_token(input, &parser, data);
+			if (input = NULL)
+				return (1);
+			parser_reset(&parser);
 		}
 	}
 	if (merge_tokens(parser.token_list))
 		return (1); // clean return
+	return (0);
+}
 	/*
 	After tokenization:
 	- define token types
 	- separate into commands based on |
 	- assing into command structs and their variables
 	*/
-	return (0);
-}
 
 /*
 Cases

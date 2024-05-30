@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 14:51:37 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:07:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,18 @@ int	check_quotes(char *str)
 CLEANER FUNCTION NEEDED
 */
 
-void	init_parser(t_parser *parser)
+void	parser_reset(t_parser *parser)
 {
 	parser->substring = NULL;
-	parser->quote_start = NULL;
-	parser->string_start = NULL;
+	parser->start = NULL;
+	parser->start = NULL;
+}
+
+void	parser_init(t_parser *parser)
+{
+	parser->substring = NULL;
+	parser->start = NULL;
+	parser->start = NULL;
 	parser->token_list = NULL;
 	parser->new_token = NULL;
 }
@@ -75,7 +82,7 @@ void	skip_whitespace(char **ptr)
 Expands the environment variables in the given string. Returns the expanded 
 string, or NULL if errors occur.
 */
-char	*expand_variables(char **str, t_data *data)
+char	*expand(char **str, t_data *data)
 {
 	(void)str;
 	(void)data;
