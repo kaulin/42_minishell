@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 14:36:00 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:35:54 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 	- If there is no text to print echo prints a new line
     - With -n do not output a trailing newline.
 	-Can this command fail somehow?
+	-Problem with two words with a ' ' in the middle and no ""
 */
 
 void	print_cmd(char **cmds, int flag)//this prints the rest of the input
@@ -66,4 +67,3 @@ int	echo_builtin(char **cmd)//Argument form must be desided. Example here is com
 	print_cmd(cmd, flag);
 	return (EXIT_SUCCESS);
 }
-//spaces to tabs

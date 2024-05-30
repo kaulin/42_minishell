@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 16:32:02 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:48:16 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 	Sets the value of PWD to the new directory(new path)
 */
 
-int update_pwd(t_data *data, char *path)//aina kun vaihdamme osoitetta ensin pitaa oaivittaa old = pwd ja sitten pwd = cwd
+int update_pwd(t_data *data)//aina kun vaihdamme osoitetta ensin pitaa oaivittaa old = pwd ja sitten pwd = cwd
 {
 	char *old_pwd;
 	char *new_pwd;
 	char *value;
 	char *temp;
+	char buffer[PATH_MAX];
 
 	value = getenv("PWD");
 	if (!value)
@@ -35,7 +36,7 @@ int update_pwd(t_data *data, char *path)//aina kun vaihdamme osoitetta ensin pit
 	check_key(data, old_pwd);
 	value = getcwd(value, PATH_MAX);//can this fail?
 	temp = ft_strjoin("PWD", "=");
-	new_pwd = ft_strjoin(temp, path);
+	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));
 	free(temp);
 	check_key(data, new_pwd);
 	return (EXIT_SUCCESS);
@@ -54,7 +55,7 @@ int change_directory(t_data *data, char *path)
 		return (EXIT_FAILURE);
 	}
 	else
-		update_pwd(data, path);
+		update_pwd(data);
 	return (EXIT_SUCCESS);
 }
 
@@ -76,7 +77,7 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
-	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)//if no directory is given or '~' is given, the value of the HOME shell variable is used.
+	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)//if no directory is given or '~' is given, the value of the HOME shell variable is used. iIs this expansion done in parsing?
 	{
 		path = getenv("HOME");
 		if (!path || *path == '\0' || *path == ' ')//tabs?
@@ -90,14 +91,18 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD). DOES NOT WORK
 		{
 			path = getenv("OLDPWD");
-			printf("%s\n", path);
+			//printf("%s\n", path);
 			if (!path)
 			{
 				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
 				return (EXIT_FAILURE);
 			}
 		}
-	// 	if ()//if there is a ".." it will change the directory up one directory
+		// if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
+		// {
+		// 	path = 
+
+		// }
 		else
 			path = cmds[1];
 	}
