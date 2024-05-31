@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/29 11:04:14 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:36:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ static int	merge_token(t_token *token)
 	return (0);
 }
 
-int	merge_tokens(t_token **token)
+int	merge_tokens(t_token **tokens)
 {
-	while (*token)
+	t_token	*token;
+
+	token = *tokens;
+	while (token)
 	{
-		if (merge_token(*token))
+		if (merge_token(token))
 			return (1);
-		*token = (*token)->next;
+		token = (token)->next;
 	}
 	return (0);
 }
@@ -53,4 +56,19 @@ int	merge_tokens(t_token **token)
 void	define_tokens(t_token *token)
 {
 	token->type = 0;
+}
+
+void	print_tokens(t_token **token_list)
+{
+	int		count;
+	t_token	*token;
+
+	count = 0;
+	token = *token_list;
+	while (token)
+	{
+		printf("Token %d contains: %s\n", count, token->str);
+		count++;
+		token = token->next;
+	}
 }
