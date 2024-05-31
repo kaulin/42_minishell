@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/29 10:27:44 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/05/31 13:30:36 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ BINS_SRC	:= check_builtins.c \
 PARSER_DIR	:= $(SRC_DIR)parser/
 PARSER_SRC	:= parser.c \
 			parser_utils.c \
+			expand.c \
 			token_list.c \
 			token_utils.c
 #
