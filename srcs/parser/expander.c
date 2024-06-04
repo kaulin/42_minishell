@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/31 13:24:01 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/03 11:15:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "expander.h"
 
 /*
 Find variable
@@ -39,7 +39,7 @@ char	*get_var(char *key, char **envp)
 	return (content);
 }
 
-char	*get_key(char *str)
+char	*form_key(char *str)
 {
 	
 }
@@ -48,14 +48,22 @@ char	*get_key(char *str)
 Expands the environment variables in the given string. Returns the expanded 
 string, or NULL if errors occur.
 */
-void	*expand(char **str, int	i, t_data *data)
+int	expand(char **str, int	i, t_data *data)
 {
-	char	*expanded;
+	t_expander	expander;
 
-	if (*str[i] == 0)
-		return ;
-	expanded = NULL;
-	free(*str);
-	*str = expanded;
-	return (expand(str, i, data));
+	expander_init(&expander, *str);
+	if (is_quote_char(*expander.ptr))
+	{
+		expander.quote = expander.ptr;
+		expander.ptr++;
+	}
+	if (expander.quote == '\'')
+	{
+
+	}
+	else
+	{
+		
+	}
 }

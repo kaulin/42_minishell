@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/05/31 13:30:36 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/06/04 09:20:41 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,12 @@ BINS_SRC	:= check_builtins.c \
 PARSER_DIR	:= $(SRC_DIR)parser/
 PARSER_SRC	:= parser.c \
 			parser_utils.c \
-			expand.c \
+			expander.c \
+			expander_utils.c \
+			str_list.c \
 			token_list.c \
-			token_utils.c
+			token_utils.c \
+			splitjoin.c
 #
 VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
 
