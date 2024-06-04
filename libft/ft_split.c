@@ -3,100 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/29 12:26:57 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 16:34:13 by kkauhane         ###   ########.fr       */
+/*   Created: 2023/10/28 16:39:19 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/06/04 09:17:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	wordcount(char const *s, char delimiter)
+static int	count_words(char const *s, char *dstr)
 {
-	int		count;
-	int		i;
+	size_t	count;
+	size_t	i;
 
 	count = 0;
 	i = 0;
-	while (*s != '\0')
+	while (s[i])
 	{
-		if (*s != delimiter && i == 0)
+		while (s[i] && ft_strchr(dstr, s[i]) != NULL)
+			i++;
+		if (s[i] && ft_strchr(dstr, s[i]) == NULL)
 		{
-			i = 1;
 			count++;
+			while (s[i] && ft_strchr(dstr, s[i]) == NULL)
+				i++;
 		}
-		else if (*s == delimiter)
-			i = 0;
-		s++;
 	}
 	return (count);
 }
 
-static void	fill_array(char *array, int start, int end, char const *s)
+static int	make_word(char **dest, char const *src, char *dstr)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
-	while (start < end)
-	{
-		array[i] = s[start];
-		start++;
+	while (ft_strchr(dstr, src[i]) == NULL && src[i] != 0)
 		i++;
-	}
-	array[i] = '\0';
+	*dest = ft_substr(src, 0, i);
+	return ((int)i);
 }
 
-static char	**ft_free(char **string)
+static void	*make_words(char **array, int count, char const *s, char *dstr)
+{
+	int	str_i;
+	int	word_i;
+
+	str_i = 0;
+	word_i = 0;
+	while (s[str_i])
+	{
+		if (ft_strchr(dstr, s[str_i]) == NULL)
+		{
+			str_i += make_word(&array[word_i], s + str_i, dstr);
+			if (array[word_i] == NULL)
+				return (NULL);
+			word_i++;
+		}
+		else
+			str_i++;
+	}
+	array[count] = NULL;
+	return (array);
+}
+
+static void	clean(char **array)
 {
 	int	i;
 
 	i = 0;
-	while (string[i])
-	{
-		free(string[i]);
-		i++;
-	}
-	free(string);
-	return (0);
+	while (array[i])
+		free(array[i++]);
 }
 
-static char	**allocate_words(char **array, char const *s, char c)
+char	**ft_split(char const *s, char *dstr)
 {
-	unsigned int	j;
-	int				start;
-	int				i;
+	int		count;
+	char	**array;
 
-	j = 0;
-	i = 0;
-	start = 0;
-	while (j < ft_strlen(s))
+	count = count_words(s, dstr);
+	array = malloc((count + 1) * sizeof(char *));
+	if (array == NULL)
+		return (NULL);
+	if (make_words(array, count, s, dstr) == NULL)
 	{
-		while (s[j] == c && s[j] != '\0')
-			j++;
-		if (s[j] == '\0')
-			return (array);
-		start = j;
-		while (s[j] != c && s[j] != '\0')
-			j++;
-		array[i] = (char *)malloc((j - start + 1) * sizeof(char));
-		if (!array[i])
-			return (ft_free(array));
-		fill_array(array[i], start, j, s);
-		i++;
+		clean(array);
+		free(array);
+		return (NULL);
 	}
 	return (array);
-}
-
-char	**ft_split(char *s, char c)
-{
-	char	**strarray;
-
-	strarray = (char **)ft_calloc((wordcount(s, c) + 1), sizeof(char *));
-	if (!strarray)
-		return (0);
-	strarray = allocate_words(strarray, s, c);
-	if (!strarray)
-		return (0);
-	return (strarray);
 }
