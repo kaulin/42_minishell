@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/04 15:32:03 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:45:43 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_cmd
 // data.c
 void	clean_data(t_data *data);
 void	init_data(t_data *data, char **envp);
+char	**copy_envp(t_data *data, char **envp);
 
 // cmd_list.c
 t_cmd	*cmd_new(char *content);
