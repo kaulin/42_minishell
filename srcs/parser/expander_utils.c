@@ -6,22 +6,37 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/03 14:12:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:36:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-void	expander_init(t_expander *expander, char *str)
+/*
+Find variable
+*/
+char	*get_var(char *key, char **envp)
 {
-	expander->quote = 0;
-	if (is_quote_char(*str))
-		expander->quote = *str;
-	expander->ptr = str;
-	expander->key = NULL;
-	expander->var = NULL;
-	expander->str_list = NULL;
-	expander->new_str = NULL;
+	int		env_i;
+	char	*content;
+
+	env_i = 0;
+	content = ft_strdup("");
+	if (!content)
+		return (NULL);
+	if (!envp || !*envp)
+		return  (content);
+	while (envp[env_i])
+	{
+		if (ft_strncmp(envp[env_i], key, ft_strlen(key)) \
+		&& envp[env_i][ft_strlen(key)] == '=')
+		{
+			content = ft_strdup(ft_strchr(envp[env_i], '=') + 1);
+			return (content);
+		}
+		env_i++;
+	}
+	return (content);
 }
 
 /*
@@ -30,7 +45,7 @@ characters trimmed from both ends, frees original string and replaces its
 pointer with the substring. If more characters would be trimmed than there are 
 in the string, an empty string is used.
 */
-int	trim_n(char **str, int n)
+int	trim_n(char **str, unsigned int n)
 {
 	char *temp;
 
@@ -39,8 +54,8 @@ int	trim_n(char **str, int n)
 	else
 		temp = ft_substr(*str, n, ft_strlen(*str) - 2 * n);
 	if (!temp)
-		return (1);
+		return (ERROR);
 	free(*str);
 	*str = temp;
-	return (0);
+	return (SUCCESS);
 }

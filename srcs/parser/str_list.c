@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/01 15:32:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:24:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Creates a new str struct and initialises its str with the parameter sting. 
 A pointer to the new_str is returned, unless there is a malloc error.
 */
-t_str	*str_new(char *content, char next)
+t_str	*str_new(char *content)
 {
 	t_str	*new_str;
 
@@ -77,24 +77,22 @@ void	str_clear(t_str **str_list)
 }
 
 /*
-Merges the contents of all the str nodes into one string, frees the list and 
-returns the formed string.
+Merges the contents of all the str nodes into one string.
 */
-char	*str_merge(t_str **str_list)
+char	*str_merge(t_str *str_list)
 {
 	char	*merged_string;
 	char	*temp;
 
 	merged_string = NULL;
-	while (*str_list)
+	while (str_list)
 	{
-		temp = ft_strjoin(merged_string, (*str_list)->str);
+		temp = ft_strjoin(merged_string, str_list->str);
 		free (merged_string);
 		if (!temp)
 			return (NULL);
 		merged_string = temp;
-		*str_list = (*str_list)->next;
+		str_list = str_list->next;
 	}
-	str_clear(str_list);
 	return (merged_string);
 }

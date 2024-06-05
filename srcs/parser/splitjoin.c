@@ -6,11 +6,11 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:11:35 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/04 09:21:06 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:36:04 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander.h"
+#include "parser.h"
 
 /*
 Frees a null terminated array of strings.
@@ -61,12 +61,12 @@ int	splitjoin(char **str, char *delim, char *sep)
 
 	array = ft_split(*str, delim);
 	if (!array)
-		return (1);
-	temp = join_array(array, " ");
+		return (ERROR);
+	temp = join_array(array, sep);
 	clean_array(array);
 	if (!temp)
-		return (1);
+		return (ERROR);
 	free (*str);
 	*str = temp;
-	return (0);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:58:06 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/04 09:13:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:37:07 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,35 @@
 
 typedef struct s_str
 {
-	char	*str;
-	t_str	*next;
+	char			*str;
+	struct s_str	*next;
 }	t_str;
 
 typedef struct s_expander
 {
-	char	quote;
-	char	*ptr;
-	char	*key;
-	char	*var;
-	t_str	*str_list;
-	t_str	*new_str;
+	char			quote;
+	char			*ptr;
+	char			*start;
+	char			*var;
+	t_str			*str_list;
+	t_str			*new_str;
 }	t_expander;
 
+// expander.c
+int		expand(char **str, t_data *data);
+
 // expander_utils.c
-void	expander_init(t_expander *expander, char *str);
-char	*trim_n(char **str, int n);
+char	*get_var(char *key, char **envp);
+int		trim_n(char **str, unsigned int n);
 
 // splitjoin.c
 int		splitjoin(char **str, char *delim, char *sep);
+
+// str_list.c
+t_str	*str_new(char *content);
+void	str_add_back(t_str **str_list, t_str *new_str);
+void	str_delone(t_str *str);
+void	str_clear(t_str **str_list);
+char	*str_merge(t_str *str_list);
 
 #endif
