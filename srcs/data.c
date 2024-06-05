@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pik-kak <pik-kak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 16:47:27 by pik-kak          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:00:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	clean_data(t_data *data)//need to add envp_clear
 		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
+	rl_clear_history();
 }
 
 void	init_data(t_data *data, char **envp)
