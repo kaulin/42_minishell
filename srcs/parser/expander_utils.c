@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 10:36:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:25:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 Find variable
 */
-char	*get_var(char *key, char **envp)
+char	*get_var(char *key, char **envp, int envp_count)
 {
 	int		env_i;
 	char	*content;
@@ -26,7 +26,7 @@ char	*get_var(char *key, char **envp)
 		return (NULL);
 	if (!envp || !*envp)
 		return  (content);
-	while (envp[env_i])
+	while (env_i < envp_count)
 	{
 		if (ft_strncmp(envp[env_i], key, ft_strlen(key)) \
 		&& envp[env_i][ft_strlen(key)] == '=')
