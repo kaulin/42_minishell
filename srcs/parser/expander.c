@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 10:34:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 11:48:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	expander_init(t_expander *expander, char *str)
 	expander->ptr = str;
 	expander->var = NULL;
 	expander->str_list = NULL;
-	expander->new_str = NULL;
+	expander->temp_str = NULL;
 }
 
 /*
@@ -76,19 +76,38 @@ int	cut_str(t_expander *expander)
 	temp = ft_substr(expander->start, 0, expander->ptr - expander->start);
 	if (!temp)
 		return (ERROR);
-	expander->new_str = str_new(temp);
+	expander->temp_str = str_new(temp);
 	free(temp);
-	if (!expander->new_str)
+	if (!expander->temp_str)
 		return (ERROR);
-	str_add_back(&expander->str_list, expander->new_str);
+	str_add_back(&expander->str_list, expander->temp_str);
 	return (SUCCESS);
 }
 
-int	expand_strings(t_str *list, t_data *data)
-{
-	(void)list;
-	(void)data;
-	return (SUCCESS);	
+/*
+Expands any variable strings in the str_list. For variables not enclosed in 
+double quotes, any additional whitespace within the returned variable content 
+is condensed into single spaces.*/
+static int	expand_strings(t_expander *expander, t_data *data)
+{	
+	char	*temp;
+
+	expander->temp_str = expander->str_list;
+	while (expander->temp_str)
+	{
+		if (*expander->temp_str->str == '$')
+		{
+			temp = get_var(expander->temp_str->str + 1, data->envp);
+			if (!temp)
+				return (ERROR);
+			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
+				return (ERROR);
+			free (expander->temp_str->str);
+			expander->temp_str->str = temp;
+		}
+		expander->temp_str = expander->temp_str->next;
+	}
+	return (SUCCESS);
 }
 
 /*
@@ -110,7 +129,7 @@ int	expand(char **str, t_data *data)
 		if (cut_str(&expander))
 			return (ERROR);
 	}
-	if (expand_strings(expander.str_list, data))
+	if (expander.quote != '\'' && expand_strings(&expander, data))
 	{
 		expander_clean(&expander);
 		return (ERROR);
