@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/14 14:58:20 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:04:04 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,12 @@ int main(int argc, char **argv, char **envp)
 		//if (input[0] != '\0')
 		//	add_history(input);
 		if (parse(input, &data))
-			break ;
+		{
+			printf("Memory allocation error\n");
+			free(input);
+			clean_data(&data);
+			return (EXIT_FAILURE);
+		}
 		// execute commands from data->cmd_list, wait for possible children to complete and exit pipe with last command's exit code
 		free(input);
 	}
