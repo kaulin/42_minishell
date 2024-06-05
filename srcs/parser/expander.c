@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 12:09:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:30:41 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	expander_init(t_expander *expander, char *str)
 	expander->ptr = str;
 	expander->var = NULL;
 	expander->str_list = NULL;
-	expander->temp_str = NULL;
 }
 
 /*
@@ -62,6 +61,7 @@ added to the end of the expander->str_list.
 int	cut_str(t_expander *expander)
 {
 	char	*temp;
+	t_str	*node;
 
 	expander->start = expander->ptr++;
 	while (*expander->ptr)
@@ -76,13 +76,13 @@ int	cut_str(t_expander *expander)
 	temp = ft_substr(expander->start, 0, expander->ptr - expander->start);
 	if (!temp)
 		return (ERROR);
-	expander->temp_str = str_new(temp);
-	if (!expander->temp_str)
+	node = str_new(temp);
+	if (!node)
 	{
 		free(temp);
 		return (ERROR);
 	}
-	str_add_back(&expander->str_list, expander->temp_str);
+	str_add_back(&expander->str_list, node);
 	return (SUCCESS);
 }
 
@@ -93,21 +93,22 @@ is condensed into single spaces.*/
 static int	expand_strings(t_expander *expander, t_data *data)
 {	
 	char	*temp;
+	t_str	*node;
 
-	expander->temp_str = expander->str_list;
-	while (expander->temp_str)
+	node = expander->str_list;
+	while (node)
 	{
-		if (*expander->temp_str->str == '$')
+		if (*node->str == '$')
 		{
-			temp = get_var(expander->temp_str->str + 1, data->envp);
+			temp = get_var(node->str + 1, data->envp, data->envp_count);
 			if (!temp)
 				return (ERROR);
 			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
 				return (ERROR);
-			free (expander->temp_str->str);
-			expander->temp_str->str = temp;
+			free (node->str);
+			node->str = temp;
 		}
-		expander->temp_str = expander->temp_str->next;
+		node = node->next;
 	}
 	return (SUCCESS);
 }

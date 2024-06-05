@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:58:06 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 11:25:44 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:30:28 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ typedef struct s_expander
 	char			*start;
 	char			*var;
 	t_str			*str_list;
-	t_str			*temp_str;
 }	t_expander;
 
 // expander.c
 int		expand(char **str, t_data *data);
 
 // expander_utils.c
-char	*get_var(char *key, char **envp);
+char	*get_var(char *key, char **envp, int envp_count);
 int		trim_n(char **str, unsigned int n);
 
 // splitjoin.c
