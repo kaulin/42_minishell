@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 17:45:43 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/05 19:29:26 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h> //
 # include <sys/ioctl.h>
 # include <termios.h> //contains the definitions used by the terminal I/O interfaces
+# include <fcntl.h>
 # include "libft.h"
 
 # define STDIN 0
