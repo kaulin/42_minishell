@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 10:24:26 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:32:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	parser_init(t_parser *parser)
 	parser->start = NULL;
 	parser->start = NULL;
 	parser->token_list = NULL;
-	parser->new_token = NULL;
 }
 
 static void	parser_clean(t_parser *parser)
@@ -39,6 +38,8 @@ static void	parser_clean(t_parser *parser)
 
 static char	*tokenize(char *input, t_parser *parser, t_data *data)
 {
+	t_token	*node;
+	
 	parser->start = input;
 	if (is_quote_char(*input))
 	{
@@ -57,10 +58,10 @@ static char	*tokenize(char *input, t_parser *parser, t_data *data)
 		return (NULL);
 	if (expand(&parser->substring, data))
 		return (NULL);
-	parser->new_token = token_new(parser->substring, *input);
-	if (!parser->new_token)
+	node = token_new(parser->substring, *input);
+	if (!node)
 		return (NULL);
-	token_add_back(&parser->token_list, parser->new_token);
+	token_add_back(&parser->token_list, node);
 	return (input);
 }
 
