@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 15:04:04 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 19:25:33 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Readline allocates space for string automatically but doesn't free it.
 int main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-	char *input;
+	char	*input;
 
 	(void)argc;//Ignore arguments
 	(void)argv;//Ignore arguments
@@ -32,8 +32,8 @@ int main(int argc, char **argv, char **envp)
 		input = readline("Minishell > ");
 		if (input == NULL) //In case of Ctrl+D (EOF)
 			break ;
-		//if (input[0] != '\0')
-		//	add_history(input);
+		if (input[0] != '\0')//do we need to also check for whitespaces only input?
+			add_history(input);
 		if (parse(input, &data))
 		{
 			printf("Memory allocation error\n");
@@ -42,7 +42,6 @@ int main(int argc, char **argv, char **envp)
 			return (EXIT_FAILURE);
 		}
 		// execute commands from data->cmd_list, wait for possible children to complete and exit pipe with last command's exit code
-		free(input);
 	}
 	clean_data(&data);
 	return 0;
