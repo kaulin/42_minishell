@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/04 15:24:58 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 12:24:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ char	*str_merge(t_str *str_list)
 	char	*merged_string;
 	char	*temp;
 
-	merged_string = NULL;
+	merged_string = ft_strdup("");
+	if (!merged_string)
+		return (NULL);
 	while (str_list)
 	{
 		temp = ft_strjoin(merged_string, str_list->str);
