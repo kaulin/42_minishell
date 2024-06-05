@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:11:35 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/04 15:36:04 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:43:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ Frees a null terminated array of strings.
 */
 static void	clean_array(char **array)
 {
-	while (*array)
-		free((*array)++);
+	int	i;
+
+	i = 0;
+	while (array[i])
+		free(array[i++]);
 	free (array);
 }
 
