@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:11:35 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 14:43:38 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:52:16 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static char	*join_array(char **array, char *sep)
 		free(temp2);
 		if (!temp1)
 			return (NULL);
+		i++;
 	}
 	return (temp1);
 }
@@ -62,6 +63,8 @@ int	splitjoin(char **str, char *delim, char *sep)
 	char	*temp;
 	char	**array;
 
+	if (ft_strlen(*str) == 0)
+		return (SUCCESS);
 	array = ft_split(*str, delim);
 	if (!array)
 		return (ERROR);
