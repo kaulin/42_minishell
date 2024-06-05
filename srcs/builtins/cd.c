@@ -3,38 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pik-kak <pik-kak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/30 12:48:16 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:56:10 by pik-kak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
 /*
-	Sets the OLDPWD to the current working directory(PWD before the change).
+	Returns a pointer to the value of the environmental variable in question
+*/
+char	*ft_getenv(t_data *data, char *variable)
+{
+	int	i;
+	char *pointer;
+
+	i = 0;
+	pointer = NULL;
+	while (data->envp[i] != NULL)
+	{
+		if (ft_strncmp(data->envp[i], variable, ft_strlen(variable)) == 0 && data->envp[i][ft_strlen(variable)] == '=')
+		{
+			pointer = ft_strchr(data->envp[i], '=');
+			pointer++;
+			return (pointer);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+/*
+	Sets the OLDPWD to the current working directory
 	Sets the value of PWD to the new directory(new path)
 */
-
-int update_pwd(t_data *data)//aina kun vaihdamme osoitetta ensin pitaa oaivittaa old = pwd ja sitten pwd = cwd
+int update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
 {
 	char *old_pwd;
 	char *new_pwd;
-	char *value;
 	char *temp;
 	char buffer[PATH_MAX];
 
-	value = getenv("PWD");
-	if (!value)
+	if (!(ft_getenv(data, "PWD")))
 	{
 		ft_putendl_fd("minishell: cd: PWD not set", STDERR);
 		return (EXIT_FAILURE);
 	}
 	temp = ft_strjoin("OLDPWD", "=");
-	old_pwd = ft_strjoin(temp, value);
+	old_pwd = ft_strjoin(temp, ft_getenv(data, "PWD"));
 	free(temp);
 	check_key(data, old_pwd);
-	value = getcwd(value, PATH_MAX);//can this fail?
 	temp = ft_strjoin("PWD", "=");
 	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));
 	free(temp);
@@ -63,7 +83,7 @@ int change_directory(t_data *data, char *path)
 CD with only a relative or absolute path
 */
 
-int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from the struct?
+int cd_builtin(t_data *data, char **cmds)
 {
 	char	*path;
 	int		i;
@@ -77,9 +97,9 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
-	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)//if no directory is given or '~' is given, the value of the HOME shell variable is used. iIs this expansion done in parsing?
+	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
-		path = getenv("HOME");
+		path = ft_getenv(data, "HOME");
 		if (!path || *path == '\0' || *path == ' ')//tabs?
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR);
@@ -88,10 +108,9 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 	}
 	else
 	{
-		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD). DOES NOT WORK
+		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD). DOES NOT WORK YET
 		{
-			path = getenv("OLDPWD");
-			//printf("%s\n", path);
+			path = ft_getenv(data, "OLDPWD");//getenv gets the path from the original envp not from the copy
 			if (!path)
 			{
 				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
@@ -101,7 +120,7 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 		// if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
 		// {
 		// 	path = 
-
+		// 	//we get the current working directory and copy it until the last / and set that as path. If we copy we need to free it...
 		// }
 		else
 			path = cmds[1];
@@ -109,3 +128,4 @@ int cd_builtin(t_data *data, char **cmds)//can i get the amount of commands from
 	change_directory(data, path);
 	return (EXIT_SUCCESS);
 }
+
