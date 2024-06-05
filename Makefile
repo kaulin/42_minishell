@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/06/04 09:20:41 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/06/05 11:50:57 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
 
 # Objects
 BUILD_DIR	:= build/
-OBJ			:= $(MAIN_SRC:.c=.o) $(BI_SRC:.c=.o) $(PARSER_SRC:.c=.o)
+OBJ			:= $(MAIN_SRC:.c=.o) $(BINS_SRC:.c=.o) $(PARSER_SRC:.c=.o)
 OBJS		:= $(addprefix $(BUILD_DIR), $(OBJ)) 
 
 # Libraries & headers
