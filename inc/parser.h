@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/01 14:57:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:15:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include "minishell.h"
 
 // Types of tokens
-# define REDIR_TKN = 1;
-# define CMD_TKN = 2;
-# define OPT_TKN = 3;
-# define ARG_TKN = 4;
-# define PIPE_TKN = 5;
+# define REDIR_TKN 1;
+# define CMD_TKN 2;
+# define OPT_TKN 3;
+# define ARG_TKN 4;
+# define PIPE_TKN 5;
 
 /*
 Defines linked list token struct.
@@ -47,25 +47,20 @@ typedef struct s_parser
 }	t_parser;
 
 // parser_utils.c
-int			check_quotes(char *str);
-void		parser_init(t_parser *parser);
-void		parser_reset(t_parser *parser);
-int			is_quote_char(char c);
-int			is_whitespace(char c);
-void		skip_whitespace(char **ptr);
-
-// expand.c
-void		expand(char **str, int i, t_data *data);
+int		is_quote_char(char c);
+int		is_whitespace(char c);
+void	skip_whitespace(char **ptr);
+int		check_quotes(char *str);
 
 // token_list.c
-t_token		*token_new(char *content, char next);
-void		token_add_back(t_token **token_list, t_token *new_token);
-void		token_delone(t_token *token);
-void		token_clear(t_token **token_list);
+t_token	*token_new(char *content, char next);
+void	token_add_back(t_token **token_list, t_token *new_token);
+void	token_delone(t_token *token);
+void	token_clear(t_token **token_list);
 
 // token_utils.c
-int			merge_tokens(t_token **token);
-void		define_tokens(t_token *token);
-void		print_tokens(t_token **token_list);
+int		merge_tokens(t_token **token);
+void	define_tokens(t_token *token);
+void	print_tokens(t_token **token_list);
 
 #endif

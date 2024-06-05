@@ -6,31 +6,11 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/31 13:15:17 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:15:59 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-/*
-CLEANER FUNCTION NEEDED
-*/
-
-void	parser_reset(t_parser *parser)
-{
-	parser->substring = NULL;
-	parser->start = NULL;
-	parser->start = NULL;
-}
-
-void	parser_init(t_parser *parser)
-{
-	parser->substring = NULL;
-	parser->start = NULL;
-	parser->start = NULL;
-	parser->token_list = NULL;
-	parser->new_token = NULL;
-}
 
 int	is_quote_char(char c)
 {
@@ -50,4 +30,30 @@ void	skip_whitespace(char **ptr)
 {
 	while (is_whitespace(**ptr))
 		(*ptr)++;
+}
+
+/*
+Checks whether the given string contains unclosed single or double quotes. 
+Returns 1 if there are unclosed quotes.
+*/
+int	check_quotes(char *str)
+{
+	char	*quote;
+
+	quote = NULL;
+	while (*str)
+	{
+		if (!quote)
+		{
+			if (is_quote_char(*str))
+				quote = str;
+		}
+		else
+			if (*str == *quote)
+				quote = NULL;
+		str++;
+	}
+	if (quote)
+		return (*quote);
+	return (0);
 }

@@ -6,39 +6,38 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/01 14:38:37 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:24:26 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "expander.h"
 
-/*
-Checks whether the given string contains unclosed single or double quotes. 
-Returns 1 if there are unclosed quotes.
-*/
-static int	check_quotes(char *str)
+static void	parser_reset(t_parser *parser)
 {
-	char	*quote;
-
-	quote = NULL;
-	while (*str)
-	{
-		if (!quote)
-		{
-			if (is_quote_char(*str))
-				quote = str;
-		}
-		else
-			if (*str == *quote)
-				quote = NULL;
-		str++;
-	}
-	if (quote)
-		return (*quote);
-	return (0);
+	parser->substring = NULL;
+	parser->start = NULL;
+	parser->start = NULL;
 }
 
-char	*tokenize(char *input, t_parser *parser, t_data *data)
+static void	parser_init(t_parser *parser)
+{
+	parser->substring = NULL;
+	parser->start = NULL;
+	parser->start = NULL;
+	parser->token_list = NULL;
+	parser->new_token = NULL;
+}
+
+static void	parser_clean(t_parser *parser)
+{
+	if (parser->substring)
+		free(parser->substring);
+	if (parser->token_list)
+		token_clear(&parser->token_list);
+}
+
+static char	*tokenize(char *input, t_parser *parser, t_data *data)
 {
 	parser->start = input;
 	if (is_quote_char(*input))
@@ -56,8 +55,7 @@ char	*tokenize(char *input, t_parser *parser, t_data *data)
 	parser->substring = ft_substr(parser->start, 0, input - parser->start);
 	if (!parser->substring)
 		return (NULL);
-	expand(&parser->substring, 0, data);
-	if (!parser->substring)
+	if (expand(&parser->substring, data))
 		return (NULL);
 	parser->new_token = token_new(parser->substring, *input);
 	if (!parser->new_token)
@@ -73,7 +71,7 @@ int	parse(char *input, t_data *data)
 	if (check_quotes(input))
 	{
 		printf("Unclosed quotes!\n");
-		return (1); // clean return
+		return (ERROR);
 	}
 	parser_init(&parser);
 	while (*input)
@@ -84,15 +82,16 @@ int	parse(char *input, t_data *data)
 		{
 			input = tokenize(input, &parser, data);
 			if (!input)
-				return (1); // clean return
+				return (ERROR); // clean return
 			parser_reset(&parser);
 		}
 	}
 	print_tokens(&parser.token_list);
 	if (merge_tokens(&parser.token_list))
-		return (1); // clean return
+		return (ERROR); // clean return
 	print_tokens(&parser.token_list);
-	return (0);
+	parser_clean(&parser);
+	return (SUCCESS);
 }
 	/*
 	After tokenization:
