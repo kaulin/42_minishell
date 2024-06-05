@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 11:48:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/05 12:09:22 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ int	cut_str(t_expander *expander)
 	if (!temp)
 		return (ERROR);
 	expander->temp_str = str_new(temp);
-	free(temp);
 	if (!expander->temp_str)
+	{
+		free(temp);
 		return (ERROR);
+	}
 	str_add_back(&expander->str_list, expander->temp_str);
 	return (SUCCESS);
 }
