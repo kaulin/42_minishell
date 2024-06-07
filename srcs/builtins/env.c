@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pik-kak <pik-kak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 17:00:19 by pik-kak          ###   ########.fr       */
+/*   Updated: 2024/06/07 18:50:42 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
-
+#include "minishell.h"
 
 /*
 ◦ env with no options or arguments
@@ -20,7 +19,7 @@ Env without any argument is used to print out a list of all environment variable
 */
 void	free_copy(char **copy)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (copy[i])
@@ -33,7 +32,7 @@ void	free_copy(char **copy)
 
 int	arrange(char **copy, int i, int j)
 {
-	char *temp;
+	char	*temp;
 
 	temp = strdup(copy[i]);
 	if (temp == NULL)
@@ -56,9 +55,9 @@ int	arrange(char **copy, int i, int j)
 
 int	env_in_order(t_data *data)
 {
-	int i;
-	int j;
-	char **copy;
+	int		i;
+	int		j;
+	char	**copy;
 
 	i = 0;
 	copy = copy_envp(data, data->envp);
@@ -84,7 +83,7 @@ int	env_in_order(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int env_builtin(t_data *data, char **cmds)
+int	env_builtin(t_data *data, char **cmds)
 {
 	int	i;
 

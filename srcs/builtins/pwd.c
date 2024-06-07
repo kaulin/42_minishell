@@ -6,20 +6,20 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 14:31:53 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:55:53 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /*
-◦ pwd with no options
 Displays the current working directory path.
+ // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
 */
 
-int pwd_builtin(char **cmds)
+int	pwd_builtin(char **cmds)
 {
-	char *cwd;
-	char buffer[PATH_MAX]; // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
+	char	*cwd;
+	char	buffer[PATH_MAX];
 
 	if (cmds[1])
 	{
@@ -36,4 +36,3 @@ int pwd_builtin(char **cmds)
 	}
 	return (EXIT_FAILURE);
 }
-//spaces to tabs and removed the argument and the commen

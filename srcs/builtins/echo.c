@@ -6,11 +6,11 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/30 14:35:54 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:48:17 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /*
 ◦ Echo with option -n
     - Used to print text/variables to the terminal(syntax: echo 'sample text')
@@ -28,7 +28,7 @@ void	print_cmd(char **cmds, int flag)//this prints the rest of the input
 		cmds += 2;
 	if (*cmds != '\0')
 	{
-		while(*cmds)
+		while (*cmds)
 		{
 			printf("%s", *cmds);
 			cmds++;
@@ -40,7 +40,7 @@ void	print_cmd(char **cmds, int flag)//this prints the rest of the input
 
 int	check_flag(char *arg)//this checks if there is a -n flag (also -nn.. is acceptable)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (arg[i] == '-')
@@ -59,7 +59,7 @@ int	check_flag(char *arg)//this checks if there is a -n flag (also -nn.. is acce
 
 int	echo_builtin(char **cmd)//Argument form must be desided. Example here is command cmd[0], flag cmd[1], and the printable part cmd[2]
 {
-	int flag;
+	int	flag;
 
 	flag = 0;
 	if (cmd && cmd[1])

@@ -6,11 +6,11 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/05/29 14:40:24 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:51:03 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /*
 ◦ exit with no options
 

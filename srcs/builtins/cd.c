@@ -6,25 +6,26 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 17:50:16 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:46:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 /*
 	Returns a pointer to the value of the environmental variable in question
 */
 char	*ft_getenv(t_data *data, char *variable)
 {
-	int	i;
-	char *pointer;
+	int		i;
+	char	*pointer;
 
 	i = 0;
 	pointer = NULL;
 	while (data->envp[i] != NULL)
 	{
-		if (ft_strncmp(data->envp[i], variable, ft_strlen(variable)) == 0 && data->envp[i][ft_strlen(variable)] == '=')
+		if (ft_strncmp(data->envp[i], variable, ft_strlen(variable)) \
+			== 0 && data->envp[i][ft_strlen(variable)] == '=')
 		{
 			pointer = ft_strchr(data->envp[i], '=');
 			pointer++;
@@ -39,12 +40,12 @@ char	*ft_getenv(t_data *data, char *variable)
 	Sets the OLDPWD to the current working directory
 	Sets the value of PWD to the new directory(new path)
 */
-int update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
+int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
 {
-	char *old_pwd;
-	char *new_pwd;
-	char *temp;
-	char buffer[PATH_MAX];
+	char	*old_pwd;
+	char	*new_pwd;
+	char	*temp;
+	char	buffer[PATH_MAX];
 
 	if (!(ft_getenv(data, "PWD")))
 	{
@@ -67,11 +68,12 @@ int update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 // 	Chdir changes the current working directory by passing the new path to the function. 
 // */
 
-int change_directory(t_data *data, char *path)
+int	change_directory(t_data *data, char *path)
 {
-	if (chdir(path) != 0)//System function (system call) that changes the current working directory.Doesn't change the PWD variable. What if this fails?
+	if (chdir(path) != 0) //System function (system call) that changes the current working directory.Doesn't change the PWD variable. What if this fails?
 	{
-		ft_putendl_fd("minishell: cd: error: No such file or directory", STDERR);
+		ft_putendl_fd("minishell: cd: error: No such file or directory", \
+		STDERR);
 		return (EXIT_FAILURE);
 	}
 	else
@@ -83,7 +85,7 @@ int change_directory(t_data *data, char *path)
 CD with only a relative or absolute path
 */
 
-int cd_builtin(t_data *data, char **cmds)
+int	cd_builtin(t_data *data, char **cmds)
 {
 	char	*path;
 	int		i;
@@ -100,7 +102,7 @@ int cd_builtin(t_data *data, char **cmds)
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		path = ft_getenv(data, "HOME");
-		if (!path || *path == '\0' || *path == ' ')//tabs?
+		if (!path || *path == '\0' || *path == ' ') //tabs?
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR);
 			return (EXIT_FAILURE);
@@ -108,7 +110,7 @@ int cd_builtin(t_data *data, char **cmds)
 	}
 	else
 	{
-		if (ft_strncmp(cmds[1], "-", 2) == 0)//Change directory to the previous directory(OLDPWD). DOES NOT WORK YET
+		if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD). DOES NOT WORK YET
 		{
 			path = ft_getenv(data, "OLDPWD");//getenv gets the path from the original envp not from the copy
 			if (!path)
@@ -128,4 +130,3 @@ int cd_builtin(t_data *data, char **cmds)
 	change_directory(data, path);
 	return (EXIT_SUCCESS);
 }
-

@@ -6,11 +6,11 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 18:07:27 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:57:35 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 /*
 ◦ unset with no options
 
@@ -23,9 +23,9 @@ Each name refers to a variable; if there is no variable by that name, a function
 Readonly variables and functions may not be unset. Do we need to check?
 */
 
-int unset(t_data *data, char *variable)
+int	unset(t_data *data, char *variable)
 {
-	int i;
+	int	i;
 	int	len;
 
 	i = 0;
@@ -35,7 +35,7 @@ int unset(t_data *data, char *variable)
 		if (ft_strncmp(data->envp[i], variable, len) == 0)
 		{
 			free(data->envp[i]);
-			data->envp[i] =  NULL;
+			data->envp[i] = NULL;
 			data->envp[i] = ++(*data->envp);
 		}
 		i++;
@@ -43,11 +43,11 @@ int unset(t_data *data, char *variable)
 	return (EXIT_SUCCESS);
 }
 
-int unset_builtin(t_data *data, char **cmds)
+int	unset_builtin(t_data *data, char **cmds)
 {
 	int	i;
 	int	flag;
-	
+
 	i = 0;
 	flag = 0;
 	cmds++;
@@ -55,7 +55,8 @@ int unset_builtin(t_data *data, char **cmds)
 		return (EXIT_SUCCESS);
 	while (*cmds != '\0')
 	{
-		while (data->envp[i] && ft_strncmp(*cmds, data->envp[i], ft_strlen(*cmds) != 0))
+		while (data->envp[i] && ft_strncmp(*cmds, data->envp[i], \
+				ft_strlen(*cmds) != 0))
 			i++;
 		if (data->envp[i] == NULL)
 			flag = 1;
