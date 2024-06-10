@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/10 14:32:50 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:45:27 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,31 @@ Scenarios:
 	- We have heredoc but no outfile
 	- We have heredoc and outfile
 */
-static void	open_dub_close(t_data *data, t_cmd *cur_cmd)
-{
-	if (data->cmd_list == cur_cmd)//we check if the command is the very first
-	{
-		if (cur_cmd->heredoc_flag && !cur_cmd->infile) //heredoc flag but no infile do we need this?
-			cur_cmd->in_fd = STDIN_FILENO;
-		if (!cur_cmd->heredoc_flag && cur_cmd->infile)//redirection we open the infile to stdin.
-			cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
-		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 1 with the file fd
-			fail("bash: syntax error near unexpected token `newline'");
-		close(cur_cmd->in_fd);
-	}
-	if (cur_cmd->next == NULL)//if it is the last command
-	{
-		if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile we append into the end of the outfile
-			cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->append_flag && !cur_cmd->outfile)//if there is heredoc but no outfile we have error, do we need this?
-			fail();
-		else
-			cur_cmd->out_fd = open(cur_cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);//if there is no heredoc but outfile
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 0 with the file fd
-			fail();
-		close(cur_cmd->out_fd);
-	}
-}
+// static void	open_dub_close(t_data *data, t_cmd *cur_cmd)
+// {
+// 	if (data->cmd_list == cur_cmd)//we check if the command is the very first
+// 	{
+// 		if (cur_cmd->heredoc_flag && !cur_cmd->infile) //heredoc flag but no infile do we need this?
+// 			cur_cmd->in_fd = STDIN_FILENO;
+// 		if (!cur_cmd->heredoc_flag && cur_cmd->infile)//redirection we open the infile to stdin.
+// 			cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
+// 		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 1 with the file fd
+// 			fail("bash: syntax error near unexpected token `newline'");
+// 		close(cur_cmd->in_fd);
+// 	}
+// 	if (cur_cmd->next == NULL)//if it is the last command
+// 	{
+// 		if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile we append into the end of the outfile
+// 			cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
+// 		if (cur_cmd->append_flag && !cur_cmd->outfile)//if there is heredoc but no outfile we have error, do we need this?
+// 			fail();
+// 		else
+// 			cur_cmd->out_fd = open(cur_cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);//if there is no heredoc but outfile
+// 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 0 with the file fd
+// 			fail();
+// 		close(cur_cmd->out_fd);
+// 	}
+// }
 
 /*
 Child process handles input and output redirection and calls do_cmd to actually 
