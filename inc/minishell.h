@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 19:29:26 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:43:12 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 typedef struct s_data
 {
 	char			**envp;
+	char			**paths;
 	int				envp_count;
 	struct s_cmd	*cmd_list;
 	int				status;
@@ -49,6 +50,8 @@ typedef struct s_cmd
 	int				heredoc_flag;
 	char			*outfile; // outfile for specific cmd, NULL if not set
 	int				append_flag;
+	int				in_fd;
+	int				out_fd;
 	pid_t			pid;
 	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
@@ -80,5 +83,14 @@ int	env_in_order(t_data *data);
 int	unset_builtin(t_data *data, char **cmds);
 int	export_builtin(t_data *data, char **cmds);
 int	check_key(t_data *data, char *cmd);
+
+//paths.c
+void	parse_paths(t_data *data);
+char	*find_cmd_path(t_data *data, char *cur_cmd);
+
+//utils.c
+void	clean_array(char **array);
+int		clean_return(char **arr, char *str, int ret);
+int		is_directory(char *filepath);
 
 #endif
