@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
+#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/06/05 11:50:57 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/06/10 14:49:36 by kkauhane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ SRC_DIR		:= srcs/
 MAIN_SRC	:= main.c \
 			cmd_list.c \
 			data.c \
-			signal.c
+			signal.c \
+			paths.c \
+			execute.c \
+			utils.c
 #
 BINS_DIR	:= $(SRC_DIR)builtins/
 BINS_SRC	:= check_builtins.c \
