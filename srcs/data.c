@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 19:00:22 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:48:43 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	init_data(t_data *data, char **envp)
 	data->envp = copy_envp(data, envp);
 	//if (data->envp == NULL)//if copy failed
 		//error();
+	parse_paths(data);//where should this be?
 	data->cmd_list = NULL;
 	data->status = 0;
 	data->error_msg = NULL;
