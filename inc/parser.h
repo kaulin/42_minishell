@@ -6,11 +6,9 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/12 12:54:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/12 12:58:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// LOL
 
 #ifndef PARSER_H
 # define PARSER_H
