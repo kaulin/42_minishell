@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:46:57 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:43:04 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 /*
 This checks if the command is one of the builtins
+Commands that produce output can be redirected so we we need to check redirections before executing commands.
 */
-int	check_if_builtin(t_data *data, char **cmds)
+int	check_if_builtin(t_data *data, char **cmds)//
 {
 	(void)data;
 	if (ft_strncmp("echo", cmds[0], 5) == 0)
@@ -32,5 +33,7 @@ int	check_if_builtin(t_data *data, char **cmds)
 		pwd_builtin(cmds);
 	if (ft_strncmp("unset", cmds[0], 6) == 0)
 		unset_builtin(data, cmds);
+	else
+		return (1);
 	return (0);
 }
