@@ -5,3 +5,4 @@
 
 **To be corrected/taken into consideration**
 - Need to check the forms of valid identifiers with export. Variables can only start with alphabets or '_'.
+- Malloc protection!
