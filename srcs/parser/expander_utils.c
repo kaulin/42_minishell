@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 15:12:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:34:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ char	*get_var(char *key, char **envp, int envp_count)
 	char	*content;
 
 	env_i = 0;
-	content = ft_strdup("");
-	if (!content)
-		return (NULL);
+	content = NULL;
 	if (!envp || !*envp)
 		return  (content);
 	while (env_i < envp_count)
@@ -36,6 +34,8 @@ char	*get_var(char *key, char **envp, int envp_count)
 		}
 		env_i++;
 	}
+	if (content == NULL)
+		content = ft_strdup("");
 	return (content);
 }
 
