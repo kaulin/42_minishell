@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/10 14:43:12 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/16 14:44:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <signal.h> //
 # include <sys/ioctl.h>
+# include <sys/wait.h>
 # include <termios.h> //contains the definitions used by the terminal I/O interfaces
 # include <fcntl.h>
 # include "libft.h"
