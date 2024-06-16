@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/06/10 14:49:36 by kkauhane         ###   ########.fr        #
+#    Updated: 2024/06/16 14:34:35 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # General
 NAME		:= minishell
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
+CC			:= gcc
+CFLAGS		:= -Wall -Wextra -Werror -g #-fsanitize=address
 
 # Sources
 SRC_DIR		:= srcs/
