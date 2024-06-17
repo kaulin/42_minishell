@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/06/16 14:34:35 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/06/17 16:14:04 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ CFLAGS		:= -Wall -Wextra -Werror -g #-fsanitize=address
 # Sources
 SRC_DIR		:= srcs/
 MAIN_SRC	:= main.c \
+			fail.c \
 			cmd_list.c \
 			data.c \
 			signal.c \
