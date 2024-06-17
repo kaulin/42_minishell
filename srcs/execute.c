@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/12 11:38:25 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:02:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	open_dub_close(t_data *data, t_cmd *cur_cmd)
 		if (!cur_cmd->heredoc_flag && cur_cmd->infile)//redirection we open the infile to stdin.
 			cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
 		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 1 with the file fd
-			fail("bash: syntax error near unexpected token `newline'");
+			fail(42, "bash: syntax error near unexpected token `newline'", data);
 		close(cur_cmd->in_fd);
 	}
 	if (cur_cmd->next == NULL)//if it is the last command
@@ -65,11 +65,11 @@ static void	open_dub_close(t_data *data, t_cmd *cur_cmd)
 		if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile we append into the end of the outfile
 			cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->append_flag && !cur_cmd->outfile)//if there is heredoc but no outfile we have error, do we need this?
-			fail();
+			fail(42, "MSG", data);
 		else
 			cur_cmd->out_fd = open(cur_cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);//if there is no heredoc but outfile
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 0 with the file fd
-			fail();
+			fail(42, "MSG", data);
 		close(cur_cmd->out_fd);
 	}
 }
@@ -92,7 +92,7 @@ static void	child(int *fd, t_data *data, t_cmd *cur_cmd)
 	open_dub_close(data, cur_cmd);
 	err_code = do_cmd(data, cur_cmd);
 	if (err_code == 1)
-		fail();
+		fail(42, "MSG", data);
 	//if ((*piper)->cmd_err)
 		//fail(err_code, (*piper)->cmd_err, piper);
 	//fail(err_code, (*piper)->cmdv[(*piper)->cmd_i], piper);
@@ -131,12 +131,11 @@ Goes through the linked list and calls the parent function for each node (cmd) o
 
 int	execute_and_pipe(t_data *data)
 {
-	int		i;
 	int		exit_status;
 	int		status;
 	t_cmd	*cur_cmd;
 
-	i = 0;
+	exit_status = 0;
 	cur_cmd = data->cmd_list;
 	while (cur_cmd != NULL)
 	{
@@ -146,11 +145,11 @@ int	execute_and_pipe(t_data *data)
 	cur_cmd = data->cmd_list;
 	while (cur_cmd != NULL)
 	{
-		exit_status = 0;
-		if (waitpid(cur_cmd->pid, status, 0) == -1)
+		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 			fail(1, "Waitpid failed", data);
 		if (WIFEXITED(status))
 			exit_status = WEXITSTATUS(status);
 		cur_cmd = cur_cmd->next;
 	}
+	return (exit_status);
 }
