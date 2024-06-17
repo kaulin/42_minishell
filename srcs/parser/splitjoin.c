@@ -6,24 +6,11 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:11:35 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 14:52:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:11:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-/*
-Frees a null terminated array of strings.
-*/
-static void	clean_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-		free(array[i++]);
-	free (array);
-}
 
 /*
 Joins the elements of a given null terminated string array into a single 
