@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/16 14:44:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 15:55:09 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ void	clean_data(t_data *data);
 void	init_data(t_data *data, char **envp);
 char	**copy_envp(t_data *data, char **envp);
 
+// fail.c
+void	fail(int exit_code, char *msg, t_data *data);
+
 // cmd_list.c
 t_cmd	*cmd_new(char *content);
 void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
@@ -75,15 +78,15 @@ int		parse(char *input, t_data *data);
 void	sigint_handler(int signal);
 
 // builtins
-int	check_if_builtin(t_data *data, char **cmds);
-int	cd_builtin(t_data *data, char **cmds);
-int pwd_builtin(char **cmds);
-int	echo_builtin(char **cmd);
-int	env_builtin(t_data *data, char **cmds);
-int	env_in_order(t_data *data);
-int	unset_builtin(t_data *data, char **cmds);
-int	export_builtin(t_data *data, char **cmds);
-int	check_key(t_data *data, char *cmd);
+int		check_if_builtin(t_data *data, char **cmds);
+int		cd_builtin(t_data *data, char **cmds);
+int 	pwd_builtin(char **cmds);
+int		echo_builtin(char **cmd);
+int		env_builtin(t_data *data, char **cmds);
+int		env_in_order(t_data *data);
+int		unset_builtin(t_data *data, char **cmds);
+int		export_builtin(t_data *data, char **cmds);
+int		check_key(t_data *data, char *cmd);
 
 //paths.c
 void	parse_paths(t_data *data);
