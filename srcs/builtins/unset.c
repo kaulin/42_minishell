@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:57:35 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:08:32 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	unset_builtin(t_data *data, char **cmds)
 	cmds++;
 	if (!*cmds)
 		return (EXIT_SUCCESS);
-	while (*cmds != '\0')
+	while (*cmds != NULL)
 	{
 		while (data->envp[i] && ft_strncmp(*cmds, data->envp[i], \
 				ft_strlen(*cmds) != 0))
