@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 15:55:09 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:18:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	parse_paths(t_data *data);
 char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 //utils.c
+int		join_print_free(char *str1, char *str2, int fd);
 void	clean_array(char **array);
 int		clean_return(char **arr, char *str, int ret);
 int		is_directory(char *filepath);

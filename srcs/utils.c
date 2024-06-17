@@ -6,11 +6,27 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:51:56 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:09:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:18:33 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+Joins the two sttrings given as parameters, prints joined string to given fd 
+and frees the joined string. If mallocing of joined string fails, returns 1.
+*/
+int	join_print_free(char *str1, char *str2, int fd)
+{
+	char	*str;
+
+	str = ft_strjoin(str1, str2);
+	if (!str)
+		return (1);
+	ft_putstr_fd(str, fd);
+	free(str);
+	return (0);
+}
 
 /*
 Free's the elements of an array of strings and then the array pointer itself.
