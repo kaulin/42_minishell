@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:02:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:07:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,71 +32,34 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
 	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
 }
-
 /*
-Scenarios:
-- Only command
-	- We have eg. echo/pwd testing > test.txt or cat << LIMIT
-- First command:
-	- We have heredoc but no infile//we read from terminal
-	- We have infile (redirection), we read from infile
-	- We have heredoc and infile. This might be a syntax error and we do not need to handle it?
-	- We don't have redirection
-- Last command:
-	- We don't have outfile
-	- We have outfile (redirection)
-	- We have heredoc but no outfile
-	- We have heredoc and outfile
-*/
-static void	open_dub_close(t_data *data, t_cmd *cur_cmd)
-{
-	if (data->cmd_list == cur_cmd)//we check if the command is the very first
-	{
-		if (cur_cmd->heredoc_flag && !cur_cmd->infile) //heredoc flag but no infile do we need this?
-			cur_cmd->in_fd = STDIN_FILENO;
-		if (!cur_cmd->heredoc_flag && cur_cmd->infile)//redirection we open the infile to stdin.
-			cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
-		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 1 with the file fd
-			fail(42, "bash: syntax error near unexpected token `newline'", data);
-		close(cur_cmd->in_fd);
-	}
-	if (cur_cmd->next == NULL)//if it is the last command
-	{
-		if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile we append into the end of the outfile
-			cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->append_flag && !cur_cmd->outfile)//if there is heredoc but no outfile we have error, do we need this?
-			fail(42, "MSG", data);
-		else
-			cur_cmd->out_fd = open(cur_cmd->outfile, O_TRUNC | O_CREAT | O_RDWR, 0644);//if there is no heredoc but outfile
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)//if there was an error in opening the file or with replacing the fd 0 with the file fd
-			fail(42, "MSG", data);
-		close(cur_cmd->out_fd);
-	}
-}
-
-/*
-Child process handles input and output redirection and calls do_cmd to actually 
+Child process handles input and output redirection as well and calls do_cmd to actually 
 execute execve.
 */
-
-static void	child(int *fd, t_data *data, t_cmd *cur_cmd)
+static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	int	err_code;
 
-	close(fd[0]);
-	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)//checks that the current command is not the last
-		//fail(1, "Dup2 failed", data);
-	close(fd[1]);
-	//if (*((*piper)->cmdv[(*piper)->cmd_i]) == 0) //checks if the cmd is empty. Do we need this? Is this not checked in the parsing stage?
-		//fail(127, (*piper)->cmdv[(*piper)->cmd_i], piper);
-	open_dub_close(data, cur_cmd);
+	if (cur_cmd == data->cmd_list && dup2(fd[0], STDIN_FILENO) == -1)// If this is not the first command, we need to read from the pipe
+	{
+		close(fd[0]);
+		close(fd[1]);
+		fail(1, "Dup2 failed", data);
+	}
+	if (cur_cmd->next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// If this is not the last command, we need to write to the pipe
+	{
+		close(fd[0]);
+		close(fd[1]);
+		fail(1, "Dup2 failed", data);
+	}
+    close(fd[0]);
+    close(fd[1]);
+	//check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command
 	err_code = do_cmd(data, cur_cmd);
-	if (err_code == 1)
+	if (err_code == 1)//if do_cmd fails
 		fail(42, "MSG", data);
-	//if ((*piper)->cmd_err)
-		//fail(err_code, (*piper)->cmd_err, piper);
-	//fail(err_code, (*piper)->cmdv[(*piper)->cmd_i], piper);
 }
+
 
 static void	parent(t_data *data, t_cmd *cur_cmd)
 {
