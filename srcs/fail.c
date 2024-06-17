@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:32:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/17 15:54:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:20:01 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ bash specific error message.
 */
 static void	check_exit_code(int *exit_code, char *msg, t_data *data)
 {
+	(void)data;
 	/* Needs to be modified for data structure
 	if (*exit_code == 127 && ft_strncmp(msg, "", 1) == 0 \
 		&& ft_strncmp((*piper)->infile, "", 1) == 0)
