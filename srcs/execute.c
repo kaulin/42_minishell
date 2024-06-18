@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 20:07:08 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/18 10:49:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	parent(t_data *data, t_cmd *cur_cmd)
 			fail(666, "Fork failed", data);
 		}
 		if (cur_cmd->pid == 0)
-			child(fd, data, cur_cmd);
+			child(data, cur_cmd, fd);
 	}
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
