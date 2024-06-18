@@ -10,3 +10,6 @@
 - Check the forms of valid identifiers with export. Variables can only start with alphabets or '_'?
 - Handle several redirections/files inside sigle command
 - Change check_builtin function call placement. In parent ff we have only one command and it is a builtin we do not need to fork.
+- Handle heredoc by making another pipe where the input is written and where it can be read from
+- Check if PATH_MAX still works in linux as it should
+- Make error handling uniform using fail() everywhere
