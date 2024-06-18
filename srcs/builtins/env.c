@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:50:42 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:10:00 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,27 +83,31 @@ int	env_in_order(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int	env_builtin(t_data *data, char **cmds)
+int	env_builtin(t_data *data, char **cmds)//this needs to print only the variables that have values(=)
 {
 	int	i;
+	int	len;
 
 	i = 0;
-	while (cmds[i])
-		i++;
-	if (i > 1)
+	len = 0;
+	if (cmds[1])//we could transfer the argument count checks to the check builtin function?
 	{
 		ft_putendl_fd("minishell: env: too many arguments", STDERR);
 		return (EXIT_FAILURE);
 	}
 	if (!data->envp)
 	{
-		ft_putendl_fd("Error", STDERR);//error message?
+		ft_putendl_fd("Error, envp not set", STDERR);//error message? Do we need to do something if envp is unset?
 		return (EXIT_FAILURE);
 	}
 	while (data->envp[i] != NULL)
 	{
-		printf("%s\n", data->envp[i]);
+		while (data->envp[i][len] != '=' && data->envp[i][len] != '\0')//would strcmp be better?
+			len++;
+		if ((data->envp[i])[len] == '=')
+			printf("%s\n", data->envp[i]);
 		i++;
+		len = 0;
 	}
 	return (EXIT_SUCCESS);
 }
