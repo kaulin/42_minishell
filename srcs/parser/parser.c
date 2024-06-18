@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/13 12:10:09 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:46:27 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	parse(char *input, t_data *data)
 
 	if (check_quotes(input))
 	{
-		printf("Unclosed quotes!\n");
+		data->error_msg = ft_strdup("Unclosed quotes!\n");
 		return (ERROR);
 	}
 	parser_init(&parser);

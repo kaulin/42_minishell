@@ -6,11 +6,15 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/05 14:30:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:44:39 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+
+// Todo: Handle ${} expansion
+// Todo: Handle $1 $2 etc, ie Positional parameters?
+// Todo: Handle $(cmd) execution, ie Command substitution?
 
 /*
 Clears the malloced str_list nodes in the expander struct.
@@ -64,13 +68,11 @@ int	cut_str(t_expander *expander)
 	t_str	*node;
 
 	expander->start = expander->ptr++;
-	while (*expander->ptr)
+	if (*expander->start == '$')
+		expander->ptr = find_key_end(expander->ptr);
+	else
 	{
-		if (*expander->start == '$')
-			expander->ptr = find_key_end(expander->ptr);
-		else if (*expander->start != '$' && *expander->ptr == '$')
-			break ;
-		else
+		while (*expander->ptr && *expander->ptr != '$')
 			expander->ptr++;
 	}
 	temp = ft_substr(expander->start, 0, expander->ptr - expander->start);
@@ -98,7 +100,7 @@ static int	expand_strings(t_expander *expander, t_data *data)
 	node = expander->str_list;
 	while (node)
 	{
-		if (*node->str == '$')
+		if (*node->str == '$' && *(node->str + 1))
 		{
 			temp = get_var(node->str + 1, data->envp, data->envp_count);
 			if (!temp)
