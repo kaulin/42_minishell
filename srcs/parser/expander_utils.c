@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/11 10:34:24 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/18 12:56:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_var(char *key, char **envp, int envp_count)
 		return  (content);
 	while (env_i < envp_count)
 	{
-		if (ft_strncmp(envp[env_i], key, ft_strlen(key)) \
+		if (!ft_strncmp(envp[env_i], key, ft_strlen(key)) \
 		&& envp[env_i][ft_strlen(key)] == '=')
 		{
 			content = ft_strdup(ft_strchr(envp[env_i], '=') + 1);
