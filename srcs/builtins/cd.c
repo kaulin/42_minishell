@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:46:22 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:22:13 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 
 	if (!(ft_getenv(data, "PWD")))
 	{
-		ft_putendl_fd("minishell: cd: PWD not set", STDERR);
-		return (EXIT_FAILURE);
+		ft_putendl_fd("minishell: cd: PWD not set", STDERR);//use fail
+		return (ERROR);
 	}
 	temp = ft_strjoin("OLDPWD", "=");
 	old_pwd = ft_strjoin(temp, ft_getenv(data, "PWD"));
@@ -60,7 +60,7 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));
 	free(temp);
 	check_key(data, new_pwd);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 /*
@@ -74,11 +74,11 @@ int	change_directory(t_data *data, char *path)
 	{
 		ft_putendl_fd("minishell: cd: error: No such file or directory", \
 		STDERR);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	else
 		update_pwd(data);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 /*
@@ -97,7 +97,7 @@ int	cd_builtin(t_data *data, char **cmds)
 	if (i > 2)
 	{
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
@@ -105,7 +105,7 @@ int	cd_builtin(t_data *data, char **cmds)
 		if (!path || *path == '\0' || *path == ' ') //tabs?
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR);
-			return (EXIT_FAILURE);
+			return (ERROR);
 		}
 	}
 	else
@@ -116,7 +116,7 @@ int	cd_builtin(t_data *data, char **cmds)
 			if (!path)
 			{
 				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
-				return (EXIT_FAILURE);
+				return (ERROR);
 			}
 		}
 		// if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
@@ -128,5 +128,5 @@ int	cd_builtin(t_data *data, char **cmds)
 			path = cmds[1];
 	}
 	change_directory(data, path);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
