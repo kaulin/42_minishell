@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/18 10:49:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:52:42 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 If command not found from environment paths, tries to use the command itself as
 path. Calls execve with given path and command array and environment.
 */
-int	do_cmd(t_data *data, t_cmd *cur_cmd)
+int	do_cmd(t_data *data, t_cmd *cur_cmd)//do we do the builtin check here?
 {
 	cur_cmd->path = find_cmd_path(data, cur_cmd->cmd_arr[0]);
 	if (!cur_cmd->path && access(cur_cmd->cmd_arr[0], F_OK) == 0 && ft_strchr(cur_cmd->cmd_arr[0], '/'))
@@ -67,7 +67,7 @@ static void	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
-	if (check_if_builtin(data, cur_cmd->cmd_arr) == 1)//if the command is not a builtin
+	if (check_if_builtin(data, cur_cmd->cmd_arr) == 1)//This needs to be fixed
 	{
 		cur_cmd->pid = fork();
 		if (cur_cmd->pid == -1)
