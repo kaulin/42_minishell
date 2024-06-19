@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/18 16:53:46 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/06/19 14:56:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ Situations
 	- We have heredoc but no infile//we read from terminal
 	- We have heredoc and infile. This might be a syntax error and we do not need to handle it?
 	OUT
-	- We don't have outfile
 	- We have outfile (redirection)
 	- We have serveral outfiles
-		- If the files do not exist we create theme and use the last one, by traversing a linked list and checking when files->next == NULL
+		- If the files do not exist we create theme and use the last one, by traversing a linked list and checking when files->next == NULL. If there is some content in the files we emty them.
 	- We have append but no outfile
 	- We have append and outfile
-	
+	- We have several appends/outfiles
+		- The last outfile is the one that is used. Files before that are either emptied of content(redirection) or left as they are (append)
 */
 
 /*
@@ -38,13 +38,15 @@ delimiter string. A forced EoF is caught and an error is printed to STDERROR.
 Each line given is printed to the write end of the given pipe.
 
 
-static void	get_input(t_cmd *cur_cmd, char *delim, int *fd, t_data *data)//we need to find the delimiter
+static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimiter
 {
 	char	*input;
 	int		fd[2];
+	char	delim;
 	
+	delim = cur_cmd->cmd_arr[2];//Is this correct? Does the command array include redirections?
 	if (pipe(fd) == -1)
-			fail(666, "Pipe failed", data);
+		fail(666, "Pipe failed", data);
 	while (1)
 	{
 		input = ft_get_next_line(STDIN_FILENO);
@@ -66,24 +68,24 @@ static void	get_input(t_cmd *cur_cmd, char *delim, int *fd, t_data *data)//we ne
 	cur_cmd->in_fd = fd[0];
 }
 
-void	input_redirection(t_cmd *cur_cmd, t_data *data)
+static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
 	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin. If there are several infiles we need to go through them all and return error if some of them don't exist. We only execute the command on the last file
 	{
-		cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);//opens the file, do we need to add right checks etc?
+		cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
 		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO);)//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
 		{
-			fail(1, "message", data);
+			fail(1, "No such file or directory", data);
 		}
 		close(cur_cmd->in_fd);	
 	}
 	else if (cur_cmd->heredoc_flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal
 	{
-		get_input();
+		get_input(cur_cmd, data);
 	}
-	else if (cur_cmd->heredoc_flag && cur_cmd->infile)//heredoc flag and infile. Do we need this?
+	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
 	{
-		fail(1, "This shell does not support combining < and << directly in the same command", data);
+		fail(1, "This shell does not support combining < and << in the same command", data);
 	}
 }*/
 /*
@@ -127,5 +129,5 @@ void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some
 	{
 		output_redirection(cur_cmd);
 	}
-}*/
-
+}
+*/
