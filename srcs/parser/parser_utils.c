@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/01 09:33:05 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:27:10 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ void	skip_whitespace(char **ptr)
 {
 	while (is_whitespace(**ptr))
 		(*ptr)++;
+}
+
+void	find_quote_end(char **ptr)
+{
+	char	quote;
+
+	quote = **ptr;
+	(*ptr)++;
+	while (**ptr != quote)
+		(*ptr)++;
+	(*ptr)++;
 }
 
 /*

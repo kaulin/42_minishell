@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/12 12:58:38 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:27:22 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ typedef struct s_parser
 int		is_quote_char(char c);
 int		is_whitespace(char c);
 void	skip_whitespace(char **ptr);
+void	find_quote_end(char **ptr);
 int		check_quotes(char *str);
+
+// tokenizer.c
+char	*tokenize(char *input, t_parser *parser, t_data *data);
 
 // token_list.c
 t_token	*token_new(char *content, char next);
