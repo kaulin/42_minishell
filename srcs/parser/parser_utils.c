@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/04 11:15:59 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 09:32:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_quote_char(char c)
 
 int	is_whitespace(char c)
 {
-	if (ft_strchr (" \t\v\n\r\f", c))
+	if (ft_strchr(" \t\v\n\r\f", c))
 		return (1);
 	return (0);
 }
