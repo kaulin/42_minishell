@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/01 09:32:25 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 09:33:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_quote_char(char c)
 {
-	if (ft_strchr ("\'\"", c))
+	if (ft_strchr("\'\"", c))
 		return (1);
 	return (0);
 }
