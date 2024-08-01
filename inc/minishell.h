@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:18:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:32:08 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int		parse(char *input, t_data *data);
 void	sigint_handler(int signal);
 
 // builtins
-int		check_if_builtin(t_data *data, char **cmds);
+int		check_if_builtin(char **cmds);
+void	execute_builtin(t_data *data, char **cmds);
 int		cd_builtin(t_data *data, char **cmds);
 int 	pwd_builtin(char **cmds);
 int		echo_builtin(char **cmd);
