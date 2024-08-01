@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:11:35 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/17 16:11:05 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/01 10:34:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 Joins the elements of a given null terminated string array into a single 
-string using spaces to separate elements.
+string using given sep string to separate elements.
 */
 static char	*join_array(char **array, char *sep)
 {
