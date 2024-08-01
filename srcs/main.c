@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/05 19:25:33 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/01 09:36:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **envp)
 		input = readline("Minishell > ");
 		if (input == NULL) //In case of Ctrl+D (EOF)
 			break ;
-		if (input[0] != '\0')//do we need to also check for whitespaces only input?
+		if (input[0] != '\0')//do we need to also check for whitespaces only input? -K -> Bash saves whitespace input, zsh doesnt, so no need to check -J
 			add_history(input);
 		if (parse(input, &data))
 		{
