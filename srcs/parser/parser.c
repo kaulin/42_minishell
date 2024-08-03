@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/18 15:46:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:10:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ static void	parser_reset(t_parser *parser)
 
 static void	parser_init(t_parser *parser)
 {
+	parser->start = NULL;
 	parser->substring = NULL;
-	parser->start = NULL;
-	parser->start = NULL;
 	parser->token_list = NULL;
 }
 
@@ -36,44 +35,12 @@ static void	parser_clean(t_parser *parser)
 		token_clear(&parser->token_list);
 }
 
-static char	*tokenize(char *input, t_parser *parser, t_data *data)
+int	parse_cmd(t_cmd *cmd, t_data *data)
 {
-	t_token	*node;
-	
-	parser->start = input;
-	if (is_quote_char(*input))
-	{
-		parser->quote = input++;
-		while (*input != *parser->quote)
-			input++;
-		input++;
-	}
-	else
-	{
-		while (*input && !is_quote_char(*input) && !is_whitespace(*input))
-			input++;
-	}
-	parser->substring = ft_substr(parser->start, 0, input - parser->start);
-	if (!parser->substring)
-		return (NULL);
-	if (expand(&parser->substring, data))
-		return (NULL);
-	node = token_new(parser->substring, *input);
-	if (!node)
-		return (NULL);
-	token_add_back(&parser->token_list, node);
-	return (input);
-}
+	t_parser	parser;
+	char		*input;
 
-int	parse(char *input, t_data *data)
-{
-	t_parser parser;
-
-	if (check_quotes(input))
-	{
-		data->error_msg = ft_strdup("Unclosed quotes!\n");
-		return (ERROR);
-	}
+	input = cmd->cmd_str;
 	parser_init(&parser);
 	while (*input)
 	{
@@ -94,11 +61,47 @@ int	parse(char *input, t_data *data)
 	parser_clean(&parser);
 	return (SUCCESS);
 }
+
+int	parse(char *input, t_data *data)
+{
+	t_cmd		*cmd;
+	t_parser	parser;
+
+	if (check_quotes(input))
+	{
+		data->error_msg = ft_strdup("minishell: syntax error: unclosed quotations\n");
+		return (ERROR);
+	}
+	parser_init(&parser);
+	while (*input)
+	{
+		skip_whitespace(&input);
+		if (*input = '|')
+		{
+			data->error_msg = ft_strdup("minishell: syntax error near unexpected token \`|'");
+			input++;
+			continue ;
+		}
+		while (*input)
+		{
+			parser.start = input;
+			if (is_quote_char(*input))
+				find_quote_end(&input);
+			
+		}
+		
+	}
+
+}
 	/*
 	After tokenization:
 	- define token types
 	- separate into commands based on |
 	- assing into command structs and their variables
+
+	If | without command before it
+	** bash: syntax error near unexpected token `|'
+
 	*/
 
 /*
