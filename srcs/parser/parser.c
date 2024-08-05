@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/03 13:10:51 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:10:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,9 @@ int	parse(char *input, t_data *data)
 
 	If | without command before it
 	** bash: syntax error near unexpected token `|'
+	If ||
+	** bash: syntax error near unexpected token `||'
+
 
 	*/
 
