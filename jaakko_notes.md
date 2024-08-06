@@ -2,7 +2,7 @@
 
 ## 6.8.
 - Continuing on bash behavior depending on pipe character separation:
-	1. cmd1 || cmd2 - executes cmd1 and cmd2 but cmd1 output is not piped to cmd2
+	1. cmd1 || cmd2 - executes cmd1 and cmd2 and redirects successfully, ie || = |
 	2. cmd1 | | cmd2 - gives bash: syntax error near unexpected token `|'
 	3. cmd1 ||| cmd2 - gives bash: syntax error near unexpected token `|'
 	4. cmd1 |||| cmd2 - gives bash: syntax error near unexpected token `||' (same with further | characters)
