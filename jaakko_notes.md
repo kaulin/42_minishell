@@ -1,5 +1,13 @@
 # Jaakko's Minishell Notes
 
+## 6.8.
+- Continuing on bash behavior depending on pipe character separation:
+	1. cmd1 || cmd2 - executes cmd1 and cmd2 but cmd1 output is not piped to cmd2
+	2. cmd1 | | cmd2 - gives bash: syntax error near unexpected token `|'
+	3. cmd1 ||| cmd2 - gives bash: syntax error near unexpected token `|'
+	4. cmd1 |||| cmd2 - gives bash: syntax error near unexpected token `||' (same with further | characters)
+	5. cmd1 |""| cmd2 - executes cmd1 and cmd2 but cmd1 output is not piped to cmd2 and gives Command not found error (same with other non whitespace non command strigns)
+
 ## 5.8.
 - Handling input error messages as opposed to program error messages
 - Error messages for unclosed quotes, input starting or ending with a pipe character, or pipe chacters following one another
