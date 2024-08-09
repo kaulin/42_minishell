@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/01 14:18:25 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/09 13:36:53 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	}
 	close(fd[0]);
 	close(fd[1]);
-	//check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
+	check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 		execute_builtin(data, cur_cmd->cmd_arr);
-	err_code = do_cmd(data, cur_cmd);
-	if (err_code == 1)//if do_cmd fails
-		fail(42, "MSG", data);
+	else
+	{
+		err_code = do_cmd(data, cur_cmd);
+		if (err_code == 1)//if do_cmd fails
+			fail(42, "MSG", data);
+	}
 }
 
 static void	parent(t_data *data, t_cmd *cur_cmd)
@@ -69,7 +72,10 @@ static void	parent(t_data *data, t_cmd *cur_cmd)
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
 	if (data->cmd_list->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
-		execute_builtin(data, cur_cmd->cmd_arr) ;
+	{
+		check_redirection(data, cur_cmd);
+		execute_builtin(data, cur_cmd->cmd_arr);
+	}
 	else
 	{
 		cur_cmd->pid = fork();
