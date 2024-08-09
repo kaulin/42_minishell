@@ -1,8 +1,35 @@
 # Jaakko's Minishell Notes
 
+## 9.8.
+- How to handle removal of the parent directory of current working directory. Bash:
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ rm -rf ~/42/minishell/local/1/2
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ pwd
+/home/jajuntti/42/minishell/local/1/2/3/4
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ cd .
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/.$ cd .
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/./.$ cd .
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/././.$ cd ..
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/./././..$ cd ..
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/./././../..$ cd ..
+jajuntti@c3r2p7:~/42/minishell/local/1$ echo $OLDPWD
+/home/jajuntti/42/minishell/local/1/2/3/4/./././../..
+Explained: moving to "current directory" . adds /. to $PWD and gives error message. This can be repeated indefinitely. Moving to "parent directory" .. adds /.. to the $PWD and gives error messages, but can be repeated n times, where n is the level of depth one was initially from the parent of the directory that was removed. In the above case, we started at lvl 4 and lvl 2 was removed. 4-2=2, so we are able to cd "up" .. twice, before we are returned to the actual existing directory. If lvl 1 is removed after removing lvl 2, .. can be repeated one more time, before we are returned to the still existing /local. Creating new versions of the original file structure after removing parts does not affect this.
+
+## 7.8.
+- Bashing my head against bash continues:
+<< EOF"" cat
+> $NAME
+> EOF
+$NAME
+
 ## 6.8.
 - Continuing on bash behavior depending on pipe character separation:
-	1. cmd1 || cmd2 - executes cmd1 and cmd2 and redirects successfully, ie || = |
+	1. cmd1 || cmd2 - executes cmd1, no error messages and exit code 0
 	2. cmd1 | | cmd2 - gives bash: syntax error near unexpected token `|'
 	3. cmd1 ||| cmd2 - gives bash: syntax error near unexpected token `|'
 	4. cmd1 |||| cmd2 - gives bash: syntax error near unexpected token `||' (same with further | characters)
