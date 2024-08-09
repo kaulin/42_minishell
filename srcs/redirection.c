@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/19 14:56:08 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:22:59 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Situations
 	IN
 	- We have infile (redirection), we read from infile
 	- We have several redirections/infiles
+		- If there are several infiles we need to go through them all and return error if some of them don't exist. 
 		- If they all exist we use the last one
 		- If one of them doesn't exist we give error message "bash: not: No such file or directory"
 	- We have heredoc but no infile//we read from terminal
@@ -25,7 +26,7 @@ Situations
 	OUT
 	- We have outfile (redirection)
 	- We have serveral outfiles
-		- If the files do not exist we create theme and use the last one, by traversing a linked list and checking when files->next == NULL. If there is some content in the files we emty them.
+		- If the files do not exist we create them and use the last one, by traversing a linked list and checking when files->next == NULL. If there is some content in the files we emty them.
 	- We have append but no outfile
 	- We have append and outfile
 	- We have several appends/outfiles
@@ -36,7 +37,7 @@ Situations
 Lets the user insert lines of input, until a line that contains only the 
 delimiter string. A forced EoF is caught and an error is printed to STDERROR. 
 Each line given is printed to the write end of the given pipe.
-
+*/
 
 static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimiter
 {
@@ -70,28 +71,34 @@ static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimit
 
 static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
-	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin. If there are several infiles we need to go through them all and return error if some of them don't exist. We only execute the command on the last file
+	int i;
+
+	i = 1;//where is the first redirection in the array?
+	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin
 	{
+		while (cur_cmd->cmd_arr[i])//We check that the files exists. Can we just go through the array like this? What does it contain?
+		{
+			if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
+				fail(1, "No such file or directory", data);
+			i++;
+		}
 		cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
 		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO);)//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
-		{
 			fail(1, "No such file or directory", data);
-		}
 		close(cur_cmd->in_fd);	
 	}
 	else if (cur_cmd->heredoc_flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal
-	{
 		get_input(cur_cmd, data);
-	}
 	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
-	{
 		fail(1, "This shell does not support combining < and << in the same command", data);
-	}
-}*/
-/*
+}
+
 void	output_redirection(t_cmd *cur_cmd)
 {
-	if (cur_cmd->outfile != NULL && !cur_cmd->append_flag)//if there is outfile but no append flag
+	int i;
+
+	i = 1;
+	if (cur_cmd->outfile != NULL && !cur_cmd->append_flag)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
 	{
 		cur_cmd->out_fd = open(cur_cmd->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO);)
@@ -113,11 +120,9 @@ void	output_redirection(t_cmd *cur_cmd)
 	{
 		fail();
 	}
-	//what if there is both redirection and append flag?
 }
 
-/*
-Checks if there is a redirection and if it is in input or output.
+//Checks if there is a redirection and if it is in input or output.
 
 void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends? Do we need 
 {
@@ -130,4 +135,3 @@ void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some
 		output_redirection(cur_cmd);
 	}
 }
-*/
