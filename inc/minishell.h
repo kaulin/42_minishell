@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 15:35:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:44:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ typedef struct s_cmd
 	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
 
+/*
+Defines struct to store command in- and outfiles. Uses vary. For infiles, flag 
+indicates heredoc. If flagged, file_str is heredoc delimeter instead of file 
+path. For outfiles, flag indicates appending. If flagged, outfile is appended 
+on write, not overwritten.
+*/
 typedef struct s_file
 {
 	char			*file_str;
@@ -77,10 +83,10 @@ void	cmd_delone(t_cmd *cmd);
 void	cmd_clear(t_cmd **cmd_list);
 
 // file_list.c
-t_cmd	*file_new(char *content);
-void	file_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
-void	file_delone(t_cmd *cmd);
-void	file_clear(t_cmd **cmd_list);
+t_file	*file_new(char *content);
+void	file_add_back(t_file **file_list, t_file *new_file);
+void	file_delone(t_file *file);
+void	file_clear(t_file **file_list);
 
 // parser.c
 int		parse(char *input, t_data *data);
