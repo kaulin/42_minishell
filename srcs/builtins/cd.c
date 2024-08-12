@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/18 16:22:13 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:14:35 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,25 @@ int	change_directory(t_data *data, char *path)
 	return (SUCCESS);
 }
 
+static char	*up_one(t_data *data)
+{
+	char 	*path;
+	char	*pointer;
+	char	cwd[PATH_MAX];
+
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		fail(1,"getcwd() error", data);
+	pointer = strrchr(cwd, '/');
+	if (pointer!= NULL)
+	{
+		if (pointer == cwd) //if we are at root
+			pointer++;
+		*pointer = '\0';
+		path = cwd;
+	}
+	return (path);
+}
+
 /*
 CD with only a relative or absolute path
 */
@@ -88,45 +107,26 @@ CD with only a relative or absolute path
 int	cd_builtin(t_data *data, char **cmds)
 {
 	char	*path;
-	int		i;
 
 	path = NULL;
-	i = 0;
-	while (cmds[i])
-		i++;
-	if (i > 2)
-	{
-		ft_putendl_fd("minishell: cd: too many arguments", STDERR);
-		return (ERROR);
-	}
+	if (cmds[2])
+		fail(1, "minishell: cd: too many arguments", data);
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		path = ft_getenv(data, "HOME");
 		if (!path || *path == '\0' || *path == ' ') //tabs?
-		{
-			ft_putendl_fd("minishell: cd: HOME not set", STDERR);
-			return (ERROR);
-		}
+			fail(1, "minishell: cd: HOME not set", data);
 	}
-	else
+	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD). DOES THIS WORK YET
 	{
-		if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD). DOES NOT WORK YET
-		{
-			path = ft_getenv(data, "OLDPWD");//getenv gets the path from the original envp not from the copy
-			if (!path)
-			{
-				ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR);
-				return (ERROR);
-			}
-		}
-		// if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
-		// {
-		// 	path = 
-		// 	//we get the current working directory and copy it until the last / and set that as path. If we copy we need to free it...
-		// }
-		else
-			path = cmds[1];
+		path = ft_getenv(data, "OLDPWD");//getenv gets the path from the original envp not from the copy
+		if (!path)
+			fail(1, "minishell: cd: OLDPWD not set", data);
 	}
+	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
+		path = up_one(data);
+	else
+		path = cmds[1];
 	change_directory(data, path);
 	return (SUCCESS);
 }
