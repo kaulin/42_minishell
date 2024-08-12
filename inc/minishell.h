@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 15:29:56 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:35:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef struct s_cmd
 	char			*path; // path to command
 	char			*cmd_str; // command name (can be full path), flags and arguments
 	char			**cmd_arr; // cmd_str broken into array with split
-	struct t_file	*infiles; // infiles for specific cmd, NULL if not set
-	struct t_file	*outfiles; // outfiles for specific cmd, NULL if not set
+	struct s_file	*infiles; // infiles for specific cmd, NULL if not set
+	struct s_file	*outfiles; // outfiles for specific cmd, NULL if not set
 	int				in_fd;
 	int				out_fd;
 	pid_t			pid;
@@ -59,7 +59,7 @@ typedef struct s_file
 {
 	char			*file_str;
 	int				flag;
-	struct t_file	*next;
+	struct s_file	*next;
 } t_file;
 
 // data.c
