@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 11:25:39 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:46:49 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
 	int i;
 
-	i = 1;//where is the first redirection in the array?
+	i = 1;
 	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin
 	{
-		while (cur_cmd->cmd_arr[i])//We check that the files exists. Is there a separate array for files?
+		while (cur_cmd->cmd_arr[i])//We check that the files exists. Separate array for files?
 		{
 			if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
 				fail(1, "No such file or directory", data);
@@ -87,10 +87,11 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
 	}
-	else if (cur_cmd->heredoc_flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal
+	else if (cur_cmd->heredoc_flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal. Where do we save the input?
 		get_input(cur_cmd, data);
-	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
-		fail(1, "This shell does not support combining < and << in the same command", data);
+//saattaa olla useampi heredoc ja infile
+//	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
+//		fail(1, "This shell does not support combining < and << in the same command", data);
 }
 
 void	output_redirection(t_cmd *cur_cmd, t_data *data)
@@ -124,7 +125,7 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 
 //Checks if there is a redirection and if it is in input or output.
 
-void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends? Do we need 
+void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends?
 {
 	if (cur_cmd->infile || cur_cmd->heredoc_flag)//if there is a infile or heredoc we redirect input
 	{
