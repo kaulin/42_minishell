@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 11:18:36 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:25:39 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimit
 	int		fd[2];
 	char	*delim;
 	
-	delim = cur_cmd->cmd_arr[2];//Is this correct? Does the command array include redirections?
+	delim = cur_cmd->cmd_arr[1];//Is this correct?
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
 	while (1)
@@ -76,7 +76,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 	i = 1;//where is the first redirection in the array?
 	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin
 	{
-		while (cur_cmd->cmd_arr[i])//We check that the files exists. Can we just go through the array like this? What does it contain?
+		while (cur_cmd->cmd_arr[i])//We check that the files exists. Is there a separate array for files?
 		{
 			if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
 				fail(1, "No such file or directory", data);
