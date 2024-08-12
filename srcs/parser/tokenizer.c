@@ -6,11 +6,12 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/01 11:43:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:26:55 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "expander.h"
 
 char	*tokenize(char *input, t_parser *parser, t_data *data)
 {

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
+#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/08/12 10:53:05 by kkauhane         ###   ########.fr        #
+#    Updated: 2024/08/12 11:23:14 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ PARSER_SRC	:= parser.c \
 			str_list.c \
 			token_list.c \
 			token_utils.c \
-			splitjoin.c
+			splitjoin.c \
+			tokenizer.c
 #
 VPATH		+= $(SRC_DIR):$(BINS_DIR):$(PARSER_DIR)
 
