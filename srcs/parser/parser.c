@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/05 13:10:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:47:26 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ static void	parser_clean(t_parser *parser)
 		token_clear(&parser->token_list);
 }
 
+/*
+Splits the given commands cmd_str into tokens, which are expanded and merged 
+where necessary.
+*/
 int	parse_cmd(t_cmd *cmd, t_data *data)
 {
 	t_parser	parser;
@@ -62,54 +66,66 @@ int	parse_cmd(t_cmd *cmd, t_data *data)
 	return (SUCCESS);
 }
 
-int	parse(char *input, t_data *data)
+/*
+Makes a new cmd_str from the given start and end pointers, places that into 
+a new cmd_node and adds that node to the back of the cmd_list.
+*/
+int	split_command(char *start, char *end, t_data *data)
 {
-	t_cmd		*cmd;
-	t_parser	parser;
+	char	quote;
+	char	*cmd_str;
+	t_cmd	*cmd_node;
 
-	if (check_quotes(input))
+	cmd_str = ft_substr(start, 0, end - start);
+	if (!cmd_str)
+		return (ERROR);
+	cmd_node = cmd_new(cmd_str);
+	if (!cmd_node)
 	{
-		data->error_msg = ft_strdup("minishell: syntax error: unclosed quotations\n");
+		free(cmd_str);
 		return (ERROR);
 	}
-	parser_init(&parser);
-	while (*input)
-	{
-		skip_whitespace(&input);
-		if (*input = '|')
-		{
-			data->error_msg = ft_strdup("minishell: syntax error near unexpected token \`|'");
-			input++;
-			continue ;
-		}
-		while (*input)
-		{
-			parser.start = input;
-			if (is_quote_char(*input))
-				find_quote_end(&input);
-			
-		}
-		
-	}
-
+	cmd_add_back(&data->cmd_list, cmd_node);
+	return (SUCCESS);
 }
-	/*
-	After tokenization:
-	- define token types
-	- separate into commands based on |
-	- assing into command structs and their variables
-
-	If | without command before it
-	** bash: syntax error near unexpected token `|'
-	If ||
-	** bash: syntax error near unexpected token `||'
-
-
-	*/
 
 /*
-Cases
-"$ec""$ho"
-"$ec""$space""$ho"
-"$ec""$null""$ho"
+Checks the input for unclosed quotes and erroneous pipe characters. Then 
+splits the input into separate commands based on unquoted pipe characters. 
+Finally parses each of these commands.
+*/
+int	parse(char *input, t_data *data)
+{
+	t_cmd	*cmd;
+	char	*start;
+	
+	if (check_quotes(input, data)) // && check_pipes(input, data);
+		return (ERROR);
+	start = input;
+	while (*input)
+	{
+		if (is_quote_char(*input))
+			find_quote_end(&input);
+		if (*input == '|');
+		{
+			if (split_command(start, input - 1, data));
+				return (ERROR);
+			start = ++input;
+			continue ;
+		}
+		input++;
+	}
+	cmd = data->cmd_list;
+	while (cmd)
+	{
+		if (parse_cmd(cmd, data))
+			return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+/*
+After tokenization:
+- define token types
+- assing into command structs and their variables
 */

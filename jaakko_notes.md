@@ -1,7 +1,7 @@
 # Jaakko's Minishell Notes
 
 ## 9.8.
-- How to handle removal of the parent directory of current working directory. Bash:
+- How to handle removal of the current working directory or the parent directory of current working directory. Bash:
 jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ rm -rf ~/42/minishell/local/1/2
 jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ pwd
 /home/jajuntti/42/minishell/local/1/2/3/4
@@ -18,7 +18,7 @@ cd: error retrieving current directory: getcwd: cannot access parent directories
 jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4/./././../..$ cd ..
 jajuntti@c3r2p7:~/42/minishell/local/1$ echo $OLDPWD
 /home/jajuntti/42/minishell/local/1/2/3/4/./././../..
-Explained: moving to "current directory" . adds /. to $PWD and gives error message. This can be repeated indefinitely. Moving to "parent directory" .. adds /.. to the $PWD and gives error messages, but can be repeated n times, where n is the level of depth one was initially from the parent of the directory that was removed. In the above case, we started at lvl 4 and lvl 2 was removed. 4-2=2, so we are able to cd "up" .. twice, before we are returned to the actual existing directory. If lvl 1 is removed after removing lvl 2, .. can be repeated one more time, before we are returned to the still existing /local. Creating new versions of the original file structure after removing parts does not affect this.
+Explained: moving to "current directory" . adds /. to $PWD and gives error message. This can be repeated indefinitely. Moving to "parent directory" .. adds /.. to the $PWD and gives error messages, but can be repeated n times, where n is the level of depth one was initially from the parent of the directory that was removed. In the above case, we started at lvl 4 and lvl 2 was removed. 4-2=2, so we are able to cd "up" .. twice, before we are returned to the actual existing directory. If lvl 1 is removed after removing lvl 2, .. can be repeated one more time, before we are returned to the still existing /local. Creating new versions of the original file structure after removing parts does not affect this. Only removing current directory (4-4=0) and using cd .. returns you to 3, as expected.
 
 ## 7.8.
 - Bashing my head against bash continues:

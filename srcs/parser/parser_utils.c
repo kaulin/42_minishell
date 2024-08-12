@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/01 15:27:10 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:26:21 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,52 @@ void	find_quote_end(char **ptr)
 
 	quote = **ptr;
 	(*ptr)++;
-	while (**ptr != quote)
+	while (**ptr && **ptr != quote)
 		(*ptr)++;
-	(*ptr)++;
+}
+
+/*
+Checks whether the given string contains unclosed single or double quotes. 
+Sets error message and returns ERROR if there are unclosed quotes.
+*/
+int	check_quotes(char *str, t_data *data)
+{
+	char	quote;
+
+	quote = 0;
+	while (*str)
+	{
+		if (!quote && is_quote_char(*str))
+			quote = str;
+		else if (*str == quote)
+			quote = 0;
+		str++;
+	}
+	if (quote)
+	{
+		data->error_msg = ft_strdup("minishell: syntax error: unclosed quotations\n");
+		return (ERROR);
+	}
+	return (SUCCESS);
 }
 
 /*
 Checks whether the given string contains unclosed single or double quotes. 
 Returns 1 if there are unclosed quotes.
 */
-int	check_quotes(char *str)
+int	check_pipes(char *str)
 {
-	char	*quote;
+	char	quote;
 
-	quote = NULL;
+	quote = 0;
 	while (*str)
-	{
-		if (!quote)
+	{ 
+		if (is_quote_char(*str))
 		{
-			if (is_quote_char(*str))
-				quote = str;
+			find_quote_end(&str);
+			quote = 0;
 		}
-		else
-			if (*str == *quote)
-				quote = NULL;
 		str++;
 	}
-	if (quote)
-		return (*quote);
 	return (0);
 }
