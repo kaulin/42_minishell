@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 09:53:47 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:56:01 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_quotes(char *str, t_data *data)
 	while (*str)
 	{
 		if (!quote && is_quote_char(*str))
-			quote = str;
+			quote = *str;
 		else if (*str == quote)
 			quote = 0;
 		str++;
