@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/09 13:22:59 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/12 11:18:36 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimit
 {
 	char	*input;
 	int		fd[2];
-	char	delim;
+	char	*delim;
 	
 	delim = cur_cmd->cmd_arr[2];//Is this correct? Does the command array include redirections?
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
 	while (1)
 	{
-		input = ft_get_next_line(STDIN_FILENO);
+		input = readline("> ");//Should we use this or get_new_line
 		if (!input)
 		{
 			ft_putstr_fd("warning: here-document delimited by end-of-file\n", 2);
@@ -83,7 +83,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 			i++;
 		}
 		cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
-		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO);)//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
+		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO))//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
 	}
@@ -93,32 +93,32 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 		fail(1, "This shell does not support combining < and << in the same command", data);
 }
 
-void	output_redirection(t_cmd *cur_cmd)
+void	output_redirection(t_cmd *cur_cmd, t_data *data)
 {
-	int i;
+	//int i;
 
-	i = 1;
+	//i = 1;
 	if (cur_cmd->outfile != NULL && !cur_cmd->append_flag)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
 	{
 		cur_cmd->out_fd = open(cur_cmd->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO);)
+		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
 		{
-			fail();
+			fail(1, "Error", data);
 		}
 		close(cur_cmd->out_fd);
 	}
 	else if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
 	{
 		cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO);)
+		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
 		{
-			fail();
+			fail(1, "Error", data);
 		}
 		close(cur_cmd->out_fd);
 	}
 	else if  (cur_cmd->append_flag && !cur_cmd->outfile)//if there is a append flag but no outfile we have an error
 	{
-		fail();
+		fail(1, "Error", data);
 	}
 }
 
@@ -128,10 +128,10 @@ void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some
 {
 	if (cur_cmd->infile || cur_cmd->heredoc_flag)//if there is a infile or heredoc we redirect input
 	{
-		input_redirection(cur_cmd);
+		input_redirection(cur_cmd, data);
 	}
 	if (cur_cmd->outfile || cur_cmd->append_flag)//if there is a outfile or appends we redirect output
 	{
-		output_redirection(cur_cmd);
+		output_redirection(cur_cmd, data);
 	}
 }
