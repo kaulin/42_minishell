@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 09:47:26 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:52:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ a new cmd_node and adds that node to the back of the cmd_list.
 */
 int	split_command(char *start, char *end, t_data *data)
 {
-	char	quote;
 	char	*cmd_str;
 	t_cmd	*cmd_node;
 
@@ -106,9 +105,9 @@ int	parse(char *input, t_data *data)
 	{
 		if (is_quote_char(*input))
 			find_quote_end(&input);
-		if (*input == '|');
+		if (*input == '|')
 		{
-			if (split_command(start, input - 1, data));
+			if (split_command(start, input - 1, data))
 				return (ERROR);
 			start = ++input;
 			continue ;

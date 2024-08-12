@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 09:26:21 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/12 09:53:47 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	check_quotes(char *str, t_data *data)
 /*
 Checks whether the given string contains unclosed single or double quotes. 
 Returns 1 if there are unclosed quotes.
-*/
 int	check_pipes(char *str)
 {
 	char	quote;
@@ -87,3 +86,6 @@ int	check_pipes(char *str)
 	}
 	return (0);
 }
+
+
+*/
