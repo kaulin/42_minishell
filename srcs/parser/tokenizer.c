@@ -6,22 +6,34 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/14 13:44:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:54:31 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "expander.h"
 
+static int	place_cmd_tokens(t_cmd *cmd, t_token *token_list)
+{
+	char	*temp;
+
+	temp = merge_unused_tokens(*token_list);
+	if (!temp)
+		return (ERROR);
+	free(cmd->cmd_str);
+	cmd->cmd_str = temp;
+	return (SUCCESS);
+}
+
 /*
-Places the data from the tokens to the cmd struct TODO: error handling for 
+Places the data from the redir tokens to the cmd struct TODO: error handling for 
 adding input/output files.
 */
-int	place_tokens(t_cmd *cmd, t_token **token_list)
+int	place_tokens(t_cmd *cmd, t_token *token_list)
 {
 	t_token	*this;
 	
-	this = *token_list;
+	this = token_list;
 	while (this)
 	{
 		if (is_redir_token(this))
@@ -42,10 +54,7 @@ int	place_tokens(t_cmd *cmd, t_token **token_list)
 		}
 		this = this->next;
 	}
-	cmd->cmd_str = merge_unused_tokens(*token_list);\
-	if (!cmd->cmd_str)
-		return (ERROR);
-	return (SUCCESS);
+	return (place_cmd_tokens(cmd, token_list));
 }
 
 char	*tokenize(char *input, t_parser *parser, t_data *data)

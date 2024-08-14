@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/14 13:38:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:53:15 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	parse_cmd(t_cmd *cmd, t_data *data)
 		}
 	}
 	if (merge_tokens(&parser.token_list) \
-		|| place_tokens(cmd, &parser.token_list))
+		|| place_tokens(cmd, parser.token_list)) \
+		|| place_cmd_tokens(cmd, parser.token_list)
 	{
 		parser_clean(&parser);
 		return (ERROR);
