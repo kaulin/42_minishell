@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 13:46:49 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:35:48 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,18 @@ static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimit
 
 static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
-	int i;
-
-	i = 1;
-	if (!cur_cmd->heredoc_flag && cur_cmd->infile)//infile redirection we open the infile to stdin
+	t_file	*cur_file;
+	
+	cur_file = cur_cmd->infiles; 
+	if (!cur_file->flag && cur_file->files_str)//infile redirection without heredoc, we open the infile to stdin
 	{
-		while (cur_cmd->cmd_arr[i])//We check that the files exists. Separate array for files?
+		while (cur_file->next)//We check that the files exists.
 		{
 			if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
 				fail(1, "No such file or directory", data);
-			i++;
+			cur_file = cur_file->next;
 		}
-		cur_cmd->in_fd = open(cur_cmd->infile, O_RDONLY);
+		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
 		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO))//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
@@ -96,9 +96,6 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 
 void	output_redirection(t_cmd *cur_cmd, t_data *data)
 {
-	//int i;
-
-	//i = 1;
 	if (cur_cmd->outfile != NULL && !cur_cmd->append_flag)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
 	{
 		cur_cmd->out_fd = open(cur_cmd->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
@@ -127,11 +124,11 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 
 void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends?
 {
-	if (cur_cmd->infile || cur_cmd->heredoc_flag)//if there is a infile or heredoc we redirect input
+	if (cur_cmd->infiles || cur_cmd->flag)//if there is a infile or heredoc we redirect input
 	{
 		input_redirection(cur_cmd, data);
 	}
-	if (cur_cmd->outfile || cur_cmd->append_flag)//if there is a outfile or appends we redirect output
+	if (cur_cmd->outfiles || cur_cmd->flag)//if there is a outfile or appends we redirect output
 	{
 		output_redirection(cur_cmd, data);
 	}
