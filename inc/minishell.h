@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 15:44:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:59:46 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	cmd_delone(t_cmd *cmd);
 void	cmd_clear(t_cmd **cmd_list);
 
 // file_list.c
-t_file	*file_new(char *content);
+t_file	*file_new(char *content, int flag);
 void	file_add_back(t_file **file_list, t_file *new_file);
 void	file_delone(t_file *file);
 void	file_clear(t_file **file_list);

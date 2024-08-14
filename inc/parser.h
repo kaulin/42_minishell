@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 09:17:13 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:41:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define PARSER_H
 
 # include "minishell.h"
-
-// Types of tokens
-# define REDIR_TKN 1;
-# define CMD_TKN 2;
-# define OPT_TKN 3;
-# define ARG_TKN 4;
-# define PIPE_TKN 5;
 
 /*
 Defines linked list token struct.
@@ -32,9 +25,9 @@ Defines linked list token struct.
 typedef struct s_token
 {
 	char			*str;
-	int				type;
 	struct s_token	*next;
 	int				merge_flag;
+	int				placed_flag;
 }	t_token;
 
 typedef struct s_parser
@@ -53,6 +46,7 @@ void	find_quote_end(char **ptr);
 int		check_quotes(char *str, t_data *data);
 
 // tokenizer.c
+int		place_tokens(t_cmd *cmd, t_token **token_list);
 char	*tokenize(char *input, t_parser *parser, t_data *data);
 
 // token_list.c
@@ -62,6 +56,8 @@ void	token_delone(t_token *token);
 void	token_clear(t_token **token_list);
 
 // token_utils.c
+int		is_redir_token(t_token *token);
+char	*merge_unused_tokens(t_token *token);
 int		merge_tokens(t_token **token);
 void	define_tokens(t_token *token);
 void	print_tokens(t_token **token_list);

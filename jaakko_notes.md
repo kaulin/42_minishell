@@ -1,5 +1,8 @@
 # Jaakko's Minishell Notes
 
+## 13.8
+- Problem in tokenization: redirection tokens need to be handled even when not separated from other tokens by whitespace.
+
 ## 9.8.
 - How to handle removal of the current working directory or the parent directory of current working directory. Bash:
 jajuntti@c3r2p7:~/42/minishell/local/1/2/3/4$ rm -rf ~/42/minishell/local/1/2
