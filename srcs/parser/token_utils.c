@@ -6,12 +6,48 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/05/31 10:36:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:41:17 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+int	is_redir_token(t_token *token)
+{
+	if (!ft_strncmp(token->str, "<", 2) || !ft_strncmp(token->str, "<<", 3) \
+		|| !ft_strncmp(token->str, ">", 2) || !ft_strncmp(token->str, ">>", 3))
+		return (1);
+	return (0);
+}
+
+char	*merge_unused_tokens(t_token *token)
+{
+	char	*temp_str;
+	char	*return_str;
+
+	temp_str = NULL;
+	return_str = NULL;
+	while(token)
+	{
+		if (!token->placed_flag)
+		{
+			temp_str = ft_strjoin(return_str, " ");
+			if (!temp_str && return_str)
+			{
+				free(return_str);
+				return (NULL);
+			}
+			if (return_str)
+				free(return_str);
+			return_str = ft_strjoin(temp_str, token->str);
+			free(temp_str);
+			if (!return_str)
+				return (NULL);
+		}
+		token = token->next;
+	}
+	return (return_str);
+}
 
 /*
 If the token given as an argument is mergeable, merge it with the next token. 
@@ -51,11 +87,6 @@ int	merge_tokens(t_token **tokens)
 		token = (token)->next;
 	}
 	return (0);
-}
-
-void	define_tokens(t_token *token)
-{
-	token->type = 0;
 }
 
 void	print_tokens(t_token **token_list)

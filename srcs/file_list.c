@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:14:19 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 15:29:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:19:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 /*
 Creates a new file struct and initialises its file_str with the parameter sting. 
-A pointer to the new_file is returned, unless there is a malloc 
+A pointer to the new_file is returned, unless there is a malloc error.
 */
-t_file	*file_new(char *content)
+t_file	*file_new(char *content, int flag)
 {
 	t_file	*new_file;
 
 	new_file = malloc(sizeof(t_file));
 	if (!new_file)
 		return (NULL);
-	new_file->file_str = content;
+	new_file->file_str = ft_strdup(content);
+	if (!new_file->file_str)
+	{
+		free(new_file);
+		return(NULL);
+	}
+	new_file->flag = flag;
 	new_file->next = NULL;
 	return (new_file);
 }
