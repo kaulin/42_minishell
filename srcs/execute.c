@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 14:47:42 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:50:40 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	execute_and_pipe(t_data *data)
 	cur_cmd = data->cmd_list;
 	while (cur_cmd != NULL)
 	{
-		cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");}
+		cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
 		parent(data, cur_cmd);
 		cur_cmd = cur_cmd->next;
 	}
