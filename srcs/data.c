@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/10 14:48:43 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:59:11 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	clean_data(t_data *data)//need to add envp_clear
 		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
-	rl_clear_history();
 }
 
 void	init_data(t_data *data, char **envp)
