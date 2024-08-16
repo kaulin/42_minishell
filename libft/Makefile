@@ -54,7 +54,7 @@ SRC = ft_isalpha.c \
 
 OBJ = $(SRC:.c=.o)
 
-CC = cc
+CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
