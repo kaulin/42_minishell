@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/12 15:05:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:14:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int main(int argc, char **argv, char **envp)
 			data.error_msg = NULL;
 		}
 		free(input);
-		// execute commands from data->cmd_list, wait for possible children to complete and exit pipe with last command's exit code
+		execute_and_pipe(&data);
 	}
 	clean_data(&data);
 	return 0;
