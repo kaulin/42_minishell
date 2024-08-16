@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 10:13:04 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/16 12:08:13 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,32 +101,25 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 	cur_file = cur_cmd->outfiles; 
 	if (!cur_file->flag && cur_file->file_str)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
 	{
-		while (cur_file->next)//We check that the files exists. THIS NEEDS TO BE MOVED?
+		while (cur_file->next)//We check that the files exists. And create them if not. We also empty their contents with O_TRUNC. THIS NEEDS TO BE MOVED?
 		{
-			//if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
-			//	fail(1, "No such file or directory", data);
+			open(cur_file->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			cur_file = cur_file->next;
 		}
 		cur_cmd->out_fd = open(cur_file->file_str, O_WRONLY | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
-		{
 			fail(1, "Error", data);
-		}
 		close(cur_cmd->out_fd);
 	}
 	else if (cur_file->flag && cur_file->file_str)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
 	{
 		cur_cmd->out_fd = open(cur_file->file_str, O_APPEND | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
-		{
 			fail(1, "Error", data);
-		}
 		close(cur_cmd->out_fd);
 	}
 	else if  (cur_file->flag && !cur_file->file_str)//if there is a append flag but no outfile we have an error
-	{
 		fail(1, "Error", data);
-	}
 }
 
 //Checks if there is a redirection and if it is in input or output.
