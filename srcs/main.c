@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 13:54:46 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:59:18 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int main(int argc, char **argv, char **envp)
 		clean_data(&data);
 	}
 	clean_data(&data);
+	rl_clear_history();
 	return 0;
 }
