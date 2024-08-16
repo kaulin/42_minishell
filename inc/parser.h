@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/16 10:59:51 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:03:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ int		is_redir_token(t_token *token);
 char	*merge_unused_tokens(t_token *token);
 int		merge_tokens(t_token **token);
 void	define_tokens(t_token *token);
-void	print_tokens(t_token **token_list);
+void	print_tokens(t_token *token_list);
 
 #endif
