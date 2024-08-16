@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/16 12:05:17 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:21:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	parse_cmd(t_cmd *cmd, t_data *data)
 
 	input = cmd->cmd_str;
 	parser_init(&parser);
-	printf("Tokenizing cmd: %s\n", input); // REMOVE
 	while (*input)
 	{
 		if (is_whitespace(*input))
@@ -59,9 +58,6 @@ int	parse_cmd(t_cmd *cmd, t_data *data)
 			parser_reset(&parser);
 		}
 	}
-	printf("Expanding tokens\n"); // REMOVE
-	print_tokens(parser.token_list);
-	printf("Expanding tokens\n"); // REMOVE
 	if (merge_tokens(&parser.token_list) \
 		|| place_tokens(cmd, parser.token_list) \
 		|| place_tokens(cmd, parser.token_list))
@@ -69,7 +65,6 @@ int	parse_cmd(t_cmd *cmd, t_data *data)
 		parser_clean(&parser);
 		return (ERROR);
 	}
-	print_tokens(parser.token_list);
 	parser_clean(&parser);
 	return (SUCCESS);
 }
