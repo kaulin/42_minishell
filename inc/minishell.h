@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 11:27:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:12:55 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,10 @@ char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
 void	check_redirection(t_data *data, t_cmd *cur_cmd);
+
+//execute.c
+
+int	execute_and_pipe(t_data *data);
 
 // utils.c
 int		join_print_free(char *str1, char *str2, int fd);
