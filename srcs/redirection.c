@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/14 15:35:48 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/16 10:04:30 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimit
 	int		fd[2];
 	char	*delim;
 	
-	delim = cur_cmd->cmd_arr[1];//Is this correct?
+	delim = cur_cmd->infiles->file_str;
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
 	while (1)
@@ -74,7 +74,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 	
 	cur_file = cur_cmd->infiles; 
-	if (!cur_file->flag && cur_file->files_str)//infile redirection without heredoc, we open the infile to stdin
+	if (!cur_file->flag && cur_file->file_str)//infile redirection without heredoc, we open the infile to stdin
 	{
 		while (cur_file->next)//We check that the files exists.
 		{
@@ -87,7 +87,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
 	}
-	else if (cur_cmd->heredoc_flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal. Where do we save the input?
+	else if (cur_file->flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal. Where do we save the input?
 		get_input(cur_cmd, data);
 //saattaa olla useampi heredoc ja infile
 //	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
@@ -96,25 +96,34 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 
 void	output_redirection(t_cmd *cur_cmd, t_data *data)
 {
-	if (cur_cmd->outfile != NULL && !cur_cmd->append_flag)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
+	t_file	*cur_file;
+	
+	cur_file = cur_cmd->outfiles; 
+	if (!cur_file->flag && cur_file->file_str)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
 	{
-		cur_cmd->out_fd = open(cur_cmd->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
+		while (cur_file->next)//We check that the files exists. THIS NEEDS TO BE MOVED?
+		{
+			//if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
+			//	fail(1, "No such file or directory", data);
+			cur_file = cur_file->next;
+		}
+		cur_cmd->out_fd = open(cur_file->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
 		{
 			fail(1, "Error", data);
 		}
 		close(cur_cmd->out_fd);
 	}
-	else if (cur_cmd->append_flag && cur_cmd->outfile)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
+	else if (cur_file->flag && cur_file->file_str)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
 	{
-		cur_cmd->out_fd = open(cur_cmd->outfile, O_APPEND | O_CREAT | O_RDWR, 0644);
+		cur_cmd->out_fd = open(cur_file->file_str, O_APPEND | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
 		{
 			fail(1, "Error", data);
 		}
 		close(cur_cmd->out_fd);
 	}
-	else if  (cur_cmd->append_flag && !cur_cmd->outfile)//if there is a append flag but no outfile we have an error
+	else if  (cur_file->flag && !cur_file->file_str)//if there is a append flag but no outfile we have an error
 	{
 		fail(1, "Error", data);
 	}
