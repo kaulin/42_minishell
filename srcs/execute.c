@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/09 13:36:53 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/16 14:47:42 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	}
 	close(fd[0]);
 	close(fd[1]);
-	check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
+	//check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 		execute_builtin(data, cur_cmd->cmd_arr);
 	else
@@ -73,8 +73,9 @@ static void	parent(t_data *data, t_cmd *cur_cmd)
 		fail(666, "Pipe failed", data);
 	if (data->cmd_list->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
 	{
-		check_redirection(data, cur_cmd);
+		//check_redirection(data, cur_cmd);
 		execute_builtin(data, cur_cmd->cmd_arr);
+		return ;
 	}
 	else
 	{
@@ -107,10 +108,14 @@ int	execute_and_pipe(t_data *data)
 	int		status;
 	t_cmd	*cur_cmd;
 
+	int original_stdin = dup(STDIN_FILENO);
+    int original_stdout = dup(STDOUT_FILENO);
+
 	exit_status = 0;
 	cur_cmd = data->cmd_list;
 	while (cur_cmd != NULL)
 	{
+		cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");}
 		parent(data, cur_cmd);
 		cur_cmd = cur_cmd->next;
 	}
@@ -118,10 +123,17 @@ int	execute_and_pipe(t_data *data)
 	while (cur_cmd != NULL)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
-			fail(1, "Waitpid failed", data);
+		fail(1, "Waitpid failed", data);
 		if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
+		exit_status = WEXITSTATUS(status);
 		cur_cmd = cur_cmd->next;
 	}
+	dup2(original_stdin, STDIN_FILENO);
+    dup2(original_stdout, STDOUT_FILENO);
+
+    // Close the duplicates as they're no longer needed
+    close(original_stdin);
+    close(original_stdout);
+	
 	return (exit_status);
 }
