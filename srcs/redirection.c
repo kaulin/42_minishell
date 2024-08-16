@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 10:04:30 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/16 10:13:04 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 	{
 		while (cur_file->next)//We check that the files exists.
 		{
-			if (access(cur_cmd->cmd_arr[i], O_RDONLY) == -1)
+			if (access(cur_file->file_str, O_RDONLY) == -1)
 				fail(1, "No such file or directory", data);
 			cur_file = cur_file->next;
 		}
@@ -87,7 +87,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
 	}
-	else if (cur_file->flag && !cur_cmd->infile)//heredoc flag without infile we read from terminal. Where do we save the input?
+	else if (cur_file->flag && !cur_file->next->file_str)//heredoc flag without infile we read from terminal. Where do we save the input?
 		get_input(cur_cmd, data);
 //saattaa olla useampi heredoc ja infile
 //	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
@@ -107,7 +107,7 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 			//	fail(1, "No such file or directory", data);
 			cur_file = cur_file->next;
 		}
-		cur_cmd->out_fd = open(cur_file->outfile, O_WRONLY | O_CREAT | O_RDWR, 0644);
+		cur_cmd->out_fd = open(cur_file->file_str, O_WRONLY | O_CREAT | O_RDWR, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
 		{
 			fail(1, "Error", data);
@@ -133,11 +133,11 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 
 void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends?
 {
-	if (cur_cmd->infiles || cur_cmd->flag)//if there is a infile or heredoc we redirect input
+	if (cur_cmd->infiles)//if there is a infile or heredoc we redirect input
 	{
 		input_redirection(cur_cmd, data);
 	}
-	if (cur_cmd->outfiles || cur_cmd->flag)//if there is a outfile or appends we redirect output
+	if (cur_cmd->outfiles)//if there is a outfile or appends we redirect output
 	{
 		output_redirection(cur_cmd, data);
 	}
