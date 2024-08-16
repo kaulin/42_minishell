@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/14 13:41:13 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 10:59:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	find_quote_end(char **ptr);
 int		check_quotes(char *str, t_data *data);
 
 // tokenizer.c
-int		place_tokens(t_cmd *cmd, t_token **token_list);
+int		place_tokens(t_cmd *cmd, t_token *token_list);
 char	*tokenize(char *input, t_parser *parser, t_data *data);
 
 // token_list.c

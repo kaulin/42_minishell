@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/14 13:54:31 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:00:50 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	place_cmd_tokens(t_cmd *cmd, t_token *token_list)
 {
 	char	*temp;
 
-	temp = merge_unused_tokens(*token_list);
+	temp = merge_unused_tokens(token_list);
 	if (!temp)
 		return (ERROR);
 	free(cmd->cmd_str);
