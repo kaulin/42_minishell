@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 11:39:01 by jajuntti          #+#    #+#             */
-/*   Updated: 2023/11/04 17:19:21 by jajuntti         ###   ########.fr       */
+/*   Created: 2023/11/06 10:02:42 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/01/06 12:01:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	t_list	*new;
+	t_list	*node;
+	t_list	*tmp;
 
-	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	while (str1[i] && str2[i] && i < n)
+	new = NULL;
+	if (lst == NULL)
+		return (NULL);
+	while (lst)
 	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
-		i++;
+		tmp = f(lst->content);
+		node = ft_lstnew(tmp);
+		if (node == NULL)
+		{
+			free(tmp);
+			ft_lstclear(&new, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&new, node);
+		lst = lst->next;
 	}
-	if (i < n)
-		return (str1[i] - str2[i]);
-	return (0);
+	return (new);
 }

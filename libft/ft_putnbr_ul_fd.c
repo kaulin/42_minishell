@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   help_functions.c                                   :+:      :+:    :+:   */
+/*   ft_putnbr_ul_fd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/21 20:06:06 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/01/18 13:52:29 by kkauhane         ###   ########.fr       */
+/*   Created: 2023/11/22 16:40:52 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/01/06 12:17:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_printchar(char c)
+int	ft_putnbr_ul_fd(unsigned long n, int fd)
 {
-	return (write(1, &c, 1));
-}
+	int	written;
+	int	placeholder;
 
-int	print_str(char *string)
-{
-	int	i;
-
-	i = 0;
-	if (string == NULL)
+	written = 0;
+	if (n >= 10)
 	{
-		if (write(1, "(null)", 6) < 0)
+		placeholder = ft_putnbr_ul_fd(n / 10, fd);
+		if (placeholder < 0)
 			return (-1);
-		return (6);
+		written += placeholder;
 	}
-	while (string[i] != '\0')
-	{
-		if (ft_printchar(string[i]) < 0)
-			return (-1);
-		i++;
-	}
-	return (i);
+	if (ft_putchar_fd(n % 10 + '0', fd) < 0)
+		return (-1);
+	written++;
+	return (written);
 }

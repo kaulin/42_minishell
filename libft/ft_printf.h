@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 11:39:01 by jajuntti          #+#    #+#             */
-/*   Updated: 2023/11/04 17:19:21 by jajuntti         ###   ########.fr       */
+/*   Created: 2023/11/16 17:47:49 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/02/01 12:02:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+# include <stdarg.h>
+# include "libft.h"
+
+typedef struct s_printer
 {
-	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	va_list		params;
+	const char	*source;
+	int			output_count;
+	int			status;
+}	t_printer;
 
-	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	while (str1[i] && str2[i] && i < n)
-	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
-		i++;
-	}
-	if (i < n)
-		return (str1[i] - str2[i]);
-	return (0);
-}
+int	print_c(t_printer *printer);
+int	print_s(t_printer *printer);
+int	print_p(t_printer *printer);
+int	print_d(t_printer *printer);
+int	print_u(t_printer *printer);
+int	print_x(t_printer *printer);
+
+#endif

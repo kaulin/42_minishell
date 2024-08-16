@@ -3,33 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 17:07:20 by kkauhane          #+#    #+#             */
-/*   Updated: 2023/11/17 15:38:29 by kkauhane         ###   ########.fr       */
+/*   Created: 2023/10/27 10:04:46 by jajuntti          #+#    #+#             */
+/*   Updated: 2023/11/07 16:21:09 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t length, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char			*string;
-	unsigned int	i;
+	void	*chunk;
+	size_t	nbr;
 
-	i = 0;
-	if (length > 0 && size > 0 \
-			&& ((length * size % size != 0 || length * size % length != 0)))
-		return (0);
-	if (length * size > UINT_MAX)
-		return (0);
-	string = malloc(length * size);
-	if (!string)
-		return (0);
-	while (i < (length * size))
-	{
-		string[i] = 0;
-		i++;
-	}
-	return (string);
+	nbr = 0;
+	if (count != 0 && (nbr - 1) / count < size)
+		return (NULL);
+	chunk = malloc(count * size);
+	if (chunk == NULL)
+		return (NULL);
+	ft_bzero(chunk, count * size);
+	return (chunk);
 }

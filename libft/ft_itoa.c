@@ -3,69 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 13:34:50 by kkauhane          #+#    #+#             */
-/*   Updated: 2023/11/15 16:21:10 by kkauhane         ###   ########.fr       */
+/*   Created: 2023/10/31 08:25:45 by jajuntti          #+#    #+#             */
+/*   Updated: 2023/11/06 08:15:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*allocate(int len)
+static int	get_digits(long nbr)
 {
-	char	*string;
+	int	digits;
 
-	string = (char *)malloc((len + 1) * sizeof(char));
-	if (!string)
-		return (0);
-	string[0] = '0';
-	return (string);
+	digits = 1;
+	while (nbr > 9)
+	{
+		nbr = nbr / 10;
+		digits++;
+	}
+	return (digits);
 }
 
-static int	nlen(long nbr)
+static void	convert(int sign, int digits, long nbr, char *str)
 {
-	int	count;
+	int	i;
 
-	count = 0;
-	if (nbr < 0)
+	i = sign + digits;
+	str [i--] = 0;
+	if (sign)
+		str[0] = '-';
+	while (i >= sign)
 	{
-		count++;
-		nbr = -nbr;
+		str[i] = '0' + nbr % 10;
+		nbr = nbr / 10;
+		i--;
 	}
-	if (nbr == 0)
-		count++;
-	while (nbr != 0)
-	{
-		nbr /= 10;
-		count++;
-	}
-	return (count);
 }
 
 char	*ft_itoa(int n)
 {
-	int		len;
-	int		i;
-	char	*string;
 	long	nbr;
+	int		digits;
+	int		sign;
+	char	*str;
 
-	nbr = n;
-	len = nlen(nbr);
-	string = allocate(len);
-	if (!string)
-		return (0);
+	nbr = (long)n;
+	sign = 0;
 	if (nbr < 0)
-		nbr = -nbr;
-	i = len - 1;
-	while (nbr != 0)
 	{
-		string[i] = ((nbr % 10) + 48);
-		nbr = nbr / 10;
-		i--;
+		sign = 1;
+		nbr *= -1;
 	}
-	if (n < 0)
-		string[0] = '-';
-	string[len] = '\0';
-	return (string);
+	digits = get_digits(nbr);
+	str = malloc(sign + digits + 1);
+	if (str == NULL)
+		return (NULL);
+	convert(sign, digits, nbr, str);
+	return (str);
 }

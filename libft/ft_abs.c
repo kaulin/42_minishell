@@ -1,26 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/14 13:24:17 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/01/16 14:00:44 by kkauhane         ###   ########.fr       */
+/*   Created: 2024/01/08 08:48:58 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/01/09 08:05:07 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-// void	ft_lstclear(node **lst, void (*del)(void*))
-// {
-// 	node	*pointer;
-
-// 	while (*lst)
-// 	{
-// 		pointer = (*lst)-> next;
-// 		ft_lstdelone(*lst, del);
-// 		*lst = pointer;
-// 	}
-// 	free(*lst);
-// }
+// Returns the absolute value of a number. Segfaults with INT_MIN.
+int	ft_abs(int nbr)
+{
+	return ((nbr < 0) * -nbr + (nbr >= 0) * nbr);
+}

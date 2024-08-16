@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
+/*   ft_get_next_line_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 17:28:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/01/16 14:00:38 by kkauhane         ###   ########.fr       */
+/*   Created: 2023/11/27 15:56:53 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/02/02 12:53:46 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_get_next_line.h"
 
-// void	ft_lstdelone(node *lst, void (*del)(void*))
-// {
-// 	del(lst -> content);
-// 	free(lst);
-// }
+// Frees one argument pointer also resetting it to null, and returns the other
+char	*clean(char *waste_pointer, char *return_pointer)
+{
+	free(waste_pointer);
+	waste_pointer = NULL;
+	return (return_pointer);
+}

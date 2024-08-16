@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_ul_base_fd.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 11:39:01 by jajuntti          #+#    #+#             */
-/*   Updated: 2023/11/04 17:19:21 by jajuntti         ###   ########.fr       */
+/*   Created: 2023/11/22 16:40:52 by jajuntti          #+#    #+#             */
+/*   Updated: 2024/01/06 12:37:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_putnbr_ul_base_fd(unsigned long n, char *base, int fd)
 {
-	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	int		written;
+	int		placeholder;
+	size_t	base_len;
 
-	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	while (str1[i] && str2[i] && i < n)
+	written = 0;
+	base_len = ft_strlen(base);
+	if (n >= base_len)
 	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
-		i++;
+		placeholder = ft_putnbr_ul_base_fd(n / base_len, base, fd);
+		if (placeholder < 0)
+			return (-1);
+		written += placeholder;
 	}
-	if (i < n)
-		return (str1[i] - str2[i]);
-	return (0);
+	if (ft_putchar_fd(base[n % base_len], fd) < 0)
+		return (-1);
+	written++;
+	return (written);
 }

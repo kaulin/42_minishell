@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/14 12:59:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:27:41 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <termios.h> //contains the definitions used by the terminal I/O interfaces
 # include <fcntl.h>
+# include <limits.h>
 # include "libft.h"
 
 # define STDIN 0

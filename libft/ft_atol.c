@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 11:39:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2023/11/13 15:56:55 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:12:06 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	skip_whitespace(const char *str)
 	return (i);
 }
 
-int	ft_atoi(const char *str)
+long int	ft_atol(const char *str)
 {
 	long	num;
 	long	prev;
@@ -44,9 +44,9 @@ int	ft_atoi(const char *str)
 		if (prev > num)
 		{
 			if (sign == 1)
-				return (-1);
-			return (0);
+				return (9223372036854775807);
+			return (-9223372036854775807);
 		}
 	}
-	return (sign * (int)num);
+	return (sign * num);
 }
