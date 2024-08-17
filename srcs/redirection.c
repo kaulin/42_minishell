@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/17 12:44:35 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/17 12:53:31 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,9 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 
 void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends?
 {
+	//printf("%s\n", cur_cmd->infiles->file_str);
 	if (cur_cmd->infiles)//if there is a infile or heredoc we redirect input
 		input_redirection(cur_cmd, data);
 	if (cur_cmd->outfiles)//if there is a outfile or appends we redirect output
-		output_redirection(cur_cmd, data)
+		output_redirection(cur_cmd, data);
 }
-
-
