@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 14:50:40 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/17 13:04:21 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
 	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
 }
+
 /*
 Child process handles input and output redirection as well and calls do_cmd to actually 
 execute execve.
@@ -71,24 +72,15 @@ static void	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 		fail(666, "Pipe failed", data);
-	if (data->cmd_list->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
+	cur_cmd->pid = fork();
+	if (cur_cmd->pid == -1)
 	{
-		//check_redirection(data, cur_cmd);
-		execute_builtin(data, cur_cmd->cmd_arr);
-		return ;
+		close(fd[0]);
+		close(fd[1]);
+		fail(666, "Fork failed", data);
 	}
-	else
-	{
-		cur_cmd->pid = fork();
-		if (cur_cmd->pid == -1)
-		{
-			close(fd[0]);
-			close(fd[1]);
-			fail(666, "Fork failed", data);
-		}
-		if (cur_cmd->pid == 0)
-			child(data, cur_cmd, fd);
-	}
+	if (cur_cmd->pid == 0)
+		child(data, cur_cmd, fd);
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
@@ -108,32 +100,39 @@ int	execute_and_pipe(t_data *data)
 	int		status;
 	t_cmd	*cur_cmd;
 
-	int original_stdin = dup(STDIN_FILENO);
-    int original_stdout = dup(STDOUT_FILENO);
-
 	exit_status = 0;
 	cur_cmd = data->cmd_list;
-	while (cur_cmd != NULL)
+	data->o_stdin = dup(STDIN_FILENO);
+	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
+	cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
+	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
 	{
-		cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
-		parent(data, cur_cmd);
-		cur_cmd = cur_cmd->next;
+		//check_redirection(data, cur_cmd);
+		execute_builtin(data, cur_cmd->cmd_arr);
+		return (exit_status);
 	}
-	cur_cmd = data->cmd_list;
-	while (cur_cmd != NULL)
-	{
-		if (waitpid(cur_cmd->pid, &status, 0) == -1)
-		fail(1, "Waitpid failed", data);
-		if (WIFEXITED(status))
-		exit_status = WEXITSTATUS(status);
-		cur_cmd = cur_cmd->next;
+	else 
+	{	
+		while (cur_cmd != NULL)
+		{
+			cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
+			parent(data, cur_cmd);
+			cur_cmd = cur_cmd->next;
+		}
+		cur_cmd = data->cmd_list;
+		while (cur_cmd != NULL)//this fails for some reason when we mix builtins with normal commands. Builtin return values?
+		{
+			if (waitpid(cur_cmd->pid, &status, 0) == -1)
+			fail(1, "Waitpid failed", data);
+			if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
+			cur_cmd = cur_cmd->next;
+		}
 	}
-	dup2(original_stdin, STDIN_FILENO);
-    dup2(original_stdout, STDOUT_FILENO);
-
-    // Close the duplicates as they're no longer needed
-    close(original_stdin);
-    close(original_stdout);
-	
+	dup2(data->o_stdin, STDIN_FILENO);
+	dup2(data->o_stdout, STDOUT_FILENO);
+	close(data->o_stdin);
+	close(data->o_stdout);
 	return (exit_status);
 }
+
