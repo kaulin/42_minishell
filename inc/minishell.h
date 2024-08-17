@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 12:12:55 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/17 12:55:42 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_data
 	char			**envp;
 	char			**paths;
 	int				envp_count;
+	int				o_stdin;
+	int				o_stdout;
 	struct s_cmd	*cmd_list;
 	int				status;
 	char			*error_msg;
