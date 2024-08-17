@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/16 12:08:13 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/17 12:44:35 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 			cur_file = cur_file->next;
 		}
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
-		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO))//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
+		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
 			fail(1, "No such file or directory", data);
 		close(cur_cmd->in_fd);	
 	}
@@ -107,19 +107,19 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 			cur_file = cur_file->next;
 		}
 		cur_cmd->out_fd = open(cur_file->file_str, O_WRONLY | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
-			fail(1, "Error", data);
+		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
+			fail(1, "Redirection failed", data);
 		close(cur_cmd->out_fd);
 	}
 	else if (cur_file->flag && cur_file->file_str)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
 	{
 		cur_cmd->out_fd = open(cur_file->file_str, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO))
-			fail(1, "Error", data);
+		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
+			fail(1, "Redirection failed", data);
 		close(cur_cmd->out_fd);
 	}
 	else if  (cur_file->flag && !cur_file->file_str)//if there is a append flag but no outfile we have an error
-		fail(1, "Error", data);
+		fail(1, "Error, append no file", data);
 }
 
 //Checks if there is a redirection and if it is in input or output.
@@ -127,11 +127,9 @@ void	output_redirection(t_cmd *cur_cmd, t_data *data)
 void	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point, then the child wont close the pipe_ends?
 {
 	if (cur_cmd->infiles)//if there is a infile or heredoc we redirect input
-	{
 		input_redirection(cur_cmd, data);
-	}
 	if (cur_cmd->outfiles)//if there is a outfile or appends we redirect output
-	{
-		output_redirection(cur_cmd, data);
-	}
+		output_redirection(cur_cmd, data)
 }
+
+
