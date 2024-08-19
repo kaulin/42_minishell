@@ -1,6 +1,13 @@
 # Jaakko's Minishell Notes
 
-## 13.8
+## 19.8.
+- Basic functionality established!!!
+- quit signaling works with shells within shells
+- cd:ing into a deleted directory from a subdirectory segfaults (not all the time???)
+- Redirection needs work
+- Command arguments are parsed together without separating spaces, need to rebuild tokenizing anyway
+
+## 13.8.
 - Problem in tokenization: redirection tokens need to be handled even when not separated from other tokens by whitespace.
 
 ## 9.8.
