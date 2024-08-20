@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/20 12:54:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:24:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_cmd	*cmd_new(char *content)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->cmd_str = content;
+	new_cmd->infiles = NULL;
+	new_cmd->outfiles = NULL;
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
@@ -56,6 +58,12 @@ void	cmd_delone(t_cmd *cmd)
 		return ;
 	if (cmd->cmd_str)
 		free(cmd->cmd_str);
+	if (cmd->infiles)
+		file_clear(&cmd->infiles);
+	if (cmd->outfiles)
+		file_clear(&cmd->outfiles);
+	cmd->infiles = NULL;
+	cmd->outfiles = NULL;
 	free(cmd);
 }
 
@@ -79,11 +87,37 @@ void	cmd_clear(t_cmd **cmd_list)
 void	cmd_print(t_cmd *cmd)
 {
 	int	i;
+	t_file *infile;
+	t_file *outfile;
 
 	i = 1;
+	infile = NULL;
+	outfile = NULL;
 	while (cmd)
 	{
-		printf("Command %d is: %s\n", i, cmd->cmd_str);
+		printf("Command %d is: [%s]\n", i, cmd->cmd_str);
+		infile = cmd->infiles;
+		if (infile)
+			printf("Infile redirections are:\n");
+		while (infile)
+		{
+			if (infile->flag)
+				printf("	Heredoc with delimiter [%s]\n", infile->file_str);
+			else
+				printf("	File with path [%s]\n", infile->file_str);
+			infile = infile->next;
+		}
+		outfile = cmd->outfiles;		
+		if (outfile)
+			printf("Outfile redirections are:\n");
+		while (outfile)
+		{
+			if (outfile->flag)
+				printf("	Append file with path [%s]\n", outfile->file_str);
+			else
+				printf("	File with path [%s]\n", outfile->file_str);
+			outfile = outfile->next;
+		}
 		i++;
 		cmd = cmd->next;
 	}
