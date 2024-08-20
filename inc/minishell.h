@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/17 12:55:42 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/20 11:02:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 typedef struct s_data
 {
+	char			*input;
 	char			**envp;
 	char			**paths;
 	int				envp_count;
@@ -72,8 +73,9 @@ typedef struct s_file
 } t_file;
 
 // data.c
+void	reset_data(t_data *data);
 void	clean_data(t_data *data);
-void	init_data(t_data *data, char **envp);
+int		init_data(t_data *data, char **envp);
 char	**copy_envp(t_data *data, char **envp);
 
 // fail.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/16 13:59:11 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/20 11:00:26 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,39 @@ char	**copy_envp(t_data *data, char **envp)
 	return (copy);
 }
 
+void	reset_data(t_data *data)
+{
+	if (data->input)
+		free(data->input);
+	if (data->error_msg)
+		free(data->error_msg);
+	if (data->cmd_list)
+		cmd_clear(&data->cmd_list);
+	data->input = NULL;
+	data->error_msg = NULL;
+	data->cmd_list = NULL;
+
+}
+
 void	clean_data(t_data *data)//need to add envp_clear
 {
+	if (data->input)
+		free(data->input);
 	if (data->cmd_list)
 		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
 }
 
-void	init_data(t_data *data, char **envp)
+int	init_data(t_data *data, char **envp)
 {
+	data->input = NULL;
 	data->envp = copy_envp(data, envp);
-	//if (data->envp == NULL)//if copy failed
-		//error();
-	parse_paths(data);//where should this be?
+	if (data->envp == NULL)
+		return (ERROR);
+	parse_paths(data);//where should this be? && error check?
 	data->cmd_list = NULL;
 	data->status = 0;
 	data->error_msg = NULL;
+	return (SUCCESS);
 }

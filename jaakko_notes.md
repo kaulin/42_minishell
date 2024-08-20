@@ -1,5 +1,8 @@
 # Jaakko's Minishell Notes
 
+## 20.8.
+- FIXED echo "Hello' segfaults, gets into execute, should give syntax error
+
 ## 19.8.
 - Basic functionality established!!!
 - quit signaling works with shells within shells
