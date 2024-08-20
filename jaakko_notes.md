@@ -42,7 +42,7 @@ $NAME
 
 ## 6.8.
 - Continuing on bash behavior depending on pipe character separation:
-	1. cmd1 || cmd2 - executes cmd1, no error messages and exit code 0. cmd1 not piped.
+	1. cmd1 || cmd2 - executes cmd1, no error messages and exit code 0. cmd1 not piped. !!! || is interpreted as OR, needs not be addressed
 	2. cmd1 | | cmd2 - gives bash: syntax error near unexpected token `|'
 	3. cmd1 ||| cmd2 - gives bash: syntax error near unexpected token `|'
 	4. cmd1 |||| cmd2 - gives bash: syntax error near unexpected token `||' (same with further | characters)

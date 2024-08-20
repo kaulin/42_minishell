@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/20 10:59:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:54:27 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,18 @@ void	cmd_clear(t_cmd **cmd_list)
 		next = (*cmd_list)->next;
 		cmd_delone(*cmd_list);
 		*cmd_list = next;
+	}
+}
+
+void	cmd_print(t_cmd *cmd)
+{
+	int	i;
+
+	i = 1;
+	while (cmd)
+	{
+		printf("Command %d is: %s\n", i, cmd->cmd_str);
+		i++;
+		cmd = cmd->next;
 	}
 }

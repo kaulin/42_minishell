@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/20 11:02:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:53:57 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int main(int argc, char **argv, char **envp)
 			data.error_msg = NULL;
 		}
 		else
+		{
+			cmd_print(data.cmd_list);
 			execute_and_pipe(&data);
+		}
 		reset_data(&data);
 	}
 	clean_data(&data);
