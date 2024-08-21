@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/21 14:35:58 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:14:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ void	cmd_delone(t_cmd *cmd)
 		file_clear(&cmd->infiles);
 	if (cmd->outfiles)
 		file_clear(&cmd->outfiles);
-	cmd->infiles = NULL;
-	cmd->outfiles = NULL;
 	free(cmd);
+	cmd = NULL;
 }
 
 /*

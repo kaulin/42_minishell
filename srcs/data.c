@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/20 11:00:26 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:21:39 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ void	clean_data(t_data *data)//need to add envp_clear
 		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
+	if (data->envp)
+		clean_array(data->envp);
+	if (data->paths)
+		clean_array(data->paths);
 }
 
 int	init_data(t_data *data, char **envp)
