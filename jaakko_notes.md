@@ -1,7 +1,8 @@
 # Jaakko's Minishell Notes
 
 ## 21.8.
-- TODO: If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
+- Instead of combining command and argument tokens into a cmd_str that would be split in execute, these tokens are placed directly into the cmd->cmd_array, cmd_str is no longer needed in execute
+- TODO If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
 - FIXED segfaults on empty input
 
 ## 20.8.
@@ -12,7 +13,7 @@
 - quit signaling works with shells within shells
 - cd:ing into a deleted directory from a subdirectory segfaults (not all the time???)
 - Redirection needs work
-- Command arguments are parsed together without separating spaces, need to rebuild tokenizing anyway
+- FIXED Command arguments are parsed together without separating spaces, need to rebuild tokenizing anyway
 
 ## 13.8.
 - Problem in tokenization: redirection tokens need to be handled even when not separated from other tokens by whitespace.

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/21 14:33:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:49:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ int	execute_and_pipe(t_data *data)
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
 	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
-	//cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
 	{
 		//check_redirection(data, cur_cmd);
@@ -121,7 +120,6 @@ int	execute_and_pipe(t_data *data)
 	{	
 		while (cur_cmd != NULL)//we call the parent as many times a there are commands
 		{
-			//cur_cmd->cmd_arr = ft_split(cur_cmd->cmd_str, " ");
 			parent(data, cur_cmd);
 			cur_cmd = cur_cmd->next;
 		}
