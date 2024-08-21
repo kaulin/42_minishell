@@ -1,5 +1,9 @@
 # Jaakko's Minishell Notes
 
+## 21.8.
+- TODO: If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
+- FIXED segfaults on empty input
+
 ## 20.8.
 - FIXED echo "Hello' segfaults, gets into execute, should give syntax error
 

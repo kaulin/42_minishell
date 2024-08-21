@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/20 12:53:57 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:38:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
 	while (1) 
 	{
+		reset_data(&data);
 		data.input = readline("Minishell > ");
 		if (data.input == NULL) //In case of Ctrl+D (EOF)
 			break ;
-		if (data.input[0] != '\0')//do we need to also check for whitespaces only input? -K -> Bash saves whitespace input, zsh doesnt, so no need to check -J
+		if (!*data.input)
+			continue ;
+		else
 			add_history(data.input);
 		if (parse(data.input, &data))
 		{
@@ -51,7 +54,6 @@ int main(int argc, char **argv, char **envp)
 			cmd_print(data.cmd_list);
 			execute_and_pipe(&data);
 		}
-		reset_data(&data);
 	}
 	clean_data(&data);
 	rl_clear_history();
