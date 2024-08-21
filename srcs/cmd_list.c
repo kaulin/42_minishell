@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/20 15:24:25 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:35:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_cmd	*cmd_new(char *content)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->cmd_str = content;
+	new_cmd->cmd_arr = NULL;
 	new_cmd->infiles = NULL;
 	new_cmd->outfiles = NULL;
 	new_cmd->next = NULL;
@@ -58,6 +59,8 @@ void	cmd_delone(t_cmd *cmd)
 		return ;
 	if (cmd->cmd_str)
 		free(cmd->cmd_str);
+	if (cmd->cmd_arr)
+		clean_array(cmd->cmd_arr);
 	if (cmd->infiles)
 		file_clear(&cmd->infiles);
 	if (cmd->outfiles)

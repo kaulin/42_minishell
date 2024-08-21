@@ -6,22 +6,36 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/16 11:00:50 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:43:57 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "expander.h"
 
-static int	place_cmd_tokens(t_cmd *cmd, t_token *token_list)
-{
-	char	*temp;
 
-	temp = merge_unused_tokens(token_list);
-	if (!temp)
+static int	place_cmd_array(t_cmd *cmd, t_token *token_list)
+{
+	int	unused_tokens;
+	int	i;
+
+	unused_tokens = token_count_unused(token_list);
+	i = 0;
+	cmd->cmd_arr = ft_calloc((unused_tokens + 1), sizeof(char*));
+	if (!cmd->cmd_arr)
 		return (ERROR);
-	free(cmd->cmd_str);
-	cmd->cmd_str = temp;
+	while (token_list && i < unused_tokens)
+	{
+		if (!token_list->placed_flag)
+		{
+			cmd->cmd_arr[i] = ft_strdup(token_list->str);
+			if (!cmd->cmd_arr[i])
+				return (ERROR);
+			i++;
+		}
+		token_list = token_list->next;
+	}
+	cmd->cmd_arr[i] = NULL;
 	return (SUCCESS);
 }
 
@@ -54,7 +68,7 @@ int	place_tokens(t_cmd *cmd, t_token *token_list)
 		}
 		this = this->next;
 	}
-	return (place_cmd_tokens(cmd, token_list));
+	return (place_cmd_array(cmd, token_list));
 }
 
 char	*tokenize(char *input, t_parser *parser, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/13 15:21:49 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:17:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,18 @@ void	token_clear(t_token **token_list)
 		token_delone(*token_list);
 		*token_list = next;
 	}
+}
+
+int	token_count_unused(t_token *token_list)
+{
+	int	i;
+
+	i = 0;
+	while (token_list)
+	{
+		if (!token_list->placed_flag)
+			i++;
+		token_list = token_list->next;
+	}
+	return (i);
 }
