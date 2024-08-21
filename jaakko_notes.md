@@ -2,6 +2,7 @@
 
 ## 21.8.
 - Instead of combining command and argument tokens into a cmd_str that would be split in execute, these tokens are placed directly into the cmd->cmd_array, cmd_str is no longer needed in execute
+- TODO echo does not separate multiple agruments with a space
 - TODO If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
 - FIXED segfaults on empty input
 
