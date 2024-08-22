@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 14:31:25 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:58:08 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,18 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 {
 	int		fd[2];
 
-	if (pipe(fd) == -1) 
-		fail(666, "Pipe failed", data);
+	if (pipe(fd) == -1)
+	{
+		data->error_msg = ft_strdup("Pipe failed");
+		return (ERROR);
+	}
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		fail(666, "Fork failed", data);
+		data->error_msg = ft_strdup("Fork failed");
+		return (ERROR);
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
@@ -88,10 +92,11 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
-		fail(666, "Dup2 failed", data);
+		data->error_msg = ft_strdup("Dup2 failed");
+		return (ERROR);
 	}
 	close(fd[0]);
-	return (data->status);
+	return (SUCCESS);
 }
 
 int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
@@ -119,13 +124,15 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 Goes through the linked list and calls the parent function for each node (cmd) of the list. Then waits for all the children to finish
 */
 
+//add find_path to this function
+
 int	execute_and_pipe(t_data *data)
 {
 	t_cmd	*cur_cmd;
 
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
-	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
+	data->o_stdout = dup(STDOUT_FILENO);//where should these be, Make an extra function?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		//check_redirection(data, cur_cmd);
