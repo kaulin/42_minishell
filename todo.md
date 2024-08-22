@@ -1,4 +1,5 @@
 TODO
+- rebuild parsing to handle connected arguments that should be placed in separate tokens
 - echo does not separate multiple agruments with a space
 - If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
 
