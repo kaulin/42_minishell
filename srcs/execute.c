@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:38:51 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:26:06 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,27 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	return (data->status);
 }
 
+int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
+{
+	t_cmd	*cur_cmd;
+	int		status;
+
+
+	cur_cmd = data->cmd_list;
+	while (cur_cmd != failed_cmd)
+	{
+		if (waitpid(cur_cmd->pid, &status, 0) == -1)
+		{
+			data->error_msg = ft_strdup("Waitpid failed\n");
+			return (ERROR);
+		}
+		if (WIFEXITED(status))
+			data->status = WEXITSTATUS(status);
+		cur_cmd = cur_cmd->next;
+	}
+	return (SUCCESS);
+}
+
 /*
 Goes through the linked list and calls the parent function for each node (cmd) of the list. Then waits for all the children to finish
 */
@@ -101,8 +122,6 @@ Goes through the linked list and calls the parent function for each node (cmd) o
 int	execute_and_pipe(t_data *data)
 {
 	t_cmd	*cur_cmd;
-	int		status;
-	int		exit_status;
 
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
@@ -117,24 +136,21 @@ int	execute_and_pipe(t_data *data)
 		while (cur_cmd != NULL)
 		{
 			if (parent(data, cur_cmd) != 0)
-				return (EXIT_FAILURE);
+			{
+				if (wait_for_the_kids(data, cur_cmd));
+				data->error_msg = ft_strdup("Fork failed\n");
+				// reset stdin & stdout, maybe a separate command for these
+			}
 			cur_cmd = cur_cmd->next;
 		}
 	}
-	cur_cmd = data->cmd_list;
-	while (cur_cmd != NULL)
-	{
-		if (waitpid(cur_cmd->pid, &status, 0) == -1)
-			fail(1, "Waitpid failed", data);
-		if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
-		cur_cmd = cur_cmd->next;
-	}
+	if (wait_for_the_kids(data, cur_cmd))
+		return (ERROR);
 	dup2(data->o_stdin, STDIN_FILENO);
 	dup2(data->o_stdout, STDOUT_FILENO);
 	close(data->o_stdin);
 	close(data->o_stdout);
-	return (exit_status);
+	return (SUCCESS);
 }
 
 
