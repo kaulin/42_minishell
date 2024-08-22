@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/17 12:53:31 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 12:38:27 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ Situations
 		- If they all exist we use the last one
 		- If one of them doesn't exist we give error message "bash: not: No such file or directory"
 	- We have heredoc but no infile//we read from terminal
-	- We have heredoc and infile. This might be a syntax error and we do not need to handle it?
+	- We have heredoc and infile. We handle heredoc first and then the infiles
+	- We have several heredocs and/or infiles we handle heredocs first from left to right and then the infiles
 	OUT
 	- We have outfile (redirection)
 	- We have serveral outfiles
@@ -89,9 +90,7 @@ static void	input_redirection(t_cmd *cur_cmd, t_data *data)
 	}
 	else if (cur_file->flag && !cur_file->next->file_str)//heredoc flag without infile we read from terminal. Where do we save the input?
 		get_input(cur_cmd, data);
-//saattaa olla useampi heredoc ja infile
-//	else if (cur_cmd->heredoc_flag && cur_cmd->infile)
-//		fail(1, "This shell does not support combining < and << in the same command", data);
+	
 }
 
 void	output_redirection(t_cmd *cur_cmd, t_data *data)
