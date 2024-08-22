@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:49:13 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:24:01 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@ Displays the current working directory path.
  // PATH_MAX = Maximum number of bytes to store a pathname, including the terminating '\0'. From limits.h
 */
 
-int	pwd_builtin(char **cmds)
+int	pwd_builtin(t_data *data, char **cmds)
 {
 	char	*cwd;
 	char	buffer[PATH_MAX];
 
 	if (cmds[1])
 	{
-		ft_putstr_fd("minishell: pwd: ", STDERR);
-		ft_putstr_fd(cmds[1], STDERR);
-		ft_putendl_fd(": invalid option", STDERR);
+		data->error_msg = ft_strdup("minishell: pwd: invalid option");
 		return (ERROR);
 	}
 	cwd = getcwd(buffer, PATH_MAX);

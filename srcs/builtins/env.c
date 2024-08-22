@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:45:39 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:21:20 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ int	env_builtin(t_data *data, char **cmds)//this needs to print only the variabl
 	len = 0;
 	if (cmds[1])//we could transfer the argument count checks to the check builtin function?
 	{
-		ft_putendl_fd("minishell: env: too many arguments", STDERR);
+		data->error_msg = ft_strdup("minishell: env: too many arguments");
 		return (ERROR);
 	}
 	if (!data->envp)
 	{
-		ft_putendl_fd("Error, envp not set", STDERR);//error message? Do we need to do something if envp is unset?
+		data->error_msg = ft_strdup("Error, envp not set");//error message? Do we need to do something if envp is unset?
 		return (ERROR);
 	}
 	while (data->envp[i] != NULL)
