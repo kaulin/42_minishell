@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:44:05 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:24:16 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	execute_builtin(t_data *data, char **cmds)
 	if (ft_strncmp("export", cmds[0], 7) == 0)
 		return (export_builtin(data, cmds));
 	if (ft_strncmp("pwd", cmds[0], 4) == 0)
-		return (pwd_builtin(cmds));
+		return (pwd_builtin(data, cmds));
 	if (ft_strncmp("unset", cmds[0], 6) == 0)
 		return (unset_builtin(data, cmds));
 	return (SUCCESS);
