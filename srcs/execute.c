@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 11:02:42 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 13:30:25 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ Waits for the children to finish and sets the pipeline for the next command
 static int	parent(t_data *data, t_cmd *cur_cmd)
 {
 	int		fd[2];
-	int		status;
 
 	if (pipe(fd) == -1) 
 		fail(666, "Pipe failed", data);
@@ -86,10 +85,6 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
 	close(fd[1]);
-	if (waitpid(cur_cmd->pid, &status, 0) == -1)
-		fail(1, "Waitpid failed", data);
-	if (WIFEXITED(status))
-		data->status = WEXITSTATUS(status);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
@@ -106,6 +101,8 @@ Goes through the linked list and calls the parent function for each node (cmd) o
 int	execute_and_pipe(t_data *data)
 {
 	t_cmd	*cur_cmd;
+	int		status;
+	int		exit_status;
 
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
@@ -124,11 +121,20 @@ int	execute_and_pipe(t_data *data)
 			cur_cmd = cur_cmd->next;
 		}
 	}
+	cur_cmd = data->cmd_list;
+	while (cur_cmd != NULL)
+	{
+		if (waitpid(cur_cmd->pid, &status, 0) == -1)
+			fail(1, "Waitpid failed", data);
+		if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
+		cur_cmd = cur_cmd->next;
+	}
 	dup2(data->o_stdin, STDIN_FILENO);
 	dup2(data->o_stdout, STDOUT_FILENO);
 	close(data->o_stdin);
 	close(data->o_stdout);
-	return (0);
+	return (exit_status);
 }
 
 
