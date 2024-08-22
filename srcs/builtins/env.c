@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/18 14:10:00 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:45:39 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@ int	arrange(char **copy, int i, int j)
 
 	temp = strdup(copy[i]);
 	if (temp == NULL)
-		return (EXIT_FAILURE);
+		return (ERROR);
 	copy[i] = strdup(copy[j]);
 	if (copy[i] == NULL)
 	{
 		free(temp);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	copy[j] = strdup(temp);
 	if (copy[j] == NULL)
 	{
 		free(temp);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	free(temp);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	env_in_order(t_data *data)
@@ -62,7 +62,7 @@ int	env_in_order(t_data *data)
 	i = 0;
 	copy = copy_envp(data, data->envp);
 	if (!copy)
-		return (EXIT_FAILURE);
+		return (ERROR);
 	while (i < data->envp_count - 1)
 	{
 		j = i + 1;
@@ -72,7 +72,7 @@ int	env_in_order(t_data *data)
 				if (arrange(copy, i, j) == 1)
 				{
 					free_copy(copy);
-					return (EXIT_FAILURE);
+					return (ERROR);
 				}
 			j++;
 		}
@@ -80,7 +80,7 @@ int	env_in_order(t_data *data)
 		i++;
 	}
 	free_copy(copy);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	env_builtin(t_data *data, char **cmds)//this needs to print only the variables that have values(=)
@@ -93,12 +93,12 @@ int	env_builtin(t_data *data, char **cmds)//this needs to print only the variabl
 	if (cmds[1])//we could transfer the argument count checks to the check builtin function?
 	{
 		ft_putendl_fd("minishell: env: too many arguments", STDERR);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	if (!data->envp)
 	{
 		ft_putendl_fd("Error, envp not set", STDERR);//error message? Do we need to do something if envp is unset?
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	while (data->envp[i] != NULL)
 	{
@@ -109,5 +109,5 @@ int	env_builtin(t_data *data, char **cmds)//this needs to print only the variabl
 		i++;
 		len = 0;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
