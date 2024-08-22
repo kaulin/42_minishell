@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 14:26:06 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:31:25 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,10 @@ int	execute_and_pipe(t_data *data)
 		{
 			if (parent(data, cur_cmd) != 0)
 			{
-				if (wait_for_the_kids(data, cur_cmd));
-				data->error_msg = ft_strdup("Fork failed\n");
+				if (!wait_for_the_kids(data, cur_cmd))
+					data->error_msg = ft_strdup("Fork failed\n");
 				// reset stdin & stdout, maybe a separate command for these
+				return (ERROR);
 			}
 			cur_cmd = cur_cmd->next;
 		}
