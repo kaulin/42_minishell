@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:30:25 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 13:38:51 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	execute_and_pipe(t_data *data)
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		//check_redirection(data, cur_cmd);
-		execute_builtin(data, cur_cmd->cmd_arr);
+		return (execute_builtin(data, cur_cmd->cmd_arr));
 	}
 	else 
 	{	
