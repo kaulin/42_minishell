@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:08:32 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:49:38 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	unset(t_data *data, char *variable)
 		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	unset_builtin(t_data *data, char **cmds)
@@ -52,7 +52,7 @@ int	unset_builtin(t_data *data, char **cmds)
 	flag = 0;
 	cmds++;
 	if (!*cmds)
-		return (EXIT_SUCCESS);
+		return (SUCCESS);
 	while (*cmds != NULL)
 	{
 		while (data->envp[i] && ft_strncmp(*cmds, data->envp[i], \
@@ -66,6 +66,6 @@ int	unset_builtin(t_data *data, char **cmds)
 		cmds++;
 	}
 	if (flag != 0)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (ERROR);
+	return (SUCCESS);
 }

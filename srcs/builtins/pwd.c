@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:55:53 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:49:13 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	pwd_builtin(char **cmds)
 		ft_putstr_fd("minishell: pwd: ", STDERR);
 		ft_putstr_fd(cmds[1], STDERR);
 		ft_putendl_fd(": invalid option", STDERR);
-		return (EXIT_FAILURE);
+		return (ERROR);
 	}
 	cwd = getcwd(buffer, PATH_MAX);
 	if (cwd)
 	{
 		printf("%s\n", cwd);
-		return (EXIT_SUCCESS);
+		return (SUCCESS);
 	}
-	return (EXIT_FAILURE);
+	return (ERROR);
 }

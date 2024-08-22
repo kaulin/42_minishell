@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/07 18:52:32 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:48:49 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	set_variable(t_data *data, char *cmd)
 		i++;
 	copy = (char **)malloc((i + 2) * sizeof(char *));
 	if (!copy)
-		return (EXIT_FAILURE);
+		return (ERROR);
 	i = 0;
 	while (data->envp[i]) //copy the envp until the end and then add the new variable
 	{
@@ -40,11 +40,11 @@ int	set_variable(t_data *data, char *cmd)
 	}
 	copy[i] = (char *)malloc(ft_strlen(cmd) + 1); //allocate the new variable
 	if (!copy[i])
-		return (EXIT_FAILURE);
+		return (ERROR);
 	copy[i] = cmd;
 	copy[++i] = NULL;
 	data->envp = copy;
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	check_key(t_data *data, char *cmd) //what if we give this one string
@@ -61,14 +61,14 @@ int	check_key(t_data *data, char *cmd) //what if we give this one string
 		if (ft_strncmp(data->envp[i], cmd, len) == 0 && (data->envp[i])[len] == '=')
 		{
 			if (cmd[len] == '\0') //if there is no value we return
-				return (EXIT_SUCCESS);
+				return (SUCCESS);
 			data->envp[i] = cmd; //if there is a match and a value, we replace the old string with the new one. No need to free anything?
-			return (EXIT_SUCCESS);
+			return (SUCCESS);
 		}
 		i++;
 	}
 	set_variable(data, cmd); //if we get to the end we need to allocate for a new variable and set it
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	export_builtin(t_data *data, char **cmds)
@@ -83,5 +83,5 @@ int	export_builtin(t_data *data, char **cmds)
 		check_key(data, cmds[i]); //these have been allocated already
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
