@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 15:26:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:47:35 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,27 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
 	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
 }
+
 /*
 Child process handles input and output redirection as well and calls do_cmd to actually 
-execute execve.
-*/
+execute execve.*/
+
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	int	err_code;
 
-	if (cur_cmd == data->cmd_list && dup2(fd[0], STDIN_FILENO) == -1)// If this is not the first command, we need to read from the pipe
-	{
-		close(fd[0]);
-		close(fd[1]);
-		fail(1, "Dup2 failed", data);
-	}
-	if (cur_cmd->next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// If this is not the last command, we need to write to the pipe
-	{
-		close(fd[0]);
-		close(fd[1]);
-		fail(1, "Dup2 failed", data);
-	}
 	close(fd[0]);
+	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command
+		fail(1, "Dup2 failed", NULL);
 	close(fd[1]);
 	//check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
-		execute_builtin(data, cur_cmd->cmd_arr);
+		execute_builtin(data, cur_cmd->cmd_arr);//eikö tämä palaa
 	else
 	{
 		err_code = do_cmd(data, cur_cmd);
-		if (err_code == 1)//if do_cmd fails
-			fail(42, "MSG", data);
+		if (err_code == 1)
+			fail(err_code, "MSG", data);
 	}
 }
 
@@ -89,28 +80,28 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
 	close(fd[1]);
-	if (dup2(fd[0], STDIN_FILENO) == -1)
+	if (dup2(fd[0], STDIN_FILENO) == -1)//This fails if we pipe a builtin
 	{
 		close(fd[0]);
-		data->error_msg = ft_strdup("Dup2 failed");
+		data->error_msg = ft_strdup("Dup2 failed1");
 		return (ERROR);
 	}
 	close(fd[0]);
-	return (SUCCESS);
+	return (0);
 }
+
 
 int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 {
 	t_cmd	*cur_cmd;
 	int		status;
 
-
 	cur_cmd = data->cmd_list;
 	while (cur_cmd != failed_cmd)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
-			data->error_msg = ft_strdup("Waitpid failed\n");
+			data->error_msg = ft_strdup("Waitpid failed here\n");
 			return (ERROR);
 		}
 		if (WIFEXITED(status))
@@ -123,7 +114,6 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 /*
 Goes through the linked list and calls the parent function for each node (cmd) of the list. Then waits for all the children to finish
 */
-
 //add find_path to this function
 
 int	execute_and_pipe(t_data *data)
@@ -139,7 +129,7 @@ int	execute_and_pipe(t_data *data)
 		return (execute_builtin(data, cur_cmd->cmd_arr));
 	}
 	else 
-	{	
+	{
 		while (cur_cmd != NULL)
 		{
 			if (parent(data, cur_cmd) != 0)
@@ -149,7 +139,7 @@ int	execute_and_pipe(t_data *data)
 				dup2(data->o_stdout, STDOUT_FILENO);
 				close(data->o_stdin);
 				close(data->o_stdout);
-				// reset stdin & stdout, maybe a separate command for these
+				//reset stdin & stdout, maybe a separate command for these
 				return (ERROR);
 			}
 			cur_cmd = cur_cmd->next;
