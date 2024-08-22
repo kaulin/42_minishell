@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 10:56:12 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 11:02:42 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	}
 }
 
+/*
+Makes the pipe and forks the children. 
+Waits for the children to finish and sets the pipeline for the next command
+*/
 static int	parent(t_data *data, t_cmd *cur_cmd)
 {
 	int		fd[2];
@@ -106,14 +110,14 @@ int	execute_and_pipe(t_data *data)
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
 	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
-	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)//The only case in which we do not fork is if there is only one command and it's a builtin
+	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		//check_redirection(data, cur_cmd);
 		execute_builtin(data, cur_cmd->cmd_arr);
 	}
 	else 
 	{	
-		while (cur_cmd != NULL)//we call the parent as many times a there are commands
+		while (cur_cmd != NULL)
 		{
 			if (parent(data, cur_cmd) != 0)
 				return (EXIT_FAILURE);
