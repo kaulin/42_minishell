@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:32:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/17 16:20:01 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:03:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 Function waits for any previous children that are still running, if the parent 
 fails after the first fork.
-*/
 static void	reap_the_children(int exit_code, t_data *data)
 {
 	t_cmd	*cmd;
@@ -36,6 +35,7 @@ static void	reap_the_children(int exit_code, t_data *data)
 		exit_code = 1;
 	}
 }
+*/
 
 /*
 Checks for specific exit code & message combinations to output 
@@ -78,7 +78,7 @@ struct and exits with appropriate exit code.
 */
 void	fail(int exit_code, char *msg, t_data *data)
 {
-	reap_the_children(exit_code, data);
+	//reap_the_children(exit_code, data);
 	if (exit_code == 127 && ft_strncmp(msg, ".", 2) == 0)
 	{
 		ft_putstr_fd(\
