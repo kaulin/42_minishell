@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:27:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:48:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;//Ignore arguments
 	(void)argv;//Ignore arguments
 	if (init_data(&data, envp))
+	{
+		printf("minishell: error setting up shell environment");
 		return (ERROR);
+	}
 	signal(SIGINT, sigint_handler); //Handle Ctr+C
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
 	while (1) 
@@ -40,14 +43,9 @@ int main(int argc, char **argv, char **envp)
 		if (parse(data.input, &data) || execute_and_pipe(&data))
 		{
 			if (!data.error_msg)
-			{
 				printf("Memory allocation error\n");
-				clean_data(&data);
-				return (EXIT_FAILURE);
-			}
-			printf("%s\n", data.error_msg);
-			free(data.error_msg);
-			data.error_msg = NULL;
+			else
+				printf("%s\n", data.error_msg);
 		}
 	}
 	clean_data(&data);
