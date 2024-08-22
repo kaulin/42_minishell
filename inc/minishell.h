@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:31:31 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/22 14:24:35 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	sigint_handler(int signal);
 int		check_if_builtin(char **cmds);
 int		execute_builtin(t_data *data, char **cmds);
 int		cd_builtin(t_data *data, char **cmds);
-int 	pwd_builtin(char **cmds);
+int 	pwd_builtin(t_data *data, char **cmds);
 int		echo_builtin(char **cmd);
 int		env_builtin(t_data *data, char **cmds);
 int		env_in_order(t_data *data);
