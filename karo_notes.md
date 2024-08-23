@@ -13,3 +13,7 @@
 - Handle heredoc by making another pipe where the input is written and where it can be read from
 - Check if PATH_MAX still works in linux as it should
 - Make error handling uniform using fail() everywhere
+- If we have a builtin and a normal command dup2 in parent fails and the command goes though but only after the program has already asked for another input. Why is this? Is it because the cmd2 keeps waiting for more input from builtin. Eg.
+Minishell > echo test | wc
+Dup2 failed1
+Minishell >       1       2      21
