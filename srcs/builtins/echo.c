@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:08:14 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:59:17 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_cmd(char **cmds, int flag)//this prints the rest of the input
 	{
 		while (*cmds)
 		{
-			printf("%s", *cmds);
+			printf("%s ", *cmds);
 			cmds++;
 		}
 	}
@@ -65,5 +65,5 @@ int	echo_builtin(char **cmd)//Argument form must be desided. Example here is com
 	if (cmd && cmd[1])
 		flag = check_flag(cmd[1]);//if there is a valid -n-flag we print with \n else without
 	print_cmd(cmd, flag);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
