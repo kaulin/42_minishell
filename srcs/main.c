@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 14:48:13 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:24:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int main(int argc, char **argv, char **envp)
 	}
 	clean_data(&data);
 	rl_clear_history();
+	printf("exit\n");
 	return 0;
 }
