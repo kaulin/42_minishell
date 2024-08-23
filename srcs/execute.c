@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 10:22:13 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/23 15:56:43 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,29 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
 	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
 }
-
 /*
 Child process handles input and output redirection as well and calls do_cmd to actually 
 execute execve.*/
-
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	int	err_code;
 
 	close(fd[0]);
-	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command
-		fail(1, "Dup2 failed", NULL);
+	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
+			fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	//check_redirection(data, cur_cmd);// we do not need to give this the pipe, since this only handles the redirections inside the command. Should this be after builtin check?
+	//check_redirection(data, cur_cmd);
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		execute_builtin(data, cur_cmd->cmd_arr);
 		exit (0);
 	}
+	else
+	{	
 		err_code = do_cmd(data, cur_cmd);
-		if (err_code == 1)
-			fail(err_code, "MSG", data);
+		if (err_code != 0)
+			fail(err_code, "Error", data);
+	}
 }
 
 /*
@@ -66,7 +67,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 	{
-		data->error_msg = ft_strdup("Pipe failed");
+		data->error_msg = ft_strdup("Pipe failed\n");
 		return (ERROR);
 	}
 	cur_cmd->pid = fork();
@@ -74,7 +75,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		data->error_msg = ft_strdup("Fork failed");
+		data->error_msg = ft_strdup("Fork failed\n");
 		return (ERROR);
 	}
 	if (cur_cmd->pid == 0)
@@ -83,7 +84,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
-		data->error_msg = ft_strdup("Dup2 failed");
+		data->error_msg = ft_strdup("Dup2 failed\n");
 		return (ERROR);
 	}
 	close(fd[0]);
@@ -126,7 +127,8 @@ int	execute_and_pipe(t_data *data)
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		//check_redirection(data, cur_cmd);
-		return (execute_builtin(data, cur_cmd->cmd_arr));
+		execute_builtin(data, cur_cmd->cmd_arr);
+		return (SUCCESS);
 	}
 	else 
 	{
