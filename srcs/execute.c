@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 15:56:43 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:56:06 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
 	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
 }
+
 /*
 Child process handles input and output redirection as well and calls do_cmd to actually 
 execute execve.*/
@@ -43,7 +44,9 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
 			fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	//check_redirection(data, cur_cmd);
+	if (cur_cmd->outfiles != NULL)
+		close (STDOUT_FILENO);
+	check_redirection(data, cur_cmd);
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		execute_builtin(data, cur_cmd->cmd_arr);
@@ -91,7 +94,6 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	return (0);
 }
 
-
 int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 {
 	t_cmd	*cur_cmd;
@@ -126,9 +128,10 @@ int	execute_and_pipe(t_data *data)
 	data->o_stdout = dup(STDOUT_FILENO);//where should these be, Make an extra function?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		//check_redirection(data, cur_cmd);
-		execute_builtin(data, cur_cmd->cmd_arr);
-		return (SUCCESS);
+		close(STDOUT_FILENO);
+		check_redirection(data, cur_cmd);//doesn't work with output redirection
+		execute_builtin(data, cur_cmd->cmd_arr);//should this happen in the redirection function
+		close(STDIN_FILENO);
 	}
 	else 
 	{
