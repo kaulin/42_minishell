@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 14:24:35 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/23 11:57:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	parse_paths(t_data *data);
 char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
-void	check_redirection(t_data *data, t_cmd *cur_cmd);
+int	check_redirection(t_data *data, t_cmd *cur_cmd);
 
 //execute.c
 
