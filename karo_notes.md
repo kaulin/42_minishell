@@ -7,3 +7,5 @@
 - Handle heredoc by making another pipe where the input is written and where it can be read from
 - Check if PATH_MAX still works in linux as it should
 - Correct error handling and make it uniform.
+- Echo: is there a space after the last word to be shown
+- Adding a new variable with export doesn't work
