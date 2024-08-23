@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 16:56:06 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:11:40 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ int	execute_and_pipe(t_data *data)
 	data->o_stdout = dup(STDOUT_FILENO);//where should these be, Make an extra function?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		close(STDOUT_FILENO);
+		if (cur_cmd->outfiles != NULL)
+			close (STDOUT_FILENO);
 		check_redirection(data, cur_cmd);//doesn't work with output redirection
 		execute_builtin(data, cur_cmd->cmd_arr);//should this happen in the redirection function
 		close(STDIN_FILENO);
