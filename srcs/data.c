@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/26 13:08:38 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:57:06 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	reset_data(t_data *data)
 	data->input = NULL;
 	data->error_msg = NULL;
 	data->cmd_list = NULL;
+	data->cmd_count = 0;
 
 }
 

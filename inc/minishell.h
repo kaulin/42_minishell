@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 13:02:04 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:56:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_data
 	int				o_stdin;
 	int				o_stdout;
 	struct s_cmd	*cmd_list;
+	int				cmd_count;
 	int				status;
 	char			*error_msg;
 }	t_data;
@@ -49,8 +50,7 @@ typedef struct s_data
 typedef struct s_cmd
 {
 	char			*path; // path to command
-	char			*cmd_str; // command name (can be full path), flags and arguments
-	char			**cmd_arr; // cmd_str broken into array with split
+	char			**cmd_arr; // 0 term list of cmd and arguments
 	struct s_file	*infiles; // infiles for specific cmd, NULL if not set
 	struct s_file	*outfiles; // outfiles for specific cmd, NULL if not set
 	int				in_fd;
