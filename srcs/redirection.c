@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 19:22:41 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/26 19:36:52 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Situations
 		- If they all exist we use the last one
 		- If one of them doesn't exist we give error message "bash: not: No such file or directory"
 	- We have heredoc but no infile//we read from terminal
-	- We have heredoc and infile. We handle heredoc first and then the infiles
+	- We have heredoc and infile. We handle heredoc first and then the infiles. Does this change according to the order of the things?
 	- We have several heredocs and/or infiles we handle heredocs first from left to right and then the infiles
 	OUT
 	- We have outfile (redirection)
@@ -77,7 +77,7 @@ static int	get_input(t_cmd *cur_cmd, t_data *data)
 	cur_cmd->in_fd = fd[0];
 	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
 	{
-		close(cur_cmd->in_fd); // Close the read end in case of an error
+		close(cur_cmd->in_fd);
 		return (data->error_msg = ft_strdup("dup2 failed\n"), ERROR);
 	}
 	close(cur_cmd->in_fd);
@@ -135,9 +135,11 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	return (SUCCESS);
 }
 
-//Checks if there is a redirection and if it is in input or output.
+/*
+Checks if there is a redirection and if it is in input or output.
+*/
 
-int	check_redirection(t_data *data, t_cmd *cur_cmd)//what if this fails at some point
+int	check_redirection(t_data *data, t_cmd *cur_cmd)
 {
 	if (check_if_builtin(cur_cmd->cmd_arr) == 0 && cur_cmd->infiles)
 		input_redirection(cur_cmd, data);
