@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 14:36:56 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:00:09 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,28 +117,23 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 	
 	cur_file = cur_cmd->outfiles;
-	if (!cur_file->flag && cur_file->file_str)
+	if  (cur_file->flag && !cur_file->file_str)
+		fail(1, "Error, append no file\n", data);
+	if (cur_file->file_str)
 	{
-		while (cur_file->next)
+		while (cur_file->next)//there is something wrong with this. Is cur_cmd->outfiles a linked list that ends in NULL?
 		{
 			open(cur_file->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			cur_file = cur_file->next;
 		}
-		cur_cmd->out_fd = open(cur_file->file_str,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cur_file->flag)
+			cur_cmd->out_fd = open(cur_file->file_str,  O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else
+			cur_cmd->out_fd = open(cur_file->file_str,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 			return (data->error_msg = ft_strdup("Error opening file"), ERROR);
 		close(cur_cmd->out_fd);
 	}
-	/*
-	else if (cur_file->flag && cur_file->file_str)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
-	{
-		cur_cmd->out_fd = open(cur_file->file_str, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
-			fail(1, "Redirection failed\n", data);
-		close(cur_cmd->out_fd);
-	}
-	else if  (cur_file->flag && !cur_file->file_str)//if there is a append flag but no outfile we have an error
-		fail(1, "Error, append no file\n", data);*/
 	return (SUCCESS);
 }
 
