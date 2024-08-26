@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 11:57:22 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:02:04 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,9 @@ int	check_redirection(t_data *data, t_cmd *cur_cmd);
 //execute.c
 
 int	execute_and_pipe(t_data *data);
+
+//exec_utils.c
+void	reset_io(t_data *data);
 
 // utils.c
 int		join_print_free(char *str1, char *str2, int fd);

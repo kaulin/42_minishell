@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 11:09:25 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/26 13:01:09 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,6 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 		cur_cmd = cur_cmd->next;
 	}
 	return (SUCCESS);
-}
-
-/*
-Resets the original in/out filedescriptors
-*/
-static void	reset_io(t_data *data)//make another util file for this?
-{
-	if (dup2(data->o_stdin, STDIN_FILENO) == -1 || dup2(data->o_stdout, STDOUT_FILENO) == -1)
-		data->error_msg = ft_strdup("Dup2 failed\n");
-	close(data->o_stdin);
-	close(data->o_stdout);
 }
 
 /*
