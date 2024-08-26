@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 14:56:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:30:00 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int 	pwd_builtin(t_data *data, char **cmds);
 int		echo_builtin(char **cmd);
 int		env_builtin(t_data *data, char **cmds);
 int		env_in_order(t_data *data);
+int		exit_builtin(t_data *data);
 int		unset_builtin(t_data *data, char **cmds);
 int		export_builtin(t_data *data, char **cmds);
 int		check_key(t_data *data, char *cmd);
