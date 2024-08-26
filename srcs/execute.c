@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 17:11:40 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 10:16:56 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,14 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	return (SUCCESS);
 }
 
+static void	reset_io(t_data *data)
+{
+	if (dup2(data->o_stdin, STDIN_FILENO) == -1 || dup2(data->o_stdout, STDOUT_FILENO) == -1)
+		data->error_msg = ft_strdup("Dup2 failed\n");
+	close(data->o_stdin);
+	close(data->o_stdout);
+}
+
 /*
 Goes through the linked list and calls the parent function for each node (cmd) of the list. Then waits for all the children to finish
 */
@@ -141,11 +149,7 @@ int	execute_and_pipe(t_data *data)
 			if (parent(data, cur_cmd) != 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
-				dup2(data->o_stdin, STDIN_FILENO);
-				dup2(data->o_stdout, STDOUT_FILENO);
-				close(data->o_stdin);
-				close(data->o_stdout);
-				//reset stdin & stdout, maybe a separate command for these
+				reset_io[data];
 				return (ERROR);
 			}
 			cur_cmd = cur_cmd->next;
@@ -153,10 +157,7 @@ int	execute_and_pipe(t_data *data)
 	}
 	if (wait_for_the_kids(data, cur_cmd))
 		return (ERROR);
-	dup2(data->o_stdin, STDIN_FILENO);
-	dup2(data->o_stdout, STDOUT_FILENO);
-	close(data->o_stdin);
-	close(data->o_stdout);
+	reset_io(data);
 	return (SUCCESS);
 }
 
