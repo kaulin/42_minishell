@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 13:01:09 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:35:32 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
 		fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	if (cur_cmd->outfiles != NULL)
-		close (STDOUT_FILENO);
 	check_redirection(data, cur_cmd);
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
@@ -78,8 +76,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		data->error_msg = ft_strdup("Fork failed\n");
-		return (ERROR);
+		return (data->error_msg = ft_strdup("Fork failed\n"), ERROR);
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
@@ -87,11 +84,10 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
-		data->error_msg = ft_strdup("Dup2 failed\n");
-		return (ERROR);
+		return (data->error_msg = ft_strdup("Dup2 failed\n"), ERROR);
 	}
 	close(fd[0]);
-	return (0);
+	return (SUCCESS);
 }
 
 int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
@@ -124,17 +120,10 @@ int	execute_and_pipe(t_data *data)
 	t_cmd	*cur_cmd;
 
 	cur_cmd = data->cmd_list;
-	data->o_stdin = dup(STDIN_FILENO);
-	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		if (cur_cmd->outfiles != NULL)
-		{
-			close (STDOUT_FILENO);//is this right
-			check_redirection(data, cur_cmd);//doesn't work with output redirection 
-		}
-		execute_builtin(data, cur_cmd->cmd_arr);//should this happen in the redirection function
-		close(STDIN_FILENO);
+		check_redirection(data, cur_cmd);
+		execute_builtin(data, cur_cmd->cmd_arr);
 	}
 	else 
 	{

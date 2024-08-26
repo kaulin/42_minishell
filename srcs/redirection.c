@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 16:50:15 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:36:56 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,20 +87,17 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 	
 	cur_file = cur_cmd->infiles;
-	if (!cur_file->flag && cur_file->file_str)//infile redirection without heredoc, we open the infile to stdin
+	if (!cur_file->flag && cur_file->file_str)
 	{
-		while (cur_file->next)//We check that the files exists.
+		while (cur_file->next)
 		{
-			if (access(cur_file->file_str, O_RDONLY) == -1)
-			{
-				data->error_msg = ft_strdup("No such file or directory\n");
-				return (ERROR);
-			}
+			if (access(cur_file->file_str, F_OK) == -1)
+				fail(1, cur_file->file_str, NULL);
 			cur_file = cur_file->next;
 		}
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
-		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)//we replace the stdin-fd with the file-fd. Can we check these in the same sentence?
-			data->error_msg = ft_strdup("Error opening file");
+		if (cur_cmd->in_fd == -1 || dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
+			return (data->error_msg = ft_strdup("Error opening file"), ERROR);
 		close(cur_cmd->in_fd);
 	}
 	/*
@@ -120,22 +117,19 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 	
 	cur_file = cur_cmd->outfiles;
-	if (!cur_file->flag && cur_file->file_str)//if there is outfile but no append flag. If we have several outfiles we empty their content and only use the last one
+	if (!cur_file->flag && cur_file->file_str)
 	{
-		while (cur_file->next)//We check that the files exists. And create them if not. We also empty their contents with O_TRUNC. THIS NEEDS TO BE MOVED?
+		while (cur_file->next)
 		{
 			open(cur_file->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			cur_file = cur_file->next;
 		}
-		cur_cmd->out_fd = open(cur_file->file_str, O_WRONLY | O_CREAT | O_RDWR, 0644);
-		close(cur_cmd->out_fd);
+		cur_cmd->out_fd = open(cur_file->file_str,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (cur_cmd->out_fd == -1 || dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
-		{
-			data->error_msg = ft_strdup("Error opening file");
-			return (ERROR);
-		}
-		
-	}/*
+			return (data->error_msg = ft_strdup("Error opening file"), ERROR);
+		close(cur_cmd->out_fd);
+	}
+	/*
 	else if (cur_file->flag && cur_file->file_str)//if there is append flag and outfile or name of outfile? we append into the end of the outfile
 	{
 		cur_cmd->out_fd = open(cur_file->file_str, O_APPEND | O_CREAT | O_RDWR, 0644);
