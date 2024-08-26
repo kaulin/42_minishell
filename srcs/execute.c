@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 10:16:56 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/26 11:09:25 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 
 	close(fd[0]);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
-			fail(1, "Dup2 failed\n", NULL);
+		fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
 	if (cur_cmd->outfiles != NULL)
 		close (STDOUT_FILENO);
@@ -114,7 +114,10 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	return (SUCCESS);
 }
 
-static void	reset_io(t_data *data)
+/*
+Resets the original in/out filedescriptors
+*/
+static void	reset_io(t_data *data)//make another util file for this?
 {
 	if (dup2(data->o_stdin, STDIN_FILENO) == -1 || dup2(data->o_stdout, STDOUT_FILENO) == -1)
 		data->error_msg = ft_strdup("Dup2 failed\n");
@@ -133,12 +136,14 @@ int	execute_and_pipe(t_data *data)
 
 	cur_cmd = data->cmd_list;
 	data->o_stdin = dup(STDIN_FILENO);
-	data->o_stdout = dup(STDOUT_FILENO);//where should these be, Make an extra function?
+	data->o_stdout = dup(STDOUT_FILENO);//where should these be?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		if (cur_cmd->outfiles != NULL)
-			close (STDOUT_FILENO);
-		check_redirection(data, cur_cmd);//doesn't work with output redirection
+		{
+			close (STDOUT_FILENO);//is this right
+			check_redirection(data, cur_cmd);//doesn't work with output redirection 
+		}
 		execute_builtin(data, cur_cmd->cmd_arr);//should this happen in the redirection function
 		close(STDIN_FILENO);
 	}
@@ -149,7 +154,7 @@ int	execute_and_pipe(t_data *data)
 			if (parent(data, cur_cmd) != 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
-				reset_io[data];
+				reset_io(data);
 				return (ERROR);
 			}
 			cur_cmd = cur_cmd->next;
