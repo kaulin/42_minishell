@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:48:49 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/26 20:15:09 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,43 +31,45 @@ int	set_variable(t_data *data, char *cmd)
 		i++;
 	copy = (char **)malloc((i + 2) * sizeof(char *));
 	if (!copy)
-		return (ERROR);
+		return (ERROR);//should this be a fail?
 	i = 0;
-	while (data->envp[i]) //copy the envp until the end and then add the new variable
+	while (data->envp[i])
 	{
 		copy[i] = data->envp[i];
 		i++;
 	}
-	copy[i] = (char *)malloc(ft_strlen(cmd) + 1); //allocate the new variable
+	copy[i] = (char *)malloc(ft_strlen(cmd) + 1);
 	if (!copy[i])
-		return (ERROR);
-	copy[i] = cmd;
+		return (free(copy), ERROR);
+	copy[i] = ft_strdup(cmd);
 	copy[++i] = NULL;
+	free(data->envp);
 	data->envp = copy;
 	return (SUCCESS);
 }
 
-int	check_key(t_data *data, char *cmd) //what if we give this one string
+int	check_key(t_data *data, char *cmd)
 {
 	int		len;
 	int		i;
 
 	len = 0;
 	i = 0;
-	while (cmd[len] != '=' && cmd[len] != '\0') //get the length of the variable
+	while (cmd[len] != '=' && cmd[len] != '\0')
 		len++;
-	while (data->envp[i]) //go through the environmental variables
+	while (data->envp[i])
 	{
 		if (ft_strncmp(data->envp[i], cmd, len) == 0 && (data->envp[i])[len] == '=')
 		{
-			if (cmd[len] == '\0') //if there is no value we return
+			if (cmd[len] == '\0')
 				return (SUCCESS);
-			data->envp[i] = cmd; //if there is a match and a value, we replace the old string with the new one. No need to free anything?
+			free(data->envp[i]);
+			data->envp[i] = ft_strdup(cmd);
 			return (SUCCESS);
 		}
 		i++;
 	}
-	set_variable(data, cmd); //if we get to the end we need to allocate for a new variable and set it
+	set_variable(data, cmd);
 	return (SUCCESS);
 }
 
@@ -76,11 +78,11 @@ int	export_builtin(t_data *data, char **cmds)
 	int		i;
 
 	i = 1;
-	if (!cmds[i]) //If no names are supplied, a list of names of all variables is displayed in alphabetical order
+	if (!cmds[i])
 		return (env_in_order(data));
-	while (cmds[i]) //go through the arguments and check each one and set them, in case of error return EXIT_FAILURE
+	while (cmds[i])
 	{
-		check_key(data, cmds[i]); //these have been allocated already
+		check_key(data, cmds[i]);
 		i++;
 	}
 	return (SUCCESS);
