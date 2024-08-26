@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 19:00:09 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/26 19:22:41 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,17 @@ Lets the user insert lines of input, until a line that contains only the
 delimiter string. A forced EoF is caught and an error is printed to STDERROR. 
 Each line given is printed to the write end of the given pipe.
 */
-/*
-static int	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimiter
-{
-	char	*input;
-	int		fd[2];
-	char	*delim;
 
-	delim = cur_cmd->infiles->file_str;
-	if (pipe(fd) == -1)
-	{
-		data->error_msg = ft_strdup("Pipe failed\n");
-		return (ERROR);
-	}
+static void	read_input(int *fd, char *delim)
+{
+	char *input;
+	
 	while (1)
 	{
-		input = readline("> ");//Should we use this or get_new_line
+		input = readline("> ");
 		if (!input)
 		{
-			ft_putstr_fd("warning: here-document delimited by end-of-file\n", 2);
+			printf("warning: here-document delimited by end-of-file\n");
 			break ;
 		}
 		if (ft_strncmp(input, delim, ft_strlen(delim)) == 0 && \
@@ -70,18 +62,28 @@ static int	get_input(t_cmd *cur_cmd, t_data *data)//we need to find the delimite
 		ft_putstr_fd("\n", fd[1]);
 		free(input);
 	}
+}
+
+static int	get_input(t_cmd *cur_cmd, t_data *data)
+{
+	int		fd[2];
+	char	*delim;
+
+	delim = cur_cmd->infiles->file_str;
+	if (pipe(fd) == -1)
+		return (data->error_msg = ft_strdup("Pipe failed\n"), ERROR);
+	read_input(fd, delim);
 	close(fd[1]);
 	cur_cmd->in_fd = fd[0];
 	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
 	{
-		data->error_msg = ft_strdup("dup2 failed\n");
 		close(cur_cmd->in_fd); // Close the read end in case of an error
-		return (ERROR);
+		return (data->error_msg = ft_strdup("dup2 failed\n"), ERROR);
 	}
-	close(cur_cmd->out_fd);
+	close(cur_cmd->in_fd);
 	return (SUCCESS);
 }
-*/
+
 static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
 	t_file	*cur_file;
@@ -100,15 +102,11 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 			return (data->error_msg = ft_strdup("Error opening file"), ERROR);
 		close(cur_cmd->in_fd);
 	}
-	/*
-	else if (cur_file->flag && !cur_file->next->file_str)//heredoc flag without infile we read from terminal. Where do we save the input?
+	else if (cur_file->flag)
 	{
 		if (get_input(cur_cmd, data) != 0)
-		{
-			data->error_msg = ft_strdup("Error reading from heredoc\n");
-			return (ERROR);
-		}
-	}*/
+			return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
+	}
 	return (SUCCESS);
 }
 
