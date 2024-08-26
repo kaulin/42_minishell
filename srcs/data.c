@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/21 15:21:39 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:08:38 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	reset_data(t_data *data)
 		free(data->error_msg);
 	if (data->cmd_list)
 		cmd_clear(&data->cmd_list);
+	data->o_stdin = dup(STDIN_FILENO);
+	data->o_stdout = dup(STDOUT_FILENO);
 	data->input = NULL;
 	data->error_msg = NULL;
 	data->cmd_list = NULL;
