@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:07:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:21:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,32 @@ int	check_tokens(t_token *token, t_data *data)
 			&& token->next->type != TEXT_TOKEN) || (token->type == PIPE_TOKEN \
 			&& token->next->type == PIPE_TOKEN))
 			{
-				data->error_msg = ft_strdup("syntax error near unexpected newline token\n");
+				data->error_msg = ft_strdup("syntax error near unexpected token\n");
 				return (ERROR);
 			}
 		token = token->next;
 	}
+	return (SUCCESS);
 }
 
 
 int	parse(char *input, t_data *data)
 {
-	t_cmd		*cmd;
 	t_parser	*parser;
 
+	parser = NULL;
 	parser_init(parser);
 	if (check_quotes(input, data))
 		return (ERROR);
 	while (*input)
 	{
 		skip_whitespace(&input);
-		input = tokenize(input, &parser, data);
+		input = tokenize(input, parser, data);
 		if (!input)
 			return (parser_clean(parser, ERROR));
 		parser_reset(parser);
 	}
-	if (merge_tokens(parser->token_list) \
+	if (merge_tokens(&parser->token_list) \
 		|| check_tokens(parser->token_list, data) \
 		|| make_commands(parser, data))
 		return (parser_clean(parser, ERROR));

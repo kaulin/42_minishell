@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:14:21 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:22:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char	*tokenize(char *input, t_parser *parser, t_data *data)
 	else
 	{
 		while (*input && !is_quote_char(*input) && !is_whitespace(*input) \
-			&& *input != '|' || *input != '<' || *input != '>')
+			&& (*input != '|' || *input != '<' || *input != '>'))
 			input++;
 	}
 	parser->substring = ft_substr(parser->start, 0, input - parser->start);
