@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 14:47:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:54:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_cmd	*cmd_new(void)
 	if (!new_cmd)
 		return (NULL);
 	new_cmd->cmd_arr = NULL;
+	new_cmd->path = NULL;
 	new_cmd->infiles = NULL;
 	new_cmd->outfiles = NULL;
 	new_cmd->next = NULL;
