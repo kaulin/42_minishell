@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 19:36:52 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/27 13:07:57 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 		fail(1, "Error, append no file\n", data);
 	if (cur_file->file_str)
 	{
-		while (cur_file->next)//there is something wrong with this. Is cur_cmd->outfiles a linked list that ends in NULL?
+		while (cur_file->next)
 		{
 			open(cur_file->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			cur_file = cur_file->next;
@@ -141,7 +141,7 @@ Checks if there is a redirection and if it is in input or output.
 
 int	check_redirection(t_data *data, t_cmd *cur_cmd)
 {
-	if (check_if_builtin(cur_cmd->cmd_arr) == 0 && cur_cmd->infiles)
+	if (cur_cmd->infiles)
 		input_redirection(cur_cmd, data);
 	if (cur_cmd->outfiles)
 		output_redirection(cur_cmd, data);
