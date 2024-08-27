@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/26 14:45:01 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:59:15 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ int	is_pipe_token(t_token *token)
 	if (!ft_strncmp(token->str, "|", 2))
 		return (1);
 	return (0);
-}
-
-void	handle_special_char(char **input)
-{
-	char	*ptr;
-
-	ptr = *input;
-	if ((*ptr == '<' && *(ptr + 1) == '<') \
-		|| (*ptr == '>' && *(ptr + 1) == '>'))
-		ptr++;
-	ptr++;
-	*input = ptr;
 }
 
 /*

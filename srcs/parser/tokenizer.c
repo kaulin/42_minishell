@@ -6,12 +6,24 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:22:20 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:28:16 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "expander.h"
+
+static void	handle_special_char(char **input)
+{
+	char	*ptr;
+
+	ptr = *input;
+	ptr++;
+	if ((*ptr == '<' && *(ptr + 1) == '<') \
+		|| (*ptr == '>' && *(ptr + 1) == '>'))
+		ptr++;
+	*input = ptr;
+}
 
 static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
 {
@@ -80,7 +92,7 @@ int	make_commands(t_parser *parser, t_data *data)
 	while (cmd_num <= data->cmd_count)
 	{
 		cmd_node = cmd_new();
-		if (!cmd_node || place_tokens(cmd_node, parser->token_list, cmd_num))
+		if (!cmd_node)
 			return (ERROR);
 		if (place_tokens(cmd_node, parser->token_list, cmd_num))
 		{
@@ -108,7 +120,7 @@ char	*tokenize(char *input, t_parser *parser, t_data *data)
 	else
 	{
 		while (*input && !is_quote_char(*input) && !is_whitespace(*input) \
-			&& (*input != '|' || *input != '<' || *input != '>'))
+			&& *input != '|' && *input != '<' && *input != '>')
 			input++;
 	}
 	parser->substring = ft_substr(parser->start, 0, input - parser->start);
