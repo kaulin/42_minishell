@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 10:05:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:01:37 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,13 @@ int	cmd_print(t_cmd *cmd)
 	{
 		arg_i = 0;
 		printf("Command %d contains the following:\n", i);
-		while (cmd->cmd_arr[arg_i])
+		if (cmd->cmd_arr)
 		{
-			printf("Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
-			arg_i++;
+			while (cmd->cmd_arr && cmd->cmd_arr[arg_i])
+			{
+				printf("Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
+				arg_i++;
+			}
 		}
 		infile = cmd->infiles;
 		if (infile)

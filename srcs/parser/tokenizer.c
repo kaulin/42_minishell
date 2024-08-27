@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 10:48:58 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:55:59 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
 	int	i;
 
 	unused_tokens = token_count_unused(token_list, cmd_num);
+	if (unused_tokens == 0)
+	{
+		cmd->cmd_arr = NULL;
+		return (SUCCESS);
+	}
 	i = 0;
 	cmd->cmd_arr = ft_calloc((unused_tokens + 1), sizeof(char*));
 	if (!cmd->cmd_arr)
@@ -71,6 +76,8 @@ static int	place_tokens(t_cmd *cmd, t_token *token_list, int cmd_num)
 			this->next->placed_flag = 1;
 			this = this->next;
 		}
+		if (this->type == PIPE_TOKEN)
+			this->placed_flag = 1;
 		this = this->next;
 	}
 	return (place_cmd_array(cmd, token_list, cmd_num));
