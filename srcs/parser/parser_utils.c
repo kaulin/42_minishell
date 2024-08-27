@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/12 09:56:01 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:57:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_whitespace(char c)
 
 void	skip_whitespace(char **ptr)
 {
-	while (is_whitespace(**ptr))
+	while (**ptr && is_whitespace(**ptr))
 		(*ptr)++;
 }
 

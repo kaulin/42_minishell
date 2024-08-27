@@ -6,23 +6,19 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 10:28:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:48:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "expander.h"
 
-static void	handle_special_char(char **input)
+static void	handle_special_char(char **ptr)
 {
-	char	*ptr;
-
-	ptr = *input;
-	ptr++;
-	if ((*ptr == '<' && *(ptr + 1) == '<') \
-		|| (*ptr == '>' && *(ptr + 1) == '>'))
-		ptr++;
-	*input = ptr;
+	(*ptr)++;
+	if ((**ptr == '<' && *(*ptr + 1) == '<') \
+		|| (**ptr == '>' && *(*ptr + 1) == '>'))
+		(*ptr)++;
 }
 
 static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
