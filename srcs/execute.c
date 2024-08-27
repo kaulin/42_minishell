@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 15:34:16 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:58:31 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
 		fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	if (check_redirection(data, cur_cmd) == 1)
-		exit(ERROR);
+	check_redirection(data, cur_cmd);
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
-		exit (execute_builtin(data, cur_cmd->cmd_arr));
+	{
+		execute_builtin(data, cur_cmd->cmd_arr);
+		exit (0);
+	}
 	else
 	{	
 		err_code = do_cmd(data, cur_cmd);
@@ -130,14 +132,16 @@ int	execute_and_pipe(t_data *data)
 			if (parent(data, cur_cmd) != 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
-				return (reset_io(data), ERROR);
+				reset_io(data);
+				return (ERROR);
 			}
 			cur_cmd = cur_cmd->next;
 		}
 	}
 	if (wait_for_the_kids(data, cur_cmd))
 		return (ERROR);
-	return (reset_io(data), SUCCESS);
+	reset_io(data);
+	return (SUCCESS);
 }
 
 
