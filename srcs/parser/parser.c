@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 12:52:56 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:18:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ static int	parser_clean(t_parser *parser, int return_value)
 
 int	check_tokens(t_token *token, t_data *data)
 {
+	if (token->type == PIPE_TOKEN)
+	{
+		data->error_msg = ft_strdup("syntax error near unexpected token\n");
+		return (ERROR);
+	}
 	while (token)
 	{
 		token->cmd_num = data->cmd_count;
