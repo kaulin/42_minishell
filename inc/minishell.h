@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 20:30:00 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/27 09:16:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**copy_envp(t_data *data, char **envp);
 void	fail(int exit_code, char *msg, t_data *data);
 
 // cmd_list.c
-t_cmd	*cmd_new(char *content);
+t_cmd	*cmd_new(void);
 void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
 void	cmd_delone(t_cmd *cmd);
 void	cmd_clear(t_cmd **cmd_list);

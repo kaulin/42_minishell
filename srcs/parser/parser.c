@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/20 11:01:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:07:36 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,120 +16,69 @@
 static void	parser_reset(t_parser *parser)
 {
 	parser->substring = NULL;
-	parser->start = NULL;
-	parser->start = NULL;
 }
 
 static void	parser_init(t_parser *parser)
 {
-	parser->start = NULL;
 	parser->substring = NULL;
 	parser->token_list = NULL;
 }
 
-static void	parser_clean(t_parser *parser)
+static int	parser_clean(t_parser *parser, int return_value)
 {
 	if (parser->substring)
 		free(parser->substring);
-	if (parser->token_list)
+	if (parser->token_list) 
 		token_clear(&parser->token_list);
+	return (return_value);
 }
 
-/*
-Splits the given commands cmd_str into tokens, which are expanded and merged 
-where necessary.
-*/
-int	parse_cmd(t_cmd *cmd, t_data *data)
+int	check_tokens(t_token *token, t_data *data)
 {
-	t_parser	parser;
-	char		*input;
-
-	input = cmd->cmd_str;
-	parser_init(&parser);
-	while (*input)
+	while (token)
 	{
-		if (is_whitespace(*input))
-			input++;
-		else
-		{
-			input = tokenize(input, &parser, data);
-			if (!input)
-				return (ERROR); // clean return
-			parser_reset(&parser);
-		}
+		token->cmd_num = data->cmd_count;
+		if (token->type == PIPE_TOKEN)
+			data->cmd_count++;
+		if ((token->type == REDIR_TOKEN && !token->next) \
+			|| (token->type == PIPE_TOKEN && !token->next))
+			{
+				data->error_msg = ft_strdup("syntax error near unexpected newline token\n");
+				return (ERROR);
+			}
+		else if ((token->type == REDIR_TOKEN \
+			&& token->next->type != TEXT_TOKEN) || (token->type == PIPE_TOKEN \
+			&& token->next->type == PIPE_TOKEN))
+			{
+				data->error_msg = ft_strdup("syntax error near unexpected newline token\n");
+				return (ERROR);
+			}
+		token = token->next;
 	}
-	if (merge_tokens(&parser.token_list) \
-		|| place_tokens(cmd, parser.token_list) \
-		|| place_tokens(cmd, parser.token_list))
-	{
-		parser_clean(&parser);
-		return (ERROR);
-	}
-	parser_clean(&parser);
-	return (SUCCESS);
 }
 
-/*
-Makes a new cmd_str from the given start and end pointers, places that into 
-a new cmd_node and adds that node to the back of the cmd_list.
-*/
-int	split_command(char *start, char *end, t_data *data)
-{
-	char	*cmd_str;
-	t_cmd	*cmd_node;
 
-	cmd_str = ft_substr(start, 0, end - start);
-	if (!cmd_str)
-		return (ERROR);
-	cmd_node = cmd_new(cmd_str);
-	if (!cmd_node)
-	{
-		free(cmd_str);
-		return (ERROR);
-	}
-	cmd_add_back(&data->cmd_list, cmd_node);
-	return (SUCCESS);
-}
-
-/*
-Checks the input for unclosed quotes and erroneous pipe characters. Then 
-splits the input into separate commands based on unquoted pipe characters. 
-Finally parses each of these commands.
-*/
 int	parse(char *input, t_data *data)
 {
-	t_cmd	*cmd;
-	char	*start;
-	
-	if (check_quotes(input, data)) // || check_pipes(input, data);
+	t_cmd		*cmd;
+	t_parser	*parser;
+
+	parser_init(parser);
+	if (check_quotes(input, data))
 		return (ERROR);
-	start = input;
 	while (*input)
 	{
-		if (is_quote_char(*input))
-			find_quote_end(&input);
-		if (*input == '|')
-		{
-			if (split_command(start, input - 1, data))
-				return (ERROR);
-			start = ++input;
-			continue ;
-		}
-		input++;
+		skip_whitespace(&input);
+		input = tokenize(input, &parser, data);
+		if (!input)
+			return (parser_clean(parser, ERROR));
+		parser_reset(parser);
 	}
-	if (start != input)
-	{
-		if (split_command(start, input, data))
-			return (ERROR);
-	}
-	cmd = data->cmd_list;
-	while (cmd)
-	{
-		if (parse_cmd(cmd, data))
-			return (ERROR);
-		cmd = cmd->next;
-	}
-	return (SUCCESS);
+	if (merge_tokens(parser->token_list) \
+		|| check_tokens(parser->token_list, data) \
+		|| make_commands(parser, data))
+		return (parser_clean(parser, ERROR));
+	return (parser_clean(parser, SUCCESS));
 }
 
 /*

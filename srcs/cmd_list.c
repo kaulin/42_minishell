@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/21 15:14:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:16:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@
 Creates a new cmd struct and initialises its cmd_str with the parameter sting. 
 A pointer to the new_cmd is returned, unless there is a malloc 
 */
-t_cmd	*cmd_new(char *content)
+t_cmd	*cmd_new(void)
 {
 	t_cmd	*new_cmd;
 
 	new_cmd = malloc(sizeof(t_cmd));
 	if (!new_cmd)
 		return (NULL);
-	new_cmd->cmd_str = content;
 	new_cmd->cmd_arr = NULL;
 	new_cmd->infiles = NULL;
 	new_cmd->outfiles = NULL;
@@ -57,8 +56,6 @@ void	cmd_delone(t_cmd *cmd)
 {
 	if (cmd == NULL)
 		return ;
-	if (cmd->cmd_str)
-		free(cmd->cmd_str);
 	if (cmd->cmd_arr)
 		clean_array(cmd->cmd_arr);
 	if (cmd->infiles)
@@ -97,7 +94,7 @@ void	cmd_print(t_cmd *cmd)
 	outfile = NULL;
 	while (cmd)
 	{
-		printf("Command %d is: [%s]\n", i, cmd->cmd_str);
+		printf("Command %d is: [%s]\n", i, cmd->cmd_arr[0]);
 		infile = cmd->infiles;
 		if (infile)
 			printf("Infile redirections are:\n");

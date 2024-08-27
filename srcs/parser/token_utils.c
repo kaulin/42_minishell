@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/16 11:03:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:45:01 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,23 @@ int	is_redir_token(t_token *token)
 	return (0);
 }
 
-char	*merge_unused_tokens(t_token *token)
+int	is_pipe_token(t_token *token)
 {
-	char	*temp_str;
-	char	*return_str;
+	if (!ft_strncmp(token->str, "|", 2))
+		return (1);
+	return (0);
+}
 
-	temp_str = NULL;
-	return_str = NULL;
-	while(token)
-	{
-		if (!token->placed_flag)
-		{
-			temp_str = ft_strjoin(return_str, " ");
-			if (!temp_str && return_str)
-			{
-				free(return_str);
-				return (NULL);
-			}
-			if (return_str)
-				free(return_str);
-			return_str = ft_strjoin(temp_str, token->str);
-			free(temp_str);
-			if (!return_str)
-				return (NULL);
-		}
-		token = token->next;
-	}
-	return (return_str);
+void	handle_special_char(char **input)
+{
+	char	*ptr;
+
+	ptr = *input;
+	if ((*ptr == '<' && *(ptr + 1) == '<') \
+		|| (*ptr == '>' && *(ptr + 1) == '>'))
+		ptr++;
+	ptr++;
+	*input = ptr;
 }
 
 /*
@@ -87,17 +77,4 @@ int	merge_tokens(t_token **tokens)
 		token = (token)->next;
 	}
 	return (0);
-}
-
-void	print_tokens(t_token *token)
-{
-	int		count;
-
-	count = 0;
-	while (token)
-	{
-		printf("Token %d contains: %s\n", count, token->str);
-		count++;
-		token = token->next;
-	}
 }
