@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:51:56 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/06/17 16:18:33 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:48:44 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,4 @@ int	is_directory(char *filepath)
 		return (1);
 	}
 	return (0);
-}
-
-/*
-Frees an array of srings and a string given as arguments and returns the given
-integer value.
-*/
-int	clean_return(char **arr, char *str, int ret)
-{
-	if (arr)
-		clean_array(arr);
-	if (str)
-		free(str);
-	return (ret);
 }

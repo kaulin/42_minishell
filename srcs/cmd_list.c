@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 12:46:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:47:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	cmd_delone(t_cmd *cmd)
 {
 	if (cmd == NULL)
 		return ;
+	if (cmd->path)
+		free(cmd->path);
 	if (cmd->cmd_arr)
 		clean_array(cmd->cmd_arr);
 	if (cmd->infiles)
@@ -93,7 +95,7 @@ int	cmd_print(t_cmd *cmd)
 	i = 1;
 	infile = NULL;
 	outfile = NULL;
-	printf("Printing commands!\n\n");
+	printf("Printing commands!\n");
 	while (cmd)
 	{
 		arg_i = 0;

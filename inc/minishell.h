@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 09:33:03 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:49:01 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void	reset_io(t_data *data);
 // utils.c
 int		join_print_free(char *str1, char *str2, int fd);
 void	clean_array(char **array);
-int		clean_return(char **arr, char *str, int ret);
 int		is_directory(char *filepath);
 
 #endif

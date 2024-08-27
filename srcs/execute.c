@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 14:35:32 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:48:09 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 		cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
 	}
 	if (!cur_cmd->path)
-		return (clean_return(cur_cmd->cmd_arr, NULL, 127));
+		return (127);
 	if (ft_strncmp(cur_cmd->cmd_arr[0], ".", 2) && is_directory(cur_cmd->path))
-		return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 321));
+		return (321);
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp);
-	return (clean_return(cur_cmd->cmd_arr, cur_cmd->path, 126));
+	return (126);
 }
 
 /*
