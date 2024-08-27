@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:21:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:36:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,24 @@ int	check_tokens(t_token *token, t_data *data)
 
 int	parse(char *input, t_data *data)
 {
-	t_parser	*parser;
+	t_parser	parser;
 
-	parser = NULL;
-	parser_init(parser);
+	parser_init(&parser);
 	if (check_quotes(input, data))
 		return (ERROR);
 	while (*input)
 	{
 		skip_whitespace(&input);
-		input = tokenize(input, parser, data);
+		input = tokenize(input, &parser, data);
 		if (!input)
-			return (parser_clean(parser, ERROR));
-		parser_reset(parser);
+			return (parser_clean(&parser, ERROR));
+		parser_reset(&parser);
 	}
-	if (merge_tokens(&parser->token_list) \
-		|| check_tokens(parser->token_list, data) \
-		|| make_commands(parser, data))
-		return (parser_clean(parser, ERROR));
-	return (parser_clean(parser, SUCCESS));
+	if (merge_tokens(&parser.token_list) \
+		|| check_tokens(parser.token_list, data) \
+		|| make_commands(&parser, data))
+		return (parser_clean(&parser, ERROR));
+	return (parser_clean(&parser, SUCCESS));
 }
 
 /*

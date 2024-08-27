@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:16:20 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:34:37 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,26 @@ void	cmd_clear(t_cmd **cmd_list)
 	}
 }
 
-void	cmd_print(t_cmd *cmd)
+int	cmd_print(t_cmd *cmd)
 {
-	int	i;
-	t_file *infile;
-	t_file *outfile;
+	int		i;
+	int		arg_i;
+	t_file 	*infile;
+	t_file 	*outfile;
 
 	i = 1;
+	arg_i = 0;
 	infile = NULL;
 	outfile = NULL;
+	printf("Printing commands!\n\n");
 	while (cmd)
 	{
-		printf("Command %d is: [%s]\n", i, cmd->cmd_arr[0]);
+		printf("Command %d contains the following:\n", i);
+		while (cmd->cmd_arr[arg_i])
+		{
+			printf("Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
+			arg_i++;
+		}
 		infile = cmd->infiles;
 		if (infile)
 			printf("Infile redirections are:\n");
@@ -120,4 +128,5 @@ void	cmd_print(t_cmd *cmd)
 		i++;
 		cmd = cmd->next;
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/26 14:57:06 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:40:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	reset_data(t_data *data)
 	data->input = NULL;
 	data->error_msg = NULL;
 	data->cmd_list = NULL;
-	data->cmd_count = 0;
+	data->cmd_count = 1;
 
 }
 
@@ -84,6 +84,7 @@ int	init_data(t_data *data, char **envp)
 		return (ERROR);
 	parse_paths(data);//where should this be? && error check?
 	data->cmd_list = NULL;
+	data->cmd_count = 1;
 	data->status = 0;
 	data->error_msg = NULL;
 	return (SUCCESS);

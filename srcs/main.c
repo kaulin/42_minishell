@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 11:24:25 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:32:55 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		else
 			add_history(data.input);
-		if (parse(data.input, &data) || execute_and_pipe(&data))
+		if (parse(data.input, &data) | cmd_print(data.cmd_list) | execute_and_pipe(&data))
 		{
 			if (!data.error_msg)
 				printf("Memory allocation error\n");
