@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 10:34:03 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:45:27 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,19 @@ int	token_count_unused(t_token *token_list, int	cmd_num)
 		token_list = token_list->next;
 	}
 	return (i);
+}
+
+int	print_tokens(t_token *token, char *command)
+{
+	int	i;
+
+	i = 0;
+	printf("Printing tokens for command:\n%s\n", command);
+	while (token)
+	{
+		printf("%d - %s\n", i, token->str);
+		token = token->next;
+		i++;
+	}
+	return (SUCCESS);
 }

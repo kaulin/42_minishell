@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:59:39 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:42:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	token_add_back(t_token **token_list, t_token *new_token);
 void	token_delone(t_token *token);
 void	token_clear(t_token **token_list);
 int		token_count_unused(t_token *token_list, int cmd_num);
+int		print_tokens(t_token *token, char *command);
 
 // token_utils.c
 int		is_redir_token(t_token *token);

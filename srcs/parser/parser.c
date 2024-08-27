@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:36:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:52:56 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	check_tokens(t_token *token, t_data *data)
 	return (SUCCESS);
 }
 
-
 int	parse(char *input, t_data *data)
 {
 	t_parser	parser;
@@ -69,6 +68,8 @@ int	parse(char *input, t_data *data)
 	while (*input)
 	{
 		skip_whitespace(&input);
+		if (!*input)
+			break ;
 		input = tokenize(input, &parser, data);
 		if (!input)
 			return (parser_clean(&parser, ERROR));
