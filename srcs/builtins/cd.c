@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 14:34:00 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/27 12:17:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-	Returns a pointer to the value of the environmental variable in question
-*/
+// Leaks when updating pwd. Need to free the old one before updating new.
+
+
+//Returns a pointer to the value of the environmental variable in question
+
 char	*ft_getenv(t_data *data, char *variable)
 {
 	int		i;
@@ -33,13 +35,16 @@ char	*ft_getenv(t_data *data, char *variable)
 		}
 		i++;
 	}
-	return (NULL);
+	return (SUCCESS);
 }
 
 /*
+	Makes the new PWD and new OLDPWD
 	Sets the OLDPWD to the current working directory
 	Sets the value of PWD to the new directory(new path)
+	Calls check_key to change the variables
 */
+
 int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
 {
 	char	*old_pwd;
@@ -48,58 +53,54 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 	char	buffer[PATH_MAX];
 
 	if (!(ft_getenv(data, "PWD")))
-	{
-		data->error_msg = ft_strdup(" cd: PWD not set");
-		return (ERROR);
-	}
+		return (data->error_msg = ft_strdup(" cd: PWD not set"), ERROR);
 	temp = ft_strjoin("OLDPWD", "=");
-	old_pwd = ft_strjoin(temp, ft_getenv(data, "PWD"));
+	old_pwd = ft_strjoin(temp, ft_getenv(data, "PWD"));//is this a problem since PWD value has already been allocated
 	free(temp);
-	check_key(data, old_pwd);
+	check_key(data, old_pwd);// now we have the new variable and neet to set it
 	temp = ft_strjoin("PWD", "=");
-	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));
+	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list
 	free(temp);
 	check_key(data, new_pwd);
 	return (SUCCESS);
 }
 
 /*
-// 	Change the current working directory to directory given using chdir.
-// 	Chdir changes the current working directory by passing the new path to the function. 
-// */
+ 	Change the current working directory to directory given using chdir.
+ 	Chdir changes the current working directory by passing the new path to the function. 
+ */
 
 int	change_directory(t_data *data, char *path)
 {
-	if (chdir(path) != 0) //System function (system call) that changes the current working directory.Doesn't change the PWD variable. What if this fails?
-	{
-		data->error_msg = ft_strdup("cd: error: No such file or directory");
-		return (ERROR);
-	}
+	if (chdir(path) != 0) //System function (system call) that changes the current working directory. Doesn't change the PWD variable. What if this fails?
+		return (data->error_msg = ft_strdup("cd: error: No such file or directory"), ERROR);
 	else
 		update_pwd(data);
 	return (SUCCESS);
 }
 
-static char	*up_one(t_data *data)
+static char *up_one(t_data *data) 
 {
-	char 	*path;
-	char	*pointer;
-	char	cwd[PATH_MAX];
+    char *path;
+    char *pointer;
+    char cwd[PATH_MAX];
 
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+    if (getcwd(cwd, sizeof(cwd)) == NULL)
+        return (data->error_msg = ft_strdup("getcwd() error"), NULL);
+    pointer = strrchr(cwd, '/');
+    if (pointer != NULL) 
 	{
-		data->error_msg = ft_strdup("getcwd() error");
-		return (NULL);
-	}
-	pointer = strrchr(cwd, '/');
-	if (pointer!= NULL)
+        if (pointer == cwd) // if we are at root
+            pointer++;
+        *pointer = '\0';
+    }
+    path = strdup(cwd);
+    if (!path)
 	{
-		if (pointer == cwd) //if we are at root
-			pointer++;
-		*pointer = '\0';
-		path = cwd;
+	 	data->error_msg = ft_strdup("Memory allocation failed");
+        return (NULL);
 	}
-	return (path);
+    return path;
 }
 
 /*
@@ -109,36 +110,30 @@ CD with only a relative or absolute path
 int	cd_builtin(t_data *data, char **cmds)
 {
 	char	*path;
+	int		i;
 
 	path = NULL;
-	if (cmds[2])
-	{
-		data->error_msg = ft_strdup("cd: too many arguments");
-		return (ERROR);
-	}
+	i = 0;
+	while (cmds[i] != NULL)
+		i++;
+	if (i >= 3)
+		return (data->error_msg = ft_strdup("cd: too many arguments"), ERROR);
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
-		path = ft_getenv(data, "HOME");
+		path = ft_getenv(data, "HOME");//this gets the HOME variable
 		if (!path || *path == '\0' || *path == ' ') //tabs?
-		{
-			 data->error_msg = ft_strdup("cd: HOME not set");
-			 return (ERROR);
-		}
+			 return (data->error_msg = ft_strdup("cd: HOME not set"), ERROR);
 	}
-	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD). DOES THIS WORK YET
+	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD).
 	{
 		path = ft_getenv(data, "OLDPWD");//getenv gets the path from the original envp not from the copy
 		if (!path)
-		{
-			data->error_msg = ft_strdup("cd: OLDPWD not set");
-			return (ERROR);
-		}
-		
+			return (data->error_msg = ft_strdup("cd: OLDPWD not set"), ERROR);
 	}
 	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
 		path = up_one(data);
 	else
-		path = cmds[1];
-	change_directory(data, path);
-	return (SUCCESS);
+		path = cmds[1];//path is the path given
+	return (change_directory(data, path));
 }
+<

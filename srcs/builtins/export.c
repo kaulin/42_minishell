@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 20:15:09 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/27 11:38:23 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	check_key(t_data *data, char *cmd)
 
 	len = 0;
 	i = 0;
-	while (cmd[len] != '=' && cmd[len] != '\0')
+	while (cmd[len] != '=' && cmd[len] != '\0')//we reach the '='
 		len++;
 	while (data->envp[i])
 	{
@@ -63,8 +63,8 @@ int	check_key(t_data *data, char *cmd)
 		{
 			if (cmd[len] == '\0')
 				return (SUCCESS);
-			free(data->envp[i]);
-			data->envp[i] = ft_strdup(cmd);
+			free(data->envp[i]);//frees the old variable
+			data->envp[i] = cmd;//set's the new one in it's stead
 			return (SUCCESS);
 		}
 		i++;
