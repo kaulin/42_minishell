@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 11:55:59 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:05:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 static void	handle_special_char(char **ptr)
 {
-	(*ptr)++;
 	if ((**ptr == '<' && *(*ptr + 1) == '<') \
 		|| (**ptr == '>' && *(*ptr + 1) == '>'))
 		(*ptr)++;
+	(*ptr)++;
 }
 
 static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
