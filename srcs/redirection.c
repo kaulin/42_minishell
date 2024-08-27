@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 13:07:57 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:41:30 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 		while (cur_file->next)
 		{
 			if (access(cur_file->file_str, F_OK) == -1)
-				fail(1, cur_file->file_str, NULL);
+				return (data->error_msg = ft_strdup("File doesn't exist\n"), ERROR);
 			cur_file = cur_file->next;
 		}
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
@@ -103,10 +103,8 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 		close(cur_cmd->in_fd);
 	}
 	else if (cur_file->flag)
-	{
 		if (get_input(cur_cmd, data) != 0)
 			return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
-	}
 	return (SUCCESS);
 }
 
@@ -116,7 +114,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	
 	cur_file = cur_cmd->outfiles;
 	if  (cur_file->flag && !cur_file->file_str)
-		fail(1, "Error, append no file\n", data);
+		return (data->error_msg = ft_strdup("Error, append no file\n"), ERROR);
 	if (cur_file->file_str)
 	{
 		while (cur_file->next)
@@ -142,8 +140,9 @@ Checks if there is a redirection and if it is in input or output.
 int	check_redirection(t_data *data, t_cmd *cur_cmd)
 {
 	if (cur_cmd->infiles)
-		input_redirection(cur_cmd, data);
+		if (input_redirection(cur_cmd, data) == 1)
+			return (ERROR);
 	if (cur_cmd->outfiles)
-		output_redirection(cur_cmd, data);
+		return (output_redirection(cur_cmd, data));
 	return (SUCCESS);
 }

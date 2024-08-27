@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 14:48:09 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:34:16 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
 		fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	check_redirection(data, cur_cmd);
+	if (check_redirection(data, cur_cmd) == 1)
+		exit(ERROR);
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
-	{
-		execute_builtin(data, cur_cmd->cmd_arr);
-		exit (0);
-	}
+		exit (execute_builtin(data, cur_cmd->cmd_arr));
 	else
 	{	
 		err_code = do_cmd(data, cur_cmd);
@@ -122,8 +120,8 @@ int	execute_and_pipe(t_data *data)
 	cur_cmd = data->cmd_list;
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		check_redirection(data, cur_cmd);
-		execute_builtin(data, cur_cmd->cmd_arr);
+		if (check_redirection(data, cur_cmd) == 1 || execute_builtin(data, cur_cmd->cmd_arr) == 1)
+			return (reset_io(data), ERROR);
 	}
 	else 
 	{
@@ -132,16 +130,14 @@ int	execute_and_pipe(t_data *data)
 			if (parent(data, cur_cmd) != 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
-				reset_io(data);
-				return (ERROR);
+				return (reset_io(data), ERROR);
 			}
 			cur_cmd = cur_cmd->next;
 		}
 	}
 	if (wait_for_the_kids(data, cur_cmd))
 		return (ERROR);
-	reset_io(data);
-	return (SUCCESS);
+	return (reset_io(data), SUCCESS);
 }
 
 
