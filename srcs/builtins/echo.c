@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/23 15:59:17 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:39:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	print_cmd(char **cmds, int flag)//this prints the rest of the input
 	{
 		while (*cmds)
 		{
-			printf("%s ", *cmds);
+			if (*(cmds + 1))
+				printf("%s ", *cmds);
+			else
+				printf("%s", *cmds);
 			cmds++;
 		}
 	}
