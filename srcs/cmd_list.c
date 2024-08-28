@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 14:54:42 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:28:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,30 +105,30 @@ int	cmd_print(t_cmd *cmd)
 		{
 			while (cmd->cmd_arr[arg_i])
 			{
-				printf("Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
+				printf("	Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
 				arg_i++;
 			}
 		}
 		infile = cmd->infiles;
 		if (infile)
-			printf("Infile redirections are:\n");
+			printf("	Infile redirections are:\n");
 		while (infile)
 		{
 			if (infile->flag)
-				printf("	Heredoc with delimiter [%s]\n", infile->file_str);
+				printf("		Heredoc with delimiter [%s]\n", infile->file_str);
 			else
-				printf("	File with path [%s]\n", infile->file_str);
+				printf("		File with path [%s]\n", infile->file_str);
 			infile = infile->next;
 		}
 		outfile = cmd->outfiles;		
 		if (outfile)
-			printf("Outfile redirections are:\n");
+			printf("	Outfile redirections are:\n");
 		while (outfile)
 		{
 			if (outfile->flag)
-				printf("	Append file with path [%s]\n", outfile->file_str);
+				printf("		Append file with path [%s]\n", outfile->file_str);
 			else
-				printf("	File with path [%s]\n", outfile->file_str);
+				printf("		File with path [%s]\n", outfile->file_str);
 			outfile = outfile->next;
 		}
 		i++;
