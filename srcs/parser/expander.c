@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/18 15:44:39 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:50:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static int	expand_strings(t_expander *expander, t_data *data)
 
 /*
 Expands the environment variables in the given string. Returns the expanded 
-string, or NULL if errors occur.
+string, or ERROR if errors occur.
 */
 int	expand(char **str, t_data *data)
 {

@@ -7,6 +7,7 @@ TODO
 - Extra free in cleanup
 - Signals
 - Error messages
+- Fix memory leak in expander.c
 
 FIXED
 27.8. Tokenization should not separate linked and quoted arguments
@@ -14,3 +15,4 @@ FIXED
 27.8. echo does not separate multiple agruments with a space
 21.8. segfaults on empty input
 20.8. echo "Hello' segfaults, gets into execute, should give syntax error
+ 
