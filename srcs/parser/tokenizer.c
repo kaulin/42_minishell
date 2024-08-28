@@ -6,13 +6,17 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/28 12:43:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:32:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "expander.h"
 
+/*
+Moves the pointer ahead by one or two stops, depending on the command token. 
+One step for |, < and >. Two steps for << and >>.
+*/
 static void	handle_special_char(char **ptr)
 {
 	if ((**ptr == '<' && *(*ptr + 1) == '<') \
@@ -21,31 +25,35 @@ static void	handle_special_char(char **ptr)
 	(*ptr)++;
 }
 
-static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
+/*
+Places unused text tokens belonging to the specific command into the command's 
+cmd_arr. If the command has no unused text tokens, the command only 
+contains redirects and a null pointer is placed in cmd_arr instead.
+*/
+static int	place_cmd_arr(t_cmd *cmd, t_token *token, int cmd_num, int i)
 {
 	int	unused_tokens;
-	int	i;
 
-	unused_tokens = token_count_unused(token_list, cmd_num);
+	unused_tokens = token_count_unused(token, cmd_num);
 	if (unused_tokens == 0)
 	{
 		cmd->cmd_arr = NULL;
 		return (SUCCESS);
 	}
-	i = 0;
 	cmd->cmd_arr = ft_calloc((unused_tokens + 1), sizeof(char *));
 	if (!cmd->cmd_arr)
 		return (ERROR);
-	while (token_list && i < unused_tokens)
+	while (i < unused_tokens)
 	{
-		if (token_list->cmd_num == cmd_num && !token_list->placed_flag)
-		{
-			cmd->cmd_arr[i] = ft_strdup(token_list->str);
-			if (!cmd->cmd_arr[i])
-				return (ERROR);
-			i++;
-		}
-		token_list = token_list->next;
+		if (token->cmd_num == cmd_num && token->type == TEXT_TOKEN \
+			&& !token->placed_flag)
+			{
+				cmd->cmd_arr[i] = ft_strdup(token->str);
+				if (!cmd->cmd_arr[i])
+					return (ERROR);
+				i++;
+			}
+		token = token->next;
 	}
 	cmd->cmd_arr[i] = NULL;
 	return (SUCCESS);
@@ -55,36 +63,37 @@ static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
 Places the data from the redir tokens to the cmd struct TODO: error handling for 
 adding input/output files.
 */
-static int	place_tokens(t_cmd *cmd, t_token *token_list, int cmd_num)
+static int	place_redirs(t_cmd *cmd, t_token *token, int cmd_num)
 {
-	t_token	*this;
+	t_file	*file;
 	
-	this = token_list;
-	while (this)
+	file = NULL;
+	while (token)
 	{
-		if (this->cmd_num == cmd_num && this->type == REDIR_TOKEN)
+		if (token->cmd_num == cmd_num && token->type == REDIR_TOKEN)
 		{
-			if (!ft_strncmp(this->str, "<", 2))
-				file_add_back(&cmd->infiles, file_new(this->next->str, 0));
-			else if (!ft_strncmp(this->str, "<<", 3))
-				file_add_back(&cmd->infiles, file_new(this->next->str, 1));
-			else if (!ft_strncmp(this->str, ">", 2))
-				file_add_back(&cmd->outfiles, file_new(this->next->str, 0));
-			else if (!ft_strncmp(this->str, ">>", 3))
-				file_add_back(&cmd->outfiles, file_new(this->next->str, 1));
-			this->placed_flag = 1;
-			this->next->placed_flag = 1;
-			this = this->next;
+			if (ft_strlen(token->str) == 1)
+				file = file_new(token->next->str, 0);
+			else
+				file = file_new(token->next->str, 1);
+			if (!file)
+				return (ERROR);
+			if (*token->str == '<')
+				file_add_back(&cmd->infiles, file);
+			else
+				file_add_back(&cmd->outfiles, file);
+			token->next->placed_flag = 1;
+			token = token->next;
 		}
-		else if (this->cmd_num == cmd_num && this->type == PIPE_TOKEN)
-			this->placed_flag = 1;
-		this = this->next;
+		token = token->next;
 	}
-	return (place_cmd_array(cmd, token_list, cmd_num));
+	return (SUCCESS);
 }
 
 /*
-
+Creates the correct number of commands into data->cmd_list and then places 
+content from tokens into the commands in- and outfiles, as well as its command 
+array.
 */
 int	make_commands(t_parser *parser, t_data *data)
 {
@@ -97,9 +106,10 @@ int	make_commands(t_parser *parser, t_data *data)
 		cmd_node = cmd_new();
 		if (!cmd_node)
 			return (ERROR);
-		if (place_tokens(cmd_node, parser->token_list, cmd_num))
+		if (place_redirs(cmd_node, parser->token_list, cmd_num) \
+			|| place_cmd_arr(cmd_node, parser->token_list, cmd_num, 0))
 		{
-			free(cmd_node);
+			cmd_delone(cmd_node);
 			return (ERROR);
 		}
 		cmd_add_back(&data->cmd_list, cmd_node);
