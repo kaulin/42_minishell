@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 13:05:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:43:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ static int	place_cmd_array(t_cmd *cmd, t_token *token_list, int cmd_num)
 		return (SUCCESS);
 	}
 	i = 0;
-	cmd->cmd_arr = ft_calloc((unused_tokens + 1), sizeof(char*));
+	cmd->cmd_arr = ft_calloc((unused_tokens + 1), sizeof(char *));
 	if (!cmd->cmd_arr)
 		return (ERROR);
 	while (token_list && i < unused_tokens)
 	{
-		if (!token_list->placed_flag)
+		if (token_list->cmd_num == cmd_num && !token_list->placed_flag)
 		{
 			cmd->cmd_arr[i] = ft_strdup(token_list->str);
 			if (!cmd->cmd_arr[i])
@@ -76,7 +76,7 @@ static int	place_tokens(t_cmd *cmd, t_token *token_list, int cmd_num)
 			this->next->placed_flag = 1;
 			this = this->next;
 		}
-		if (this->type == PIPE_TOKEN)
+		else if (this->cmd_num == cmd_num && this->type == PIPE_TOKEN)
 			this->placed_flag = 1;
 		this = this->next;
 	}
