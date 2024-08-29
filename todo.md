@@ -1,8 +1,9 @@
 TODO
 - Redirections and file permissions or directories
-- Expansion of env variables in heredoc
+- Expansion of env variables in heredoc (maybe not necessary, according to many)
 - Redirection without command
 - If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
+- Moves env to using linked list
 - Free problem in clean array when command not found
 - Extra free in cleanup
 - Signals
