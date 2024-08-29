@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/06/18 12:56:49 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:51:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 /*
 Find variable
 */
-char	*get_var(char *key, char **envp, int envp_count)
+char	*get_var(char *key, t_data *data)
 {
 	int		env_i;
 	char	*content;
 
 	env_i = 0;
 	content = NULL;
-	if (!envp || !*envp)
-		return  (content);
-	while (env_i < envp_count)
+	if (!data->envp || !*data->envp)
+		return (content);
+	if (!ft_strncmp(key, "?", 2))
+		return (ft_itoa(data->status));
+	while (env_i < data->envp_count)
 	{
-		if (!ft_strncmp(envp[env_i], key, ft_strlen(key)) \
-		&& envp[env_i][ft_strlen(key)] == '=')
+		if (!ft_strncmp(data->envp[env_i], key, ft_strlen(key)) \
+		&& data->envp[env_i][ft_strlen(key)] == '=')
 		{
-			content = ft_strdup(ft_strchr(envp[env_i], '=') + 1);
+			content = ft_strdup(ft_strchr(data->envp[env_i], '=') + 1);
 			return (content);
 		}
 		env_i++;

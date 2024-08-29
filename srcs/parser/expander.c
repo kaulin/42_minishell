@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/28 13:50:24 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:51:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*find_key_end(char *ptr)
 		while (*ptr && ft_isalnum(*ptr))
 			ptr++;
 	}
-	else if (*ptr >= '0' && *ptr <= '9')
+	else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '?')
 		ptr++;
 	return (ptr);
 }
@@ -102,7 +102,7 @@ static int	expand_strings(t_expander *expander, t_data *data)
 	{
 		if (*node->str == '$' && *(node->str + 1))
 		{
-			temp = get_var(node->str + 1, data->envp, data->envp_count);
+			temp = get_var(node->str + 1, data);
 			if (!temp)
 				return (ERROR);
 			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
