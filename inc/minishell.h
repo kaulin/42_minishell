@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 14:49:01 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:00:45 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,19 @@ typedef struct s_file
 	struct s_file	*next;
 } t_file;
 
+/*
+Defines struct to store environment variables in a linked list of key-value 
+pairs.
+*/
+typedef struct s_var
+{
+	char			*key;
+	char			*value;
+	struct s_var	*next;
+	struct s_var	*alpha;
+	struct s_var	*a_next;
+} t_var;
+
 // data.c
 void	reset_data(t_data *data);
 void	clean_data(t_data *data);
@@ -87,6 +100,23 @@ void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
 void	cmd_delone(t_cmd *cmd);
 void	cmd_clear(t_cmd **cmd_list);
 int		cmd_print(t_cmd *cmd);
+
+// var_list.c
+t_var	*var_new(char *str);
+void	var_add_back(t_var **var_list, t_var *new);
+void	var_delone(t_var *var);
+void	var_clear(t_var **var_list);
+
+// var_list_alpha.c
+void	var_add_to_alpha(t_var *var, t_var *new);
+void	var_rmv_from_alpha(t_var *var, t_var *new);
+
+// var_list_utils.c
+char	*var_get_value(t_var *var, char *key);
+void	var_remove_key(t_var **var_list, char *key);
+void	print_vars(t_var *var_list, int order_flag);
+char	*var_to_str(t_var *var);
+char	**var_to_arr(t_var *var_list);
 
 // file_list.c
 t_file	*file_new(char *content, int flag);
