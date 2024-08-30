@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 15:42:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:58:11 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
 {
-	char	*temp;
 	char	*new_pwd;
 	char	buffer[PATH_MAX];
 	t_var	*var_pwd;
@@ -34,11 +33,7 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 	if (var_add_var(&data->envp_list, "OLDPWD"))
 		return (ERROR);
 	var_old = var_get_var(data->envp_list, "OLDPWD");
-	temp = ft_strjoin("PWD", "=");
-	if (!temp)
-		return (ERROR);
-	new_pwd = ft_strjoin(temp, getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list
-	free(temp);
+	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list
 	if (!new_pwd)
 		return (ERROR);
 	if (var_old->value)
