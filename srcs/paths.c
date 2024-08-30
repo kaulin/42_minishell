@@ -46,13 +46,13 @@ void	parse_paths(t_data *data)
 	char	*joined_path;
 
 	i = 0;
-	if (!data->envp)
+	if (!data->envp_arr)
 		return ;
-	while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5))
+	while (data->envp_arr[i] && ft_strncmp(data->envp_arr[i], "PATH=", 5))
 		i++;
-	if (!data->envp[i] || !data->envp[i][5])
+	if (!data->envp_arr[i] || !data->envp_arr[i][5])
 		return ;
-	data->paths = ft_split(&data->envp[i][5], ":");
+	data->paths = ft_split(&data->envp_arr[i][5], ":");
 	if (!*data->paths)
 		return ;
 	i = 0;

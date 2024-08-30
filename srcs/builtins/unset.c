@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/22 13:49:38 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/08/30 14:49:52 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,49 +23,25 @@ Each name refers to a variable; if there is no variable by that name, a function
 Readonly variables and functions may not be unset. Do we need to check?
 */
 
-int	unset(t_data *data, char *variable)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(variable);
-	while (data->envp[i])
-	{
-		if (ft_strncmp(data->envp[i], variable, len) == 0)
-		{
-			free(data->envp[i]);
-			data->envp[i] = NULL;
-			data->envp[i] = ++(*data->envp);
-		}
-		i++;
-	}
-	return (SUCCESS);
-}
-
 int	unset_builtin(t_data *data, char **cmds)
 {
-	int	i;
-	int	flag;
+	t_var	*var;
+	int		flag;
 
-	i = 0;
 	flag = 0;
 	cmds++;
 	if (!*cmds)
 		return (SUCCESS);
-	while (*cmds != NULL)
+	while (*cmds)
 	{
-		while (data->envp[i] && ft_strncmp(*cmds, data->envp[i], \
-				ft_strlen(*cmds) != 0))
-			i++;
-		if (data->envp[i] == NULL)
+		var = var_get_var(data->envp_list, *cmds);
+		if (!var)
 			flag = 1;
 		else
-			unset(data, *cmds);
-		i = 0;
+			var_remove_key(&data->envp_list, *cmds);
 		cmds++;
 	}
-	if (flag != 0)
+	if (flag)
 		return (ERROR);
 	return (SUCCESS);
 }

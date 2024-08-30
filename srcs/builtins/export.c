@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 11:38:23 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:37:00 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,69 +21,20 @@ They cannot contain special characters such as @, #, !, -, or spaces.
 Environmental variables normally contain only uppercase letters and '_'. Stick with that?
 */
 
-int	set_variable(t_data *data, char *cmd)
-{
-	char	**copy;
-	int		i;
-
-	i = 0;
-	while (data->envp[i])
-		i++;
-	copy = (char **)malloc((i + 2) * sizeof(char *));
-	if (!copy)
-		return (ERROR);//should this be a fail?
-	i = 0;
-	while (data->envp[i])
-	{
-		copy[i] = data->envp[i];
-		i++;
-	}
-	copy[i] = (char *)malloc(ft_strlen(cmd) + 1);
-	if (!copy[i])
-		return (free(copy), ERROR);
-	copy[i] = ft_strdup(cmd);
-	copy[++i] = NULL;
-	free(data->envp);
-	data->envp = copy;
-	return (SUCCESS);
-}
-
-int	check_key(t_data *data, char *cmd)
-{
-	int		len;
-	int		i;
-
-	len = 0;
-	i = 0;
-	while (cmd[len] != '=' && cmd[len] != '\0')//we reach the '='
-		len++;
-	while (data->envp[i])
-	{
-		if (ft_strncmp(data->envp[i], cmd, len) == 0 && (data->envp[i])[len] == '=')
-		{
-			if (cmd[len] == '\0')
-				return (SUCCESS);
-			free(data->envp[i]);//frees the old variable
-			data->envp[i] = cmd;//set's the new one in it's stead
-			return (SUCCESS);
-		}
-		i++;
-	}
-	set_variable(data, cmd);
-	return (SUCCESS);
-}
-
 int	export_builtin(t_data *data, char **cmds)
 {
 	int		i;
 
 	i = 1;
 	if (!cmds[i])
-		return (env_in_order(data));
+		var_print_vars(data->envp_list, 1);
 	while (cmds[i])
 	{
-		check_key(data, cmds[i]);
+		if (var_add_var(&data->envp_list, cmds[i]))
+			return (ERROR);
 		i++;
 	}
+	if (update_envp(data))
+		return (ERROR);
 	return (SUCCESS);
 }
