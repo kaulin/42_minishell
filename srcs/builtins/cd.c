@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 15:58:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:07:33 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 	var_pwd = var_get_var(data->envp_list, "PWD");
 	if (!var_pwd)
 		return (data->error_msg = ft_strdup(" cd: PWD not set"), ERROR);
-	if (var_add_var(&data->envp_list, "OLDPWD"))
-		return (ERROR);
 	var_old = var_get_var(data->envp_list, "OLDPWD");
+	if (!var_old)
+	{
+		if (var_add_var(&data->envp_list, "OLDPWD"))
+			return (ERROR);
+		var_old = var_get_var(data->envp_list, "OLDPWD");
+	}
 	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list
 	if (!new_pwd)
 		return (ERROR);
