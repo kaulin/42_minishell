@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 09:29:51 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:10:11 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,83 +38,6 @@ static void	expander_init(t_expander *expander, char *str)
 	expander->ptr = str;
 	expander->var = NULL;
 	expander->str_list = NULL;
-}
-
-/*
-Traverses the given string. If the first character is alphabetic or 
-an underscore, continues as long as the characters are alphanumeric or 
-underscores. If the first character is numeric, only jumps one character 
-ahead. Returns the current ptr location.
-*/
-static char	*find_key_end(char *ptr)
-{
-	if (ft_isalpha(*ptr) || *ptr == '_')
-	{
-		while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
-			ptr++;
-	}
-	else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '?')
-		ptr++;
-	return (ptr);
-}
-
-/*
-Forms a string from the given point. If the first character is the variable 
-symbol $, string end is specified by the find_key_end function. Otherwise 
-string end is the $ symbol or the end of the string. The new substring is 
-added to the end of the expander->str_list.
-*/
-int	cut_str(t_expander *expander)
-{
-	char	*temp;
-	t_str	*node;
-
-	expander->start = expander->ptr++;
-	if (*expander->start == '$')
-		expander->ptr = find_key_end(expander->ptr);
-	else
-	{
-		while (*expander->ptr && *expander->ptr != '$')
-			expander->ptr++;
-	}
-	temp = ft_substr(expander->start, 0, expander->ptr - expander->start);
-	if (!temp)
-		return (ERROR);
-	node = str_new(temp);
-	if (!node)
-	{
-		free(temp);
-		return (ERROR);
-	}
-	str_add_back(&expander->str_list, node);
-	return (SUCCESS);
-}
-
-/*
-Expands any variable strings in the str_list. For variables not enclosed in 
-double quotes, any additional whitespace within the returned variable content 
-is condensed into single spaces.*/
-static int	expand_strings(t_expander *expander, t_data *data)
-{	
-	char	*temp;
-	t_str	*node;
-
-	node = expander->str_list;
-	while (node)
-	{
-		if (*node->str == '$' && *(node->str + 1))
-		{
-			temp = get_var(node->str + 1, data);
-			if (!temp)
-				return (ERROR);
-			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
-				return (ERROR);
-			free (node->str);
-			node->str = temp;
-		}
-		node = node->next;
-	}
-	return (SUCCESS);
 }
 
 /*
