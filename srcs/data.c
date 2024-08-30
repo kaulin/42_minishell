@@ -6,43 +6,47 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 09:40:42 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:51:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-This copies the envp variables and counts their amount
+This copies the envp variables to a linked list and also stores it in a null 
+terminated array.
 */
-
-char	**copy_envp(t_data *data, char **envp)
+static int	copy_envp(t_data *data, char **envp)
 {
-	char	**copy;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	copy = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (envp[i])
+	while (*envp)
 	{
-		copy[i] = ft_strdup(envp[i]);
-		if (!copy[i])
+		if (var_add_var(&data->envp_list, *envp))
 		{
-			while (i > 0)
-                free(copy[--i]);
-			free(copy);
-			return (NULL);
+			var_clear(&data->envp_list);
+			return (ERROR);
 		}
-		i++;
+		envp++;
 	}
-	copy[i] = NULL;
-	data->envp_count = i;
-	return (copy);
+	data->envp_arr = var_to_arr(data->envp_list);
+	if (!data->envp_arr)
+	{
+		var_clear(&data->envp_list);
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+int	update_envp(t_data *data)
+{
+	char	**temp;
+
+	temp = var_to_arr(data->envp_list);
+	if (!temp)
+		return (ERROR);
+	if (data->envp_arr)
+		clean_array(data->envp_arr);
+	data->envp_arr = temp;
+	return (SUCCESS);
 }
 
 void	reset_data(t_data *data)
@@ -59,7 +63,6 @@ void	reset_data(t_data *data)
 	data->error_msg = NULL;
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
-
 }
 
 void	clean_data(t_data *data)//need to add envp_clear
@@ -70,8 +73,10 @@ void	clean_data(t_data *data)//need to add envp_clear
 		cmd_clear(&data->cmd_list);
 	if (data->error_msg)
 		free(data->error_msg);
-	if (data->envp)
-		clean_array(data->envp);
+	if (data->envp_list)
+		var_clear(&data->envp_list);
+	if (data->envp_arr)
+		clean_array(data->envp_arr);
 	if (data->paths)
 		clean_array(data->paths);
 }
@@ -79,8 +84,9 @@ void	clean_data(t_data *data)//need to add envp_clear
 int	init_data(t_data *data, char **envp)
 {
 	data->input = NULL;
-	data->envp = copy_envp(data, envp);
-	if (data->envp == NULL)
+	data->envp_arr = NULL;
+	data->envp_list = NULL;
+	if (copy_envp(data, envp))
 		return (ERROR);
 	parse_paths(data);//where should this be? && error check?
 	data->cmd_list = NULL;
