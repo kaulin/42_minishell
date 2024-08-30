@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 14:36:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:42:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,8 @@ int	change_directory(t_data *data, char *path)
 {
 	if (chdir(path) != 0) //System function (system call) that changes the current working directory. Doesn't change the PWD variable. What if this fails?
 		return (data->error_msg = ft_strdup("cd: error: No such file or directory"), ERROR);
-	else
-	{
-		if (update_pwd(data) || update_envp(data))
-			return (ERROR);
-	}
+	else if (update_pwd(data) || update_envp(data))
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -82,10 +79,7 @@ static char *up_one(t_data *data)
 	}
 	path = strdup(cwd);
 	if (!path)
-	{
-		data->error_msg = ft_strdup("Memory allocation failed");
 		return (NULL);
-	}
 	return (path);
 }
 
