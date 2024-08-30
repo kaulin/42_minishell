@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 15:05:18 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:36:16 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_var	*var_new(char *key, char *value)
 
 /*
 Adds the new to the end of the var_list. If var_list is empty to 
-start with, var_list is set equal to the new.
+start with, var_list is set equal to the new. The alphabetic pointer list 
+is also updated accordingly.
 */
 void	var_add_back(t_var **var_list, t_var *new)
 {
@@ -82,6 +83,10 @@ void	var_clear(t_var **var_list)
 	}
 }
 
+/*
+Returns a heap allocated string of the var's contents in the format 
+key=value.
+*/
 char	*var_to_str(t_var *var)
 {
 	char	*temp;
