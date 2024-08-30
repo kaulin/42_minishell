@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 09:19:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:39:46 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,26 +96,17 @@ void	var_clear(t_var **var_list)
 	}
 }
 
-void	var_remove_key(t_var **var_list, char *key)
+char	*var_to_str(t_var *var)
 {
-	t_var	*var;
-	t_var	*rmv;
-	
-	var = *var_list;
-	if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
-	{
-		var_remove_from_alpha(*var_list, var);
-		*var_list = var->next;
-		var_delone(var);
-	}
-	while (var->next)
-	{
-		if (!ft_strncmp(var->next->key, key, ft_strlen(key) + 1))
-		{
-			rmv = var->next;
-			var_remove_from_alpha(*var_list, rmv);
-			var->next = rmv->next;
-			var_delone(rmv);
-		}
-	}
+	char	*temp;
+	char	*final;
+
+	temp = NULL;
+	final = NULL;
+	temp = ft_strjoin(var->key, "=");
+	if (!temp)
+		return (NULL);
+	final = ft_strjoin(temp, var->value);
+	free(temp);
+	return (final);
 }

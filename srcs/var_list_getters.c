@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_list_utils.c                                   :+:      :+:    :+:   */
+/*   var_list_getters.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:41:12 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 09:19:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:48:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*var_get_value(t_var *var, char *key)
+t_var	*var_get_var(t_var *var, char *key)
 {
 	while (var)
 	{
 		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
-			return (ft_strdup(var->value));
+			return (var);
 		var = var->next;
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 void	print_vars(t_var *var_list, int order_flag)
@@ -43,21 +43,6 @@ void	print_vars(t_var *var_list, int order_flag)
 			var = var->next;
 		}
 	}
-}
-
-char	*var_to_str(t_var *var)
-{
-	char	*temp;
-	char	*final;
-
-	temp = NULL;
-	final = NULL;
-	temp = ft_strjoin(var->key, "=");
-	if (!temp)
-		return (NULL);
-	final = ft_strjoin(temp, var->value);
-	free(temp);
-	return (final);
 }
 
 char	**var_to_arr(t_var *var_list)

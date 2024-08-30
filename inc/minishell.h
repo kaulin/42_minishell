@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 09:20:07 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:48:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,17 @@ t_var	*var_new(char *str);
 void	var_add_back(t_var **var_list, t_var *new);
 void	var_delone(t_var *var);
 void	var_clear(t_var **var_list);
-void	var_remove_key(t_var **var_list, char *key);
+char	*var_to_str(t_var *var);
 
-// var_list_alpha.c
+// var_list_getters.c
+t_var	*var_get_var(t_var *var, char *key);
+void	print_vars(t_var *var_list, int order_flag);
+char	**var_to_arr(t_var *var_list);
+
+// var_list_editc
 void	var_add_to_alpha(t_var *var, t_var *new);
 void	var_remove_from_alpha(t_var *var, t_var *new);
-
-// var_list_utils.c
-char	*var_get_value(t_var *var, char *key);
-void	print_vars(t_var *var_list, int order_flag);
-char	*var_to_str(t_var *var);
-char	**var_to_arr(t_var *var_list);
+void	var_remove_key(t_var **var_list, char *key);
 
 // file_list.c
 t_file	*file_new(char *content, int flag);
