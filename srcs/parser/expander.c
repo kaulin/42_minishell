@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/29 10:51:25 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:29:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,16 @@ static void	expander_init(t_expander *expander, char *str)
 }
 
 /*
-Traverses the given string. If the first character is alphabetic, continues as 
-long as the characters are alphanumeric. If the first character is numeric, only jumps one character ahead. Returns the current ptr location.
+Traverses the given string. If the first character is alphabetic or 
+an underscore, continues as long as the characters are alphanumeric or 
+underscores. If the first character is numeric, only jumps one character 
+ahead. Returns the current ptr location.
 */
 static char	*find_key_end(char *ptr)
 {
-	if (ft_isalpha(*ptr))
+	if (ft_isalpha(*ptr) || *ptr == '_')
 	{
-		while (*ptr && ft_isalnum(*ptr))
+		while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 			ptr++;
 	}
 	else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '?')
