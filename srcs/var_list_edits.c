@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 15:05:59 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:01:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	var_add_var(t_var **var_list, char *str)
 	if (var && value)
 	{
 		free(var->value);
+		free(key);
 		var->value = value;
 	}
 	else if (!var)
