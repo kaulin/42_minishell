@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/29 15:01:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:19:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_var	*var_new(char *str)
 		free(new);
 		return (NULL);
 	}
-	new->value = ft_stdrup(ft_strchr(str, '=') + 1);
+	new->value = ft_strdup(ft_strchr(str, '=') + 1);
 	if (!new->value)
 	{
 		free(new->key);
@@ -41,7 +41,7 @@ t_var	*var_new(char *str)
 	}
 	new->next = NULL;
 	new->alpha = new;
-	new->a_next = NULL;
+	new->anext = NULL;
 	return (new);
 }
 
@@ -93,5 +93,29 @@ void	var_clear(t_var **var_list)
 		next = (*var_list)->next;
 		var_delone(*var_list);
 		*var_list = next;
+	}
+}
+
+void	var_remove_key(t_var **var_list, char *key)
+{
+	t_var	*var;
+	t_var	*rmv;
+	
+	var = *var_list;
+	if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
+	{
+		var_remove_from_alpha(*var_list, var);
+		*var_list = var->next;
+		var_delone(var);
+	}
+	while (var->next)
+	{
+		if (!ft_strncmp(var->next->key, key, ft_strlen(key) + 1))
+		{
+			rmv = var->next;
+			var_remove_from_alpha(*var_list, rmv);
+			var->next = rmv->next;
+			var_delone(rmv);
+		}
 	}
 }

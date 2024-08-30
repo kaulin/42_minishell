@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/29 15:01:26 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:20:32 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	var_add_to_alpha(t_var *var, t_var *new)
 {
 	var = var->alpha;
-	if (ft_strncmp(var->key, new->key, ft_strlen(var)) > 0)
+	if (ft_strncmp(var->key, new->key, ft_strlen(var->key)) > 0)
 	{
-		new->a_next = var;
+		new->anext = var;
 		while (var)
 		{
 			var->alpha = new;
@@ -27,35 +27,35 @@ void	var_add_to_alpha(t_var *var, t_var *new)
 	else
 	{
 		new->alpha = var;
-		while (var->a_next)
+		while (var->anext)
 		{
-			if (ft_strncmp(var->a_next->key, new->key, ft_strlen(var)) > 0)
+			if (ft_strncmp(var->anext->key, new->key, ft_strlen(var->key)) > 0)
 			{
-				new->a_next = var->a_next;
-				var->a_next = new;
+				new->anext = var->anext;
+				var->anext = new;
 			}
 			else
-				var = var->a_next;
+				var = var->anext;
 		}
-		var->a_next = new;
+		var->anext = new;
 	}
 }
 
-void	var_rmv_from_alpha(t_var *var, t_var *rmv)
+void	var_remove_from_alpha(t_var *var, t_var *rmv)
 {
 	var = var->alpha;
-	if (var = rmv)
+	if (var == rmv)
 	{
 		while (var)
 		{
-			var->alpha = rmv->a_next;
-			var = var->a_next;
+			var->alpha = rmv->anext;
+			var = var->anext;
 		}
 	}
 	else
 	{
-		while (var->a_next != rmv)
-			var = var->a_next;
-		var->a_next = rmv->next;
+		while (var->anext != rmv)
+			var = var->anext;
+		var->anext = rmv->next;
 	}
 }

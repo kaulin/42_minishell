@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:41:12 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/29 15:05:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:19:48 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,6 @@ char	*var_get_value(t_var *var, char *key)
 	return (ft_strdup(""));
 }
 
-void	var_remove_key(t_var **var_list, char *key)
-{
-	t_var	*var;
-	
-	var = *var_list;
-	if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
-	{
-		*var_list = var->next;
-		var_delone(var);
-	}
-	while (var->next)
-	{
-		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
-		{
-			
-		}
-	}
-
-}
-
 void	print_vars(t_var *var_list, int order_flag)
 {
 	t_var	*var;
@@ -55,7 +35,7 @@ void	print_vars(t_var *var_list, int order_flag)
 		if (order_flag)
 		{
 			printf("declare -x %s=\"%s\"\n", var->key, var->value);
-			var = var->a_next;
+			var = var->anext;
 		}
 		else
 		{
