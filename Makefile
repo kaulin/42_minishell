@@ -6,7 +6,7 @@
 #    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/08/29 15:06:39 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/08/30 12:51:28 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ MAIN_SRC	:= main.c \
 			redirection.c \
 			utils.c \
 			var_list.c \
-			var_list_alpha.c \
+			var_list_edits.c \
 			var_list_utils.c
 #
 BINS_DIR	:= $(SRC_DIR)builtins/

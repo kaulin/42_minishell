@@ -6,39 +6,25 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 09:39:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:05:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Creates a new var varuct and initialises key and value from parameter string. 
+Creates a new var varuct and initialises key and value from parameter strings. 
 Returns a pointer to new, or NULL in the case of error.
 */
-t_var	*var_new(char *str)
+t_var	*var_new(char *key, char *value)
 {
 	t_var	*new;
-
-	new = NULL;
-	new->key = NULL;
-	new->value = NULL;
+	
 	new = malloc(sizeof(t_var));
 	if (!new)
 		return (NULL);
-	new->key = ft_substr(str, 0, ft_strchr(str, '=') - str);
-	if (!new->key)
-	{
-		free(new);
-		return (NULL);
-	}
-	new->value = ft_strdup(ft_strchr(str, '=') + 1);
-	if (!new->value)
-	{
-		free(new->key);
-		free(new);
-		return (NULL);
-	}
+	new->key = key;
+	new->value = value;
 	new->next = NULL;
 	new->alpha = new;
 	new->anext = NULL;
@@ -58,11 +44,11 @@ void	var_add_back(t_var **var_list, t_var *new)
 	else
 	{
 		temp = *var_list;
-		while (temp->next != NULL)
+		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
+		var_add_to_alpha(*var_list, new);
 	}
-	var_add_to_alpha(*var_list, new);
 }
 
 /*

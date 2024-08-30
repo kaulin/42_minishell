@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_list_getters.c                                 :+:      :+:    :+:   */
+/*   var_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:41:12 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 09:48:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:16:04 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_var	*var_get_var(t_var *var, char *key)
 {
+	if (!key || !*key)
+		return (NULL);
 	while (var)
 	{
 		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
@@ -23,23 +25,40 @@ t_var	*var_get_var(t_var *var, char *key)
 	return (NULL);
 }
 
-void	print_vars(t_var *var_list, int order_flag)
+char	*var_get_value(t_var *var, char *key)
+{
+	while (var)
+	{
+		if (!ft_strncmp(var->key, key, ft_strlen(key) + 1))
+			return (var->value);
+		var = var->next;
+	}
+	return (NULL);
+}
+
+void	var_print_vars(t_var *var_list, int in_order_flag)
 {
 	t_var	*var;
 
-	var = var_list;
-	if (order_flag)
-		var = var->alpha;
-	while (var)
+	if (in_order_flag)
 	{
-		if (order_flag)
+		var = var_list->alpha;
+		while (var)
 		{
-			printf("declare -x %s=\"%s\"\n", var->key, var->value);
+			if (var->value)
+				printf("declare -x %s=\"%s\"\n", var->key, var->value);
+			else
+				printf("declare -x %s\n", var->key);
 			var = var->anext;
 		}
-		else
+	}
+	else
+	{
+		var = var_list;
+		while (var)
 		{
-			printf("%s=%s\n", var->key, var->value);
+			if (var->value)
+				printf("%s=%s\n", var->key, var->value);
 			var = var->next;
 		}
 	}
@@ -48,16 +67,21 @@ void	print_vars(t_var *var_list, int order_flag)
 char	**var_to_arr(t_var *var_list)
 {
 	int		var_index;
+	t_var	*var;
 	char	**var_arr;
 
 	var_index = 0;
-	while (var_list + var_index)
+	var = var_list;
+	while (var)
+	{
 		var_index++;
+		var = var->next;
+	}
 	var_arr = malloc((var_index + 1) * sizeof(char *));
 	if (!var_arr)
 		return (NULL);
 	var_index = 0;
-	while (var_list + var_index)
+	while (var_list)
 	{
 		var_arr[var_index] = var_to_str(var_list);
 		if (!var_arr[var_index])
@@ -66,6 +90,7 @@ char	**var_to_arr(t_var *var_list)
 			return (NULL);
 		}
 		var_index++;
+		var_list = var_list->next;
 	}
 	var_arr[var_index] = NULL;
 	return (var_arr);

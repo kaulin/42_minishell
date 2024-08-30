@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 09:48:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:29:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@
 typedef struct s_data
 {
 	char			*input;
-	char			**envp;
+	struct s_var	*envp_list;
+	char			**envp_arr;
 	char			**paths;
-	int				envp_count;
 	int				o_stdin;
 	int				o_stdout;
 	struct s_cmd	*cmd_list;
@@ -86,10 +86,10 @@ typedef struct s_var
 } t_var;
 
 // data.c
+int		update_envp(t_data *data);
 void	reset_data(t_data *data);
 void	clean_data(t_data *data);
 int		init_data(t_data *data, char **envp);
-char	**copy_envp(t_data *data, char **envp);
 
 // fail.c
 void	fail(int exit_code, char *msg, t_data *data);
@@ -102,21 +102,23 @@ void	cmd_clear(t_cmd **cmd_list);
 int		cmd_print(t_cmd *cmd);
 
 // var_list.c
-t_var	*var_new(char *str);
+t_var	*var_new(char *key, char *value);
 void	var_add_back(t_var **var_list, t_var *new);
 void	var_delone(t_var *var);
 void	var_clear(t_var **var_list);
 char	*var_to_str(t_var *var);
 
-// var_list_getters.c
+// var_list_utils.c
 t_var	*var_get_var(t_var *var, char *key);
-void	print_vars(t_var *var_list, int order_flag);
+char	*var_get_value(t_var *var, char *key);
+void	var_print_vars(t_var *var_list, int in_order_flag);
 char	**var_to_arr(t_var *var_list);
 
-// var_list_editc
+// var_list_edits.c
+int		var_add_var(t_var **var_list, char *str);
 void	var_add_to_alpha(t_var *var, t_var *new);
-void	var_remove_from_alpha(t_var *var, t_var *new);
 void	var_remove_key(t_var **var_list, char *key);
+void	var_remove_from_alpha(t_var *var, t_var *rmv);
 
 // file_list.c
 t_file	*file_new(char *content, int flag);
