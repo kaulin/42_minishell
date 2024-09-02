@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 16:07:33 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:06:52 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 int	change_directory(t_data *data, char *path)
 {
 	if (chdir(path) != 0) //System function (system call) that changes the current working directory. Doesn't change the PWD variable. What if this fails?
-		return (data->error_msg = ft_strdup("cd: error: No such file or directory"), ERROR);
+		return (data-> error_msg = ft_strdup("No such file or directory"), ERROR);
 	else if (update_pwd(data) || update_envp(data))
 		return (ERROR);
 	return (SUCCESS);
@@ -63,24 +63,30 @@ int	change_directory(t_data *data, char *path)
 
 static char *up_one(t_data *data) 
 {
-	char *path;
-	char *pointer;
-	char cwd[PATH_MAX];
+	char	*path;
+	char	*pointer;
+	char	cwd[PATH_MAX];
+	int		i;
 	
+	path = NULL;
+	i = 0;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return (data->error_msg = ft_strdup("getcwd() error"), NULL);
-	pointer = strrchr(cwd, '/');
-	if (pointer != NULL) 
+	pointer = ft_strrchr(cwd, '/');
+	if (pointer == cwd)
+		path = ft_strdup(cwd);
+	else
 	{
-		if (pointer == cwd) // if we are at root
-			pointer++;
-		*pointer = '\0';
+		while (&cwd[i] != pointer)
+			i++;
+		path = (char *)malloc(i + 1 * sizeof(char));
+		if (!path)
+			fail(1, NULL, data);
+		path = ft_memcpy(path, cwd, i);
 	}
-	path = strdup(cwd);
-	if (!path)
-		return (NULL);
 	return (path);
 }
+
 
 /*
 CD with only a relative or absolute path
