@@ -2,10 +2,8 @@ TODO
 - Check builtin functionality thoroughly after migration, especially cd and unset.
 - Wrong error message for trying to cd into non-existing dir
 - Redirections and file permissions or directories
-- Expansion of env variables in heredoc (maybe not necessary, according to many)
 - Redirection without command
 - If there are multiple outfiles, they are created in order and until one fails (no permissions) or the last one is reached.
-- Signals
 - Error messages
 - Fix single memory leak in trim_n of expander_utils.c
 
