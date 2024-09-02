@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 22:31:59 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/02 23:17:09 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,26 +89,64 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 	
 	cur_file = cur_cmd->infiles;
+	if (cur_file->file_str)
+	{
+		while (cur_file->next)//go through the array and exec the heredocs
+		{
+			if (cur_file->flag)
+				if (get_input(cur_cmd, data) != 0)
+					return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
+			cur_file = cur_file->next;
+		}
+		if (cur_file->flag)//if the last one is heredoc
+			if (get_input(cur_cmd, data) != 0)
+				return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
+		cur_file = cur_cmd->infiles;
+		while (cur_file->next)//go thought the array and check the files
+		{
+			if (!cur_file->flag)
+				if (check_file(data, cur_file->file_str, 1) == 1)
+					return (1);
+			cur_file = cur_file->next;
+		}
+		if (!cur_file->flag)// if the last one is a file
+		{
+			if (check_file(data, cur_file->file_str, 1) == 1)
+				return (1);
+			cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
+			if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
+				return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
+			close(cur_cmd->in_fd);
+		}
+	}
+	return (SUCCESS);
+}
+/*
+static int	input_redirection(t_cmd *cur_cmd, t_data *data)
+{
+	t_file	*cur_file;
+	
+	cur_file = cur_cmd->infiles;
+	if (cur_file->flag)
+		if (get_input(cur_cmd, data) != 0)
+			return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
 	if (!cur_file->flag && cur_file->file_str)
 	{
 		while (cur_file->next)
 		{
-			if (access(cur_file->file_str, F_OK) != 0)
-				return (data->error_msg = ft_strdup("File doesn't exist\n"), ERROR);
+			if (check_file(data, cur_file->file_str, 1) == 1)
+				return (1);
 			cur_file = cur_file->next;
 		}
+		if (check_file(data, cur_file->file_str, 1) == 1)
+			return (1);
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
-		if (cur_cmd->in_fd == -1)
-			return (data->error_msg = ft_strdup("File doesn't exist\n"), ERROR);
 		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
 			return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
 		close(cur_cmd->in_fd);
 	}
-	else if (cur_file->flag)
-		if (get_input(cur_cmd, data) != 0)
-			return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
 	return (SUCCESS);
-}
+}*/
 
 static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 {
