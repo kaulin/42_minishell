@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 15:06:52 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/02 20:48:07 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 			return (ERROR);
 		var_old = var_get_var(data->envp_list, "OLDPWD");
 	}
-	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list
+	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list do we need strinjoin?
 	if (!new_pwd)
 		return (ERROR);
 	if (var_old->value)
@@ -67,9 +67,10 @@ static char *up_one(t_data *data)
 	char	*pointer;
 	char	cwd[PATH_MAX];
 	int		i;
+	int		j;
 	
-	path = NULL;
 	i = 0;
+	j = 0;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return (data->error_msg = ft_strdup("getcwd() error"), NULL);
 	pointer = ft_strrchr(cwd, '/');
@@ -82,11 +83,15 @@ static char *up_one(t_data *data)
 		path = (char *)malloc(i + 1 * sizeof(char));
 		if (!path)
 			fail(1, NULL, data);
-		path = ft_memcpy(path, cwd, i);
+		while (j < i)
+		{
+			path[j] = cwd[j];
+			j++;
+		}
+		path[j] = '\0';
 	}
 	return (path);
 }
-
 
 /*
 CD with only a relative or absolute path
@@ -114,9 +119,10 @@ int	cd_builtin(t_data *data, char **cmds)
 		if (!path)
 			return (data->error_msg = ft_strdup("cd: OLDPWD not set"), ERROR);
 	}
-	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory
+	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory. This is the only case where we need to allocate a path? and free it if something goes wrong
 		path = up_one(data);
 	else
 		path = cmds[1];//path is the path given
-	return (change_directory(data, path));
+	change_directory(data, path);
+	return (SUCCESS);
 }
