@@ -1,11 +1,12 @@
 **TO DO**
 - Check builtin arguments, if there are possible commands or expansions inside them and if we need to handle them somehow.Echo!
-- Correct EXIT_SUCCESS/FAILURE
 - Check malloc and function call protection
 - Check the forms of valid identifiers with export. Variables can only start with alphabets or '_'?
 - Handle several redirections/files inside sigle command
-- Handle heredoc by making another pipe where the input is written and where it can be read from
-- Check if PATH_MAX still works in linux as it should
 - Correct error handling and make it uniform.
 - Echo: is there a space after the last word to be shown
-- Adding a new variable with export doesn't work
+
+Notes
+- leaks in parsing when echo has ""
+- We get syntax error near unexpected newline token if we use >out instead of > out
+- Segfault if using >out in the beginning eg. >out cat
