@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 13:35:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:13:50 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
 		fail(1, "Dup2 failed\n", NULL);
 	close(fd[1]);
-	check_redirection(data, cur_cmd);
+	//if (check_redirection(data, cur_cmd) != 0)
+	//{
+		//printf("%s\n", data->error_msg);
+	//	exit (1);
+	//}
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		execute_builtin(data, cur_cmd->cmd_arr);
@@ -71,6 +75,8 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		data->error_msg = ft_strdup("Pipe failed\n");
 		return (ERROR);
 	}
+	if (check_redirection(data, cur_cmd) != 0)
+		return (1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)
 	{
@@ -120,6 +126,7 @@ int	execute_and_pipe(t_data *data)
 	t_cmd	*cur_cmd;
 
 	cur_cmd = data->cmd_list;
+	//what if there is no cmd but there is a redirection?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		if (check_redirection(data, cur_cmd) == 1 || execute_builtin(data, cur_cmd->cmd_arr) == 1)
