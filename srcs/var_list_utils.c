@@ -6,11 +6,27 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 12:41:12 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 16:34:33 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:12:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+Returns the number of nodes in a var_list.
+*/
+int	var_count(t_var *var)
+{
+	int	count;
+
+	count = 0;
+	while (var)
+	{
+		count++;
+		var = var->next;
+	}
+	return (count);
+}
 
 /*
 Looks for a var in the given list who's key matches the given key. Returns 
@@ -84,32 +100,24 @@ Converts the given var_list to a string array, which is returned.
 */
 char	**var_to_arr(t_var *var_list)
 {
-	int		var_index;
-	t_var	*var;
+	int		i;
 	char	**var_arr;
 
-	var_index = 0;
-	var = var_list;
-	while (var)
-	{
-		var_index++;
-		var = var->next;
-	}
-	var_arr = malloc((var_index + 1) * sizeof(char *));
+	var_arr = malloc((var_count(var_list) + 1) * sizeof(char *));
 	if (!var_arr)
 		return (NULL);
-	var_index = 0;
+	i = 0;
 	while (var_list)
 	{
-		var_arr[var_index] = var_to_str(var_list);
-		if (!var_arr[var_index])
+		var_arr[i] = var_to_str(var_list);
+		if (!var_arr[i])
 		{
 			clean_array(var_arr);
 			return (NULL);
 		}
-		var_index++;
+		i++;
 		var_list = var_list->next;
 	}
-	var_arr[var_index] = NULL;
+	var_arr[i] = NULL;
 	return (var_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 14:29:23 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:12:27 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	var_clear(t_var **var_list);
 char	*var_to_str(t_var *var);
 
 // var_list_utils.c
+int		var_count(t_var *var);
 t_var	*var_get_var(t_var *var, char *key);
 char	*var_get_value(t_var *var, char *key);
 void	var_print_vars(t_var *var_list, int in_order_flag);
