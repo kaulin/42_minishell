@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 14:37:00 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:18:45 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,21 @@ Environmental variables normally contain only uppercase letters and '_'. Stick w
 int	export_builtin(t_data *data, char **cmds)
 {
 	int		i;
+	t_var	*var;
 
 	i = 1;
 	if (!cmds[i])
-		var_print_vars(data->envp_list, 1);
+	{
+		var = data->envp_list->alpha;
+		while (var)
+		{
+			if (var->value)
+				printf("declare -x %s=\"%s\"\n", var->key, var->value);
+			else
+				printf("declare -x %s\n", var->key);
+			var = var->anext;
+		}
+	}
 	while (cmds[i])
 	{
 		if (var_add_var(&data->envp_list, cmds[i]))

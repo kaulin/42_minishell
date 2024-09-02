@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 09:12:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:20:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ char	*var_to_str(t_var *var);
 int		var_count(t_var *var);
 t_var	*var_get_var(t_var *var, char *key);
 char	*var_get_value(t_var *var, char *key);
-void	var_print_vars(t_var *var_list, int in_order_flag);
 char	**var_to_arr(t_var *var_list);
 
 // var_list_edits.c
@@ -140,11 +139,9 @@ int		cd_builtin(t_data *data, char **cmds);
 int 	pwd_builtin(t_data *data, char **cmds);
 int		echo_builtin(char **cmd);
 int		env_builtin(t_data *data, char **cmds);
-int		env_in_order(t_data *data);
 int		exit_builtin(t_data *data);
 int		unset_builtin(t_data *data, char **cmds);
 int		export_builtin(t_data *data, char **cmds);
-int		check_key(t_data *data, char *cmd);
 
 // paths.c
 void	parse_paths(t_data *data);
