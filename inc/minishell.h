@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 22:28:27 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/03 09:36:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@
 # include <limits.h>
 # include "libft.h"
 
+// Standard FDs
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
 
+// Error codes
 # define SUCCESS 0
 # define ERROR 1
+# define SYNTAX_ERR 2
+# define NO_CMD_ERR 127
 
 typedef struct s_data
 {
@@ -94,6 +98,9 @@ int		init_data(t_data *data, char **envp);
 // fail.c
 void	fail(int exit_code, char *msg, t_data *data);
 
+// error.c
+int		set_err(t_data *data, int err_code, char *err_msg);
+
 // cmd_list.c
 t_cmd	*cmd_new(void);
 void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
@@ -151,7 +158,6 @@ char	*find_cmd_path(t_data *data, char *cur_cmd);
 int	check_redirection(t_data *data, t_cmd *cur_cmd);
 
 //execute.c
-
 int	execute_and_pipe(t_data *data);
 
 //exec_utils.c
