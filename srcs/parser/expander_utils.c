@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/03 09:47:00 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:25:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	trim_n(char **str, unsigned int n)
 		temp = ft_substr(*str, n, ft_strlen(*str) - 2 * n);
 	if (!temp)
 		return (ERROR);
-	free(*str - 1);
+	free(*str);
 	*str = temp;
 	return (SUCCESS);
 }
