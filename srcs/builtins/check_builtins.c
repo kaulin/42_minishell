@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/26 20:20:22 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/03 11:17:28 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ How do we handle builtins failing?
 int	execute_builtin(t_data *data, char **cmds)
 {
 	(void)data;
+	if (!cmds)
+		return (SUCCESS);
 	if (ft_strncmp("echo", cmds[0], 5) == 0)
 		return (echo_builtin(cmds));
 	if (ft_strncmp("cd", cmds[0], 3) == 0)
