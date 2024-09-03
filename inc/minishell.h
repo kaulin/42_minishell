@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/03 09:36:58 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:19:41 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,9 @@ char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
 int	check_redirection(t_data *data, t_cmd *cur_cmd);
+
+// heredocs.c
+int	check_heredocs(t_data *data, t_cmd *cur_cmd);
 
 //execute.c
 int	execute_and_pipe(t_data *data);
