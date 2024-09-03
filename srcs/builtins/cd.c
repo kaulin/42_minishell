@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 20:48:07 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/03 10:29:45 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@
 	Calls check_key to change the variables
 */
 
-int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in bash
+int	update_pwd(t_data *data)
 {
 	char	*new_pwd;
 	char	buffer[PATH_MAX];
 	t_var	*var_pwd;
 	t_var	*var_old;
 
-	
 	var_pwd = var_get_var(data->envp_list, "PWD");
 	if (!var_pwd)
 		return (data->error_msg = ft_strdup(" cd: PWD not set"), ERROR);
@@ -37,7 +36,7 @@ int	update_pwd(t_data *data)//we do not need a PWD variable to update OLDPWD in 
 			return (ERROR);
 		var_old = var_get_var(data->envp_list, "OLDPWD");
 	}
-	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//this makes the new PWD that is put into the list do we need strinjoin?
+	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//do we need strinjoin?
 	if (!new_pwd)
 		return (ERROR);
 	if (var_old->value)
@@ -61,36 +60,57 @@ int	change_directory(t_data *data, char *path)
 	return (SUCCESS);
 }
 
-static char *up_one(t_data *data) 
+static char	*up_one(t_data *data)
 {
 	char	*path;
 	char	*pointer;
 	char	cwd[PATH_MAX];
 	int		i;
-	int		j;
-	
+
 	i = 0;
-	j = 0;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return (data->error_msg = ft_strdup("getcwd() error"), NULL);
 	pointer = ft_strrchr(cwd, '/');
 	if (pointer == cwd)
-		path = ft_strdup(cwd);
-	else
+		return (path = ft_strdup(cwd));
+	while (&cwd[i] != pointer)
+		i++;
+	path = (char *)malloc(i + 1 * sizeof(char));
+	if (!path)
+		return (data->error_msg = ft_strdup("Memory allocation error"), NULL);
+	i = 0;
+	while (&cwd[i] != pointer)
 	{
-		while (&cwd[i] != pointer)
-			i++;
-		path = (char *)malloc(i + 1 * sizeof(char));
-		if (!path)
-			fail(1, NULL, data);
-		while (j < i)
-		{
-			path[j] = cwd[j];
-			j++;
-		}
-		path[j] = '\0';
+		path[i] = cwd[i];
+		i++;
 	}
+	path[i] = '\0';
 	return (path);
+}
+
+static int	find_path(t_data *data, char **cmds, char **path, int *flag)
+{	
+	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
+	{
+		*path = var_get_value(data->envp_list, "HOME");
+		if (!*path || **path == '\0' || **path == ' ') //tabs?
+			return (data->error_msg = ft_strdup("cd: HOME not set"), ERROR);
+	}
+	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD).
+	{
+		*path = var_get_value(data->envp_list, "OLDPWD");
+		if (!*path)
+			return (data->error_msg = ft_strdup("cd: OLDPWD not set"), ERROR);
+	}
+	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory. This is the only case where we need to allocate a path? and free it if something goes wrong
+	{
+		*path = up_one(data);//this has been allocated
+		if (*path)
+			*flag = 1;
+	}
+	else
+		*path = cmds[1];//path is the path given
+	return (SUCCESS);
 }
 
 /*
@@ -100,29 +120,24 @@ int	cd_builtin(t_data *data, char **cmds)
 {
 	char	*path;
 	int		i;
+	int		flag;
 
 	path = NULL;
 	i = 0;
+	flag = 0;
 	while (cmds[i] != NULL)
 		i++;
 	if (i >= 3)
 		return (data->error_msg = ft_strdup("cd: too many arguments"), ERROR);
-	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
+	if (find_path(data, cmds, &path, &flag) == 1 || !path)
+		return (ERROR);
+	if (change_directory(data, path) == 1)
 	{
-		path = var_get_value(data->envp_list, "HOME");
-		if (!path || *path == '\0' || *path == ' ') //tabs?
-			 return (data->error_msg = ft_strdup("cd: HOME not set"), ERROR);
+		if (flag)
+			free(path);
+		return (ERROR);
 	}
-	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD).
-	{
-		path = var_get_value(data->envp_list, "OLDPWD");
-		if (!path)
-			return (data->error_msg = ft_strdup("cd: OLDPWD not set"), ERROR);
-	}
-	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory. This is the only case where we need to allocate a path? and free it if something goes wrong
-		path = up_one(data);
-	else
-		path = cmds[1];//path is the path given
-	change_directory(data, path);
+	if (flag)
+		free(path);
 	return (SUCCESS);
 }
