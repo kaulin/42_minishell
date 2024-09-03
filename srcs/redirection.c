@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 23:17:09 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/03 13:55:46 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,63 +64,70 @@ static void	read_input(int *fd, char *delim)
 	}
 }
 
-static int	get_input(t_cmd *cur_cmd, t_data *data)
+static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
 {
 	int		fd[2];
 	char	*delim;
 
-	delim = cur_cmd->infiles->file_str;
+	delim = cur_file->file_str;
 	if (pipe(fd) == -1)
 		return (data->error_msg = ft_strdup("Pipe failed\n"), ERROR);
 	read_input(fd, delim);
 	close(fd[1]);
 	cur_cmd->in_fd = fd[0];
-	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-	{
-		close(cur_cmd->in_fd);
-		return (data->error_msg = ft_strdup("dup2 failed\n"), ERROR);
-	}
-	close(cur_cmd->in_fd);
 	return (SUCCESS);
 }
 
 static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
 	t_file	*cur_file;
+	int		heredoc_fd;
 	
 	cur_file = cur_cmd->infiles;
-	if (cur_file->file_str)
+	heredoc_fd = -1;
+	if (cur_file)
 	{
-		while (cur_file->next)//go through the array and exec the heredocs
+		while (cur_file)//go through the array and exec the heredocs
 		{
-			if (cur_file->flag)
-				if (get_input(cur_cmd, data) != 0)
+			if (cur_file->flag)//if heredoc
+			{
+				if (get_input(cur_cmd, cur_file, data) != 0)//get input
 					return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
+				if (heredoc_fd != -1)
+					close(heredoc_fd);
+				heredoc_fd = cur_cmd->in_fd; // Track the latest heredoc's fd
+			}
 			cur_file = cur_file->next;
 		}
-		if (cur_file->flag)//if the last one is heredoc
-			if (get_input(cur_cmd, data) != 0)
-				return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
 		cur_file = cur_cmd->infiles;
-		while (cur_file->next)//go thought the array and check the files
+		while (cur_file->next)//go through the array and check the files
 		{
-			if (!cur_file->flag)
+			if (!cur_file->flag) // If it's a regular file
 				if (check_file(data, cur_file->file_str, 1) == 1)
 					return (1);
 			cur_file = cur_file->next;
 		}
-		if (!cur_file->flag)// if the last one is a file
+		if (!cur_file->flag)//if the last redirection is file
 		{
+			if (heredoc_fd != -1)// If there was a heredoc, its fd should be closed before opening the new file
+				close(heredoc_fd);
 			if (check_file(data, cur_file->file_str, 1) == 1)
 				return (1);
 			cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
 			if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-				return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
+				return (data->error_msg = ft_strdup("Dup failed here\n"), ERROR);
 			close(cur_cmd->in_fd);
+		}
+		else if (heredoc_fd != -1)// Last one is heredoc
+		{
+			if (dup2(heredoc_fd, STDIN_FILENO) == -1)
+				return (data->error_msg = ft_strdup("Dup failed here2\n"), ERROR);
+			close(heredoc_fd);
 		}
 	}
 	return (SUCCESS);
 }
+
 /*
 static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
@@ -171,7 +178,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 			cur_cmd->out_fd = open(cur_file->file_str,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (cur_cmd->out_fd == -1)
 			return (data->error_msg = ft_strdup("Permission denied\n"), ERROR);
-		if (dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
+		if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 			return (data->error_msg = ft_strdup("Dup2 error\n"), ERROR);
 		close(cur_cmd->out_fd);
 	}
