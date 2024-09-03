@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 15:18:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:05:03 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	check_tokens(t_token *token, t_data *data)
 {
 	if (token->type == PIPE_TOKEN)
 	{
-		data->error_msg = ft_strdup("syntax error near unexpected token\n");
-		return (ERROR);
+		return (set_err(data, 2, "|"));
 	}
 	while (token)
 	{
@@ -47,17 +46,12 @@ int	check_tokens(t_token *token, t_data *data)
 			data->cmd_count++;
 		if ((token->type == REDIR_TOKEN && !token->next) \
 			|| (token->type == PIPE_TOKEN && !token->next))
-			{
-				data->error_msg = ft_strdup("syntax error near unexpected newline token\n");
-				return (ERROR);
-			}
+				return (set_err(data, 2, \
+				"newline"));
 		else if ((token->type == REDIR_TOKEN \
 			&& token->next->type != TEXT_TOKEN) || (token->type == PIPE_TOKEN \
 			&& token->next->type == PIPE_TOKEN))
-			{
-				data->error_msg = ft_strdup("syntax error near unexpected token\n");
-				return (ERROR);
-			}
+				return (set_err(data, 2, token->next->str));
 		token = token->next;
 	}
 	return (SUCCESS);
@@ -86,9 +80,3 @@ int	parse(char *input, t_data *data)
 		return (parser_clean(&parser, ERROR));
 	return (parser_clean(&parser, SUCCESS));
 }
-
-/*
-After tokenization:
-- define token types
-- assing into command structs and their variables
-*/
