@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 22:51:22 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/03 22:15:40 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_file(t_data *data, char *file, int flag)
 	if (flag == 1)//input
 	{
 		if (access(file, F_OK) == -1)
-			return (data->error_msg = ft_strdup("File doesn't exist\n"), ERROR);
+			return (data->error_msg = ft_strdup("No such file or directory\n"), ERROR);
 		if (open(file, O_RDONLY) == -1) 
 			return (data->error_msg = ft_strdup("Permission denied\n"), ERROR);
 	}
