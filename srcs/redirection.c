@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/03 13:55:46 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:22:55 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,126 +34,51 @@ Situations
 		- The last outfile is the one that is used. Files before that are either emptied of content(redirection) or left as they are (append)
 */
 
-/*
-Lets the user insert lines of input, until a line that contains only the 
-delimiter string. A forced EoF is caught and an error is printed to STDERROR. 
-Each line given is printed to the write end of the given pipe.
-*/
-
-static void	read_input(int *fd, char *delim)
-{
-	char *input;
-	
-	while (1)
-	{
-		input = readline("> ");
-		if (!input)
-		{
-			printf("warning: here-document delimited by end-of-file\n");
-			break ;
-		}
-		if (ft_strncmp(input, delim, ft_strlen(delim)) == 0 && \
-			(input[ft_strlen(delim)] == '\n' || input[ft_strlen(delim)] == 0))
-		{
-			free(input);
-			break ;
-		}
-		ft_putstr_fd(input, fd[1]);
-		ft_putstr_fd("\n", fd[1]);
-		free(input);
-	}
-}
-
-static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
-{
-	int		fd[2];
-	char	*delim;
-
-	delim = cur_file->file_str;
-	if (pipe(fd) == -1)
-		return (data->error_msg = ft_strdup("Pipe failed\n"), ERROR);
-	read_input(fd, delim);
-	close(fd[1]);
-	cur_cmd->in_fd = fd[0];
-	return (SUCCESS);
-}
-
-static int	input_redirection(t_cmd *cur_cmd, t_data *data)
+static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
 {
 	t_file	*cur_file;
-	int		heredoc_fd;
-	
+
 	cur_file = cur_cmd->infiles;
-	heredoc_fd = -1;
-	if (cur_file)
+	while (cur_file->next)//go through the array and check the files
 	{
-		while (cur_file)//go through the array and exec the heredocs
-		{
-			if (cur_file->flag)//if heredoc
-			{
-				if (get_input(cur_cmd, cur_file, data) != 0)//get input
-					return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
-				if (heredoc_fd != -1)
-					close(heredoc_fd);
-				heredoc_fd = cur_cmd->in_fd; // Track the latest heredoc's fd
-			}
-			cur_file = cur_file->next;
-		}
-		cur_file = cur_cmd->infiles;
-		while (cur_file->next)//go through the array and check the files
-		{
-			if (!cur_file->flag) // If it's a regular file
-				if (check_file(data, cur_file->file_str, 1) == 1)
-					return (1);
-			cur_file = cur_file->next;
-		}
-		if (!cur_file->flag)//if the last redirection is file
-		{
-			if (heredoc_fd != -1)// If there was a heredoc, its fd should be closed before opening the new file
-				close(heredoc_fd);
+		if (!cur_file->flag) // If it's a regular file
 			if (check_file(data, cur_file->file_str, 1) == 1)
-				return (1);
-			cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
-			if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-				return (data->error_msg = ft_strdup("Dup failed here\n"), ERROR);
-			close(cur_cmd->in_fd);
-		}
-		else if (heredoc_fd != -1)// Last one is heredoc
-		{
-			if (dup2(heredoc_fd, STDIN_FILENO) == -1)
-				return (data->error_msg = ft_strdup("Dup failed here2\n"), ERROR);
+				return (ERROR);
+		cur_file = cur_file->next;
+	}
+	if (!cur_file->flag)//if the last redirection is file
+	{
+		if (heredoc_fd != -1)// If there was a heredoc, its fd should be closed before opening the new file
 			close(heredoc_fd);
-		}
-	}
-	return (SUCCESS);
-}
-
-/*
-static int	input_redirection(t_cmd *cur_cmd, t_data *data)
-{
-	t_file	*cur_file;
-	
-	cur_file = cur_cmd->infiles;
-	if (cur_file->flag)
-		if (get_input(cur_cmd, data) != 0)
-			return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
-	if (!cur_file->flag && cur_file->file_str)
-	{
-		while (cur_file->next)
-		{
-			if (check_file(data, cur_file->file_str, 1) == 1)
-				return (1);
-			cur_file = cur_file->next;
-		}
 		if (check_file(data, cur_file->file_str, 1) == 1)
 			return (1);
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
 		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
+			return (data->error_msg = ft_strdup("Dup failed here\n"), ERROR);
 		close(cur_cmd->in_fd);
 	}
 	return (SUCCESS);
-}*/
+}
+
+static int	input_redirection(t_cmd *cur_cmd, t_data *data)
+{
+	int		heredoc_fd;
+	
+	heredoc_fd = check_heredocs(data, cur_cmd);
+	if (heredoc_fd == 1)
+		return (ERROR);
+	if (check_infiles(data, cur_cmd, heredoc_fd) == 1)
+		return (ERROR);
+	while (cur_cmd->infiles->next)//go to the end
+		cur_cmd->infiles = cur_cmd->infiles->next;
+	if (cur_cmd->infiles->flag && heredoc_fd != -1)// Last one is heredoc
+	{
+		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
+			return (data->error_msg = ft_strdup("Dup failed here2\n"), ERROR);
+		close(heredoc_fd);
+		}
+	return (SUCCESS);
+}
 
 static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 {
