@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 16:01:05 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:26:47 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,9 @@ void	var_remove_key(t_var **var_list, char *key)
 			var_remove_from_alpha(*var_list, rmv);
 			var->next = rmv->next;
 			var_delone(rmv);
+			break;
 		}
+			var = var->next;
 	}
 }
 
