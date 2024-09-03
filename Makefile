@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
+#    By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/09/03 09:37:15 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/09/03 22:20:42 by pikkak           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ MAIN_SRC	:= main.c \
 			execute.c \
 			exec_utils.c \
 			redirection.c \
+			heredocs.c \
 			utils.c \
 			var_list.c \
 			var_list_edits.c \
