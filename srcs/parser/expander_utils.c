@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/03 10:25:24 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 12:01:04 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,26 +93,5 @@ int	expand_strings(t_expander *expander, t_data *data)
 		}
 		node = node->next;
 	}
-	return (SUCCESS);
-}
-
-/*
-Takes a pointer to a heap allocated string, makes a substring of it with int n 
-characters trimmed from both ends, frees original string and replaces its 
-pointer with the substring. If more characters would be trimmed than there are 
-in the string, an empty string is used.
-*/
-int	trim_n(char **str, unsigned int n)
-{
-	char *temp;
-
-	if (n * 2 >= ft_strlen(*str))
-		temp = ft_strdup("");
-	else
-		temp = ft_substr(*str, n, ft_strlen(*str) - 2 * n);
-	if (!temp)
-		return (ERROR);
-	free(*str);
-	*str = temp;
 	return (SUCCESS);
 }

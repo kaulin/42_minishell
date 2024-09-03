@@ -6,15 +6,11 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 13:14:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 13:10:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/03 12:01:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
-
-// Todo: Handle ${} expansion
-// Todo: Handle $1 $2 etc, ie Positional parameters?
-// Todo: Handle $(cmd) execution, ie Command substitution?
 
 /*
 Clears the malloced str_list nodes in the expander struct.
@@ -30,14 +26,24 @@ Initializes the expander struct. Sets expander->quote character to the
 first character of the string, if that character is ' or "", and expander->ptr 
 to the start of the parameter str.
 */
-static void	expander_init(t_expander *expander, char *str)
+static int	expander_init(t_expander *expander, char **str)
 {
+	char	*temp;
+
 	expander->quote = 0;
-	if (is_quote_char(*str))
-		expander->quote = *str;
-	expander->ptr = str;
+	if (is_quote_char(**str))
+	{
+		expander->quote = **str;
+		temp = ft_substr(*str, 1, ft_strlen(*str) - 2);
+		if (!temp)
+			return (ERROR);
+		free(*str);
+		*str = temp;
+	}
+	expander->ptr = *str;
 	expander->var = NULL;
 	expander->str_list = NULL;
+	return (SUCCESS);
 }
 
 /*
@@ -48,12 +54,8 @@ int	expand(char **str, t_data *data)
 {
 	t_expander	expander;
 
-	expander_init(&expander, *str);
-	if (expander.quote && trim_n(&expander.ptr, 1))
-	{
-		expander_clean(&expander);
+	if (expander_init(&expander, str))
 		return (ERROR);
-	}
 	while (*expander.ptr)
 	{
 		if (cut_str(&expander))
