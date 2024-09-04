@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/28 12:32:09 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:41:06 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@ t_token	*token_new(char *content, char next)
 		return (NULL);
 	new_token->str = content;
 	new_token->next = NULL;
-	if (!next || is_whitespace(next) \
-		|| next == '|' || next == '<' || next == '>')
-		new_token->merge_flag = 0;
-	else
-		new_token->merge_flag = 1;
+	new_token->merge_flag = 0;
 	if (is_pipe_token(new_token))
 		new_token->type = PIPE_TOKEN;
 	else if (is_redir_token(new_token))
 		new_token->type = REDIR_TOKEN;
 	else
+	{
 		new_token->type = TEXT_TOKEN;
+		if (next && !is_whitespace(next) \
+		&& next != '|' && next != '<' && next != '>')
+			new_token->merge_flag = 1;
+	}
 	new_token->placed_flag = 0;
 	return (new_token);
 }
