@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 12:38:30 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/04 13:23:52 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,17 @@ static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
 static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 {
 	int		heredoc_fd;
+	t_file	*cur_file;
 
+	cur_file = cur_cmd->infiles;
 	heredoc_fd = check_heredocs(data, cur_cmd);
 	if (heredoc_fd == 1)
 		return (ERROR);
 	if (check_infiles(data, cur_cmd, heredoc_fd) == 1)
 		return (ERROR);
-	while (cur_cmd->infiles->next)
-		cur_cmd->infiles = cur_cmd->infiles->next;
-	if (cur_cmd->infiles->flag && heredoc_fd != -1)
+	while (cur_file->next)
+		cur_file = cur_file->next;
+	if (cur_file->flag && heredoc_fd != -1)
 	{
 		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
 			return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/28 13:39:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:32:24 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	print_cmd(char **cmds, int flag)//this prints the rest of the input
 		printf("\n");
 }
 
-int	check_flag(char *arg)//this checks if there is a -n flag (also -nn.. is acceptable)
+/*
+Checks if there is a -n flag (also -nn.. is acceptable)
+*/
+int	check_flag(char *arg)
 {
 	int	i;
 
@@ -60,13 +63,13 @@ int	check_flag(char *arg)//this checks if there is a -n flag (also -nn.. is acce
 	return (0);
 }
 
-int	echo_builtin(char **cmd)//Argument form must be desided. Example here is command cmd[0], flag cmd[1], and the printable part cmd[2]
+int	echo_builtin(char **cmd)
 {
 	int	flag;
 
 	flag = 0;
 	if (cmd && cmd[1])
-		flag = check_flag(cmd[1]);//if there is a valid -n-flag we print with \n else without
+		flag = check_flag(cmd[1]);
 	print_cmd(cmd, flag);
 	return (SUCCESS);
 }

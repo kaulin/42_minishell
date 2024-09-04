@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pik-kak <pik-kak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:26:14 by pik-kak           #+#    #+#             */
-/*   Updated: 2024/06/06 11:33:40 by pik-kak          ###   ########.fr       */
+/*   Updated: 2024/09/04 13:47:49 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +18,7 @@ Looks for specific command in the paths of the environment variable.
 char	*find_cmd_path(t_data *data, char *cur_cmd)
 {
 	int		i;
-	char 	*cmd_path;
+	char	*cmd_path;
 
 	i = 0;
 	if (!data->paths)

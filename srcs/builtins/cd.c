@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/03 10:29:45 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:27:08 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 	Sets the value of PWD to the new directory(new path)
 	Calls check_key to change the variables
 */
-
+//do we need strinjoin?
 int	update_pwd(t_data *data)
 {
 	char	*new_pwd;
@@ -36,7 +36,7 @@ int	update_pwd(t_data *data)
 			return (ERROR);
 		var_old = var_get_var(data->envp_list, "OLDPWD");
 	}
-	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));//do we need strinjoin?
+	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));
 	if (!new_pwd)
 		return (ERROR);
 	if (var_old->value)
@@ -48,13 +48,15 @@ int	update_pwd(t_data *data)
 
 /*
  	Change the current working directory to directory given using chdir.
- 	Chdir changes the current working directory by passing the new path to the function. 
+ 	Chdir changes the current working directory by passing the new path
+	to the function. 
  */
 
 int	change_directory(t_data *data, char *path)
 {
-	if (chdir(path) != 0) //System function (system call) that changes the current working directory. Doesn't change the PWD variable. What if this fails?
-		return (data-> error_msg = ft_strdup("No such file or directory"), ERROR);
+	if (chdir(path) != 0)
+		return (data-> error_msg = ft_strdup("No such file or directory"), \
+				ERROR);
 	else if (update_pwd(data) || update_envp(data))
 		return (ERROR);
 	return (SUCCESS);
@@ -88,28 +90,32 @@ static char	*up_one(t_data *data)
 	return (path);
 }
 
+/*
+ //Change directory to the previous directory(OLDPWD).
+*/
+
 static int	find_path(t_data *data, char **cmds, char **path, int *flag)
-{	
+{
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		*path = var_get_value(data->envp_list, "HOME");
-		if (!*path || **path == '\0' || **path == ' ') //tabs?
+		if (!*path || **path == '\0' || **path == ' ' || **path == '	')
 			return (data->error_msg = ft_strdup("cd: HOME not set"), ERROR);
 	}
-	else if (ft_strncmp(cmds[1], "-", 2) == 0) //Change directory to the previous directory(OLDPWD).
+	else if (ft_strncmp(cmds[1], "-", 2) == 0)
 	{
 		*path = var_get_value(data->envp_list, "OLDPWD");
 		if (!*path)
 			return (data->error_msg = ft_strdup("cd: OLDPWD not set"), ERROR);
 	}
-	else if (ft_strncmp(cmds[1], "..", 3) == 0)//if there is a ".." it will change the directory up one directory. This is the only case where we need to allocate a path? and free it if something goes wrong
+	else if (ft_strncmp(cmds[1], "..", 3) == 0)
 	{
-		*path = up_one(data);//this has been allocated
+		*path = up_one(data);
 		if (*path)
 			*flag = 1;
 	}
 	else
-		*path = cmds[1];//path is the path given
+		*path = cmds[1];
 	return (SUCCESS);
 }
 

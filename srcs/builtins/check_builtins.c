@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/03 11:17:28 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:28:03 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	check_if_builtin(char **cmds)
 
 /*
 Executes the builtin in question
-Commands that produce output can be redirected so we we need to check redirections before executing commands.
+Commands that produce output can be redirected
+so we we need to check redirections before executing commands.
 How do we handle builtins failing?
 */
 int	execute_builtin(t_data *data, char **cmds)

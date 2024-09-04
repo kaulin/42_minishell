@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/30 14:49:52 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:38:53 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ Remove each variable or function name.
 EXIT STATUS        
     0    All name operands were successfully unset.
     >0    At least one name could not be unset.
-Each name refers to a variable; if there is no variable by that name, a function with that name, if any, is unset(?).
+Each name refers to a variable; if there is no variable by that name,
+a function with that name, if any, is unset(?).
 Readonly variables and functions may not be unset. Do we need to check?
 */
 

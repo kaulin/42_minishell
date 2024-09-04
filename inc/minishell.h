@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 12:39:05 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/04 13:49:47 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h> //
+# include <signal.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
-# include <termios.h> //contains the definitions used by the terminal I/O interfaces
+# include <termios.h>
 # include <fcntl.h>
 # include <limits.h>
 # include "libft.h"
@@ -74,7 +74,7 @@ typedef struct s_file
 	char			*file_str;
 	int				flag;
 	struct s_file	*next;
-} t_file;
+}	t_file;
 
 /*
 Defines struct to store environment variables in a linked list of key-value 
@@ -87,7 +87,7 @@ typedef struct s_var
 	struct s_var	*next;
 	struct s_var	*alpha;
 	struct s_var	*anext;
-} t_var;
+}	t_var;
 
 // data.c
 int		update_envp(t_data *data);
@@ -143,10 +143,10 @@ void	sigint_handler(int signal);
 int		check_if_builtin(char **cmds);
 int		execute_builtin(t_data *data, char **cmds);
 int		cd_builtin(t_data *data, char **cmds);
-int 	pwd_builtin(t_data *data, char **cmds);
+int		pwd_builtin(t_data *data, char **cmds);
 int		echo_builtin(char **cmd);
 int		env_builtin(t_data *data, char **cmds);
-int		exit_builtin(t_data *data);
+void	exit_builtin(t_data *data);
 int		unset_builtin(t_data *data, char **cmds);
 int		export_builtin(t_data *data, char **cmds);
 
@@ -155,17 +155,17 @@ void	parse_paths(t_data *data);
 char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
-int	check_redirection(t_data *data, t_cmd *cur_cmd);
+int		check_redirection(t_data *data, t_cmd *cur_cmd);
 
 // heredocs.c
-int	check_heredocs(t_data *data, t_cmd *cur_cmd);
+int		check_heredocs(t_data *data, t_cmd *cur_cmd);
 
 //execute.c
-int	execute_and_pipe(t_data *data);
+int		execute_and_pipe(t_data *data);
 
 //exec_utils.c
 void	reset_io(t_data *data);
-int	check_file(t_data *data, t_file *cur_file, int flag);
+int		check_file(t_data *data, t_file *cur_file, int flag);
 
 // utils.c
 int		join_print_free(char *str1, char *str2, int fd);

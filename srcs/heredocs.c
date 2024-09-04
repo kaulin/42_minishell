@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/03 22:23:03 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/04 13:54:20 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ Each line given is printed to the write end of the given pipe.
 */
 static void	read_input(int *fd, char *delim)
 {
-	char *input;
-	
+	char	*input;
+
 	while (1)
 	{
 		input = readline("> ");
@@ -60,17 +60,18 @@ int	check_heredocs(t_data *data, t_cmd *cur_cmd)
 	t_file	*cur_file;
 	int		heredoc_fd;
 
-	cur_file = cur_cmd->infiles;//this is at the beginning of the files
+	cur_file = cur_cmd->infiles;
 	heredoc_fd = -1;
-	while (cur_file)//go through the array and exec the heredocs
+	while (cur_file)
 	{
-		if (cur_file->flag)//if heredoc
+		if (cur_file->flag)
 		{
-			if (get_input(cur_cmd, cur_file, data) != 0)//get input
-				return (data->error_msg = ft_strdup("Error reading from heredoc\n"), ERROR);
+			if (get_input(cur_cmd, cur_file, data) != 0)
+				return (data->error_msg = \
+				ft_strdup("Error reading from heredoc\n"), ERROR);
 			if (heredoc_fd != -1)
 				close(heredoc_fd);
-			heredoc_fd = cur_cmd->in_fd; // Track the latest heredoc's fd
+			heredoc_fd = cur_cmd->in_fd;
 		}
 		cur_file = cur_file->next;
 	}
