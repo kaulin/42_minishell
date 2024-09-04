@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/03 22:22:55 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/04 09:53:37 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
 			return (1);
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
 		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup failed here\n"), ERROR);
+			return (data->error_msg = ft_strdup("Dup failed here\n"), ERROR);//FIX!
 		close(cur_cmd->in_fd);
 	}
 	return (SUCCESS);
@@ -74,7 +74,7 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 	if (cur_cmd->infiles->flag && heredoc_fd != -1)// Last one is heredoc
 	{
 		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup failed here2\n"), ERROR);
+			return (data->error_msg = ft_strdup("Dup failed here2\n"), ERROR);//FIX!
 		close(heredoc_fd);
 		}
 	return (SUCCESS);
@@ -91,7 +91,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	{
 		while (cur_file->next)
 		{
-			if (check_file(data, cur_file->file_str, 1) == 1)
+			if (check_file(data, cur_file->file_str, 2) == 1)
 				return (1);
 			cur_file = cur_file->next;
 		}
