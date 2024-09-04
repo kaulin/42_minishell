@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 09:43:34 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:18:03 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	int		status;
 
 	cur_cmd = data->cmd_list;
-	while (cur_cmd->pid && cur_cmd != failed_cmd)
+	while (cur_cmd != failed_cmd && cur_cmd->pid)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
