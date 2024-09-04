@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:14:19 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/14 13:19:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:13:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	file_delone(t_file *file)
 	if (file->file_str)
 		free(file->file_str);
 	free(file);
+	file = NULL;
 }
 
 /*
