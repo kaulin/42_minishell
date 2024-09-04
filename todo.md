@@ -1,4 +1,7 @@
 TODO
+- No space between tokens = failure
+- Make error handler work
+- File checker gives error for outfile that doesnt exist
 - Check builtin functionality thoroughly after migration, especially cd and unset.
 - Wrong error message for trying to cd into non-existing dir
 - Redirections and file permissions or directories

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/02 21:13:50 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/04 09:43:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		return (ERROR);
 	}
 	if (check_redirection(data, cur_cmd) != 0)
-		return (1);
+		return (-1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)
 	{
@@ -102,7 +102,7 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	int		status;
 
 	cur_cmd = data->cmd_list;
-	while (cur_cmd != failed_cmd)
+	while (cur_cmd->pid && cur_cmd != failed_cmd)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
@@ -136,7 +136,7 @@ int	execute_and_pipe(t_data *data)
 	{
 		while (cur_cmd != NULL)
 		{
-			if (parent(data, cur_cmd) != 0)
+			if (parent(data, cur_cmd) > 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
 				reset_io(data);

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/28 12:28:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/04 09:42:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_cmd	*cmd_new(void)
 	new_cmd->infiles = NULL;
 	new_cmd->outfiles = NULL;
 	new_cmd->next = NULL;
+	new_cmd->pid = 0;
 	return (new_cmd);
 }
 
