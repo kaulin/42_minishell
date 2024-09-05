@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:50:14 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:01:56 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int	execute_and_pipe(t_data *data)
 	{
 		if (check_redir(data, cur_cmd) || exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
+		return (SUCCESS);
 	}
 	else 
 	{
