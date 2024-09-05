@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 13:01:05 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:12:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	//}
 	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		execute_builtin(data, cur_cmd->cmd_arr);
+		exec_builtin(data, cur_cmd->cmd_arr);
 		exit (0);
 	}
 	else
@@ -72,7 +72,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 		return (oops(data, ERROR, NULL, "pipe failed"));
-	if (check_redirection(data, cur_cmd) != 0)
+	if (check_redir(data, cur_cmd) != 0)
 		return (-1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)

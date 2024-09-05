@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 13:19:33 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:13:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	pwd_builtin(t_data *data, char **cmds)
 		return (ERROR);
 	}
 */
+	(void)cmds;
 	cwd = getcwd(buffer, PATH_MAX);
 	if (!cwd)
 		return (oops(data, 1, NULL, "getcwd failed"));

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 12:42:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:19:06 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		is_quote_char(char c);
 int		is_whitespace(char c);
 void	skip_whitespace(char **ptr);
 void	find_quote_end(char **ptr);
-int		check_quotes(char *str, t_data *data);
+int		check_quotes(char *str);
 
 // tokenizer.c
 int		make_commands(t_parser *parser, t_data *data);

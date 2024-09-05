@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 10:10:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:13:50 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	find_quote_end(char **ptr)
 Checks whether the given string contains unclosed single or double quotes. 
 Sets error message and returns ERROR if there are unclosed quotes.
 */
-int	check_quotes(char *str, t_data *data)
+int	check_quotes(char *str)
 {
 	char	quote;
 

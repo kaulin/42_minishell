@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 14:06:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:10:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	init_data(t_data *data, char **envp)
 	data->paths = parse_paths(data);
 	if (!data->paths)
 	{
-		var_clear(data->envp_list);
+		var_clear(&data->envp_list);
 		clean_array(data->envp_arr);
 		return (ERROR);
 	}

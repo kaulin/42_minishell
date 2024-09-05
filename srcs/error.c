@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 11:49:47 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:19:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	oops(t_data *data, int e_code, char *e_file, char *e_str)
 	if (e_code == QUOTE_E || e_code == TOKEN_E)
 		e_code = 2;
 	if (e_code == QUOTE_E)
-		printf("mini: syntax error - unclosed quotations\n", e_str);
+		printf("mini: syntax error - unclosed quotations\n");
 	else if (e_code == TOKEN_E)
 		printf("mini: syntax error - unexpected token '%s'\n", e_str);
 	else if (e_file && e_str)
@@ -30,21 +30,3 @@ int	oops(t_data *data, int e_code, char *e_file, char *e_str)
 	data->error_handled = 1;
 	return (e_code);
 }
-/*
-void	syntax_err(t_data *data, char *err_str)
-{
-	char	*msg;
-
-	msg = ft_strjoin ("mini: syntax error near unexpected token: ", err_str);
-	data->error_msg = msg;
-}
-
-int	set_err(t_data *data, int err_code, char *err_str)
-{
-	data->status = err_code;
-	if (err_code == SYNTAX_ERR)
-		syntax_err(data, err_str);
-	else
-		data->error_msg = ft_strdup(err_str);
-	return (ERROR);
-}*/

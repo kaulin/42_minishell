@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:26:14 by pik-kak           #+#    #+#             */
-/*   Updated: 2024/09/05 14:03:17 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:11:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	**parse_paths(t_data *data)
 	}
 	arr = ft_split(path, ":");
 	if (!arr)
-		return (ERROR);
+		return (NULL);
 	if (complete_paths(arr))
 	{
 		clean_array(arr);
