@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 14:51:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:14:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,11 @@ void	reset_data(t_data *data)
 {
 	if (data->input)
 		free(data->input);
-	if (data->error_msg)
-		free(data->error_msg);
 	if (data->cmd_list)
 		cmd_clear(&data->cmd_list);
 	data->o_stdin = dup(STDIN_FILENO);
 	data->o_stdout = dup(STDOUT_FILENO);
 	data->input = NULL;
-	data->error_msg = NULL;
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
 }
@@ -71,8 +68,6 @@ void	clean_data(t_data *data)//need to add envp_clear
 		free(data->input);
 	if (data->cmd_list)
 		cmd_clear(&data->cmd_list);
-	if (data->error_msg)
-		free(data->error_msg);
 	if (data->envp_list)
 		var_clear(&data->envp_list);
 	if (data->envp_arr)
@@ -92,6 +87,5 @@ int	init_data(t_data *data, char **envp)
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
 	data->status = 0;
-	data->error_msg = NULL;
 	return (SUCCESS);
 }
