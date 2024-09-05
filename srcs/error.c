@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 11:26:21 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:49:47 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	oops(t_data *data, int e_code, char *e_file, char *e_str)
 	else if (e_file && e_str)
 		printf("mini: %s: %s\n", e_file, e_str);
 	else if (!e_file && e_str)
-		printf("mini: %s", e_str);
+		printf("mini: %s\n", e_str);
 	else
 		printf("mini: memory allocation error\n");
 	data->status = e_code;
