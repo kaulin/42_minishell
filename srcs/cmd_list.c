@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/04 09:42:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:25:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	cmd_clear(t_cmd **cmd_list)
 	}
 }
 
+/*
 int	cmd_print(t_cmd *cmd)
 {
 	int		i;
@@ -137,3 +138,4 @@ int	cmd_print(t_cmd *cmd)
 	}
 	return (0);
 }
+*/
