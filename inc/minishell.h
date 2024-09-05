@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:49:47 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 09:45:10 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@
 // Error codes
 # define SUCCESS 0
 # define ERROR 1
-# define SYNTAX_ERR 2
-# define NO_CMD_ERR 127
+# define QUOTE_E 266
+# define TOKEN_E 267
+# define IS_DIR_E 126
+# define NO_CMD_E 127
 
 typedef struct s_data
 {
@@ -48,7 +50,6 @@ typedef struct s_data
 	struct s_cmd	*cmd_list;
 	int				cmd_count;
 	int				status;
-	char			*error_msg;
 }	t_data;
 
 typedef struct s_cmd
@@ -99,7 +100,7 @@ int		init_data(t_data *data, char **envp);
 void	fail(int exit_code, char *msg, t_data *data);
 
 // error.c
-int		set_err(t_data *data, int err_code, char *err_msg);
+int		oops(t_data *data, int e_code, char *e_file, char *e_str);
 
 // cmd_list.c
 t_cmd	*cmd_new(void);
