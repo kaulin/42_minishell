@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 09:45:10 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:24:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_data
 	int				o_stdout;
 	struct s_cmd	*cmd_list;
 	int				cmd_count;
+	int				error_handled;
 	int				status;
 }	t_data;
 
