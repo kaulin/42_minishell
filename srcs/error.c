@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 09:49:26 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:11:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int	oops(t_data *data, int e_code, char *e_file, char *e_str)
 	if (e_code == QUOTE_E || e_code == TOKEN_E)
 		e_code = 2;
 	if (e_code == QUOTE_E)
-		printf("mini: syntax error, unclosed quotes\n", e_str);
+		printf("mini: syntax error - unclosed quotations\n", e_str);
 	else if (e_code == TOKEN_E)
-		printf("mini: syntax error near unexpected token '%s'\n", e_str);
+		printf("mini: syntax error - unexpected token '%s'\n", e_str);
 	else if (e_file && e_str)
 		printf("mini: %s: %s\n", e_file, e_str);
 	else if (!e_file && e_str)
 		printf("mini: %s", e_str);
 	else
-		printf("mini: memory error\n");
+		printf("mini: memory allocation error\n");
 	data->status = e_code;
 	return (e_code);
 }

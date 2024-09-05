@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/27 10:57:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:10:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,32 +60,6 @@ int	check_quotes(char *str, t_data *data)
 		str++;
 	}
 	if (quote)
-	{
-		data->error_msg = ft_strdup("minishell: syntax error: unclosed quotations\n");
 		return (ERROR);
-	}
 	return (SUCCESS);
 }
-
-/*
-Checks whether the given string contains unclosed single or double quotes. 
-Returns 1 if there are unclosed quotes.
-int	check_pipes(char *str)
-{
-	char	quote;
-
-	quote = 0;
-	while (*str)
-	{ 
-		if (is_quote_char(*str))
-		{
-			find_quote_end(&str);
-			quote = 0;
-		}
-		str++;
-	}
-	return (0);
-}
-
-
-*/
