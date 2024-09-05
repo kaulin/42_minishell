@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 12:03:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:25:48 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,11 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 /*
 Checks if there is a redirection and if it is in input or output.
 */
-
 int	check_redir(t_data *data, t_cmd *cur_cmd)
 {
-	if (cur_cmd->infiles)
-		if (input_redirection(cur_cmd, data) != 0)
-			return (ERROR);
-	if (cur_cmd->outfiles)
-		return (output_redirection(cur_cmd, data));
+	if (cur_cmd->infiles && input_redirection(cur_cmd, data))
+		return (ERROR);
+	if (cur_cmd->outfiles && output_redirection(cur_cmd, data))
+		return (ERROR);
 	return (SUCCESS);
 }
