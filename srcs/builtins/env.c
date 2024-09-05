@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:34:35 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 13:16:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,9 @@ int	env_builtin(t_data *data, char **cmds)
 	t_var	*var;
 
 	if (cmds[1])
-	{
-		data->error_msg = ft_strdup("minishell: env: too many arguments");
-		return (ERROR);
-	}
+		return (oops(data, 1, "env", "too many arguments"));
 	if (!data->envp_list)
-	{
-		data->error_msg = ft_strdup("Error, envp not set");
-		return (ERROR);
-	}
+		return (oops(data, 1, "env", "envp not set"));
 	var = data->envp_list;
 	while (var)
 	{

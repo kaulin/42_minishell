@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 11:54:57 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:19:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	check_if_builtin(char **cmds)
 		|| ft_strncmp("export", cmds[0], 7) == 0
 		|| ft_strncmp("pwd", cmds[0], 4) == 0
 		|| ft_strncmp("unset", cmds[0], 6) == 0)
-		return (ERROR);
-	return (SUCCESS);
+		return (1);
+	return (0);
 }
 
 /*

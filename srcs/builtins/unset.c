@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:38:53 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 13:19:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	unset_builtin(t_data *data, char **cmds)
 			var_remove_key(&data->envp_list, *cmds);
 		cmds++;
 	}
-	if (flag)
+	if (flag) // Needs to be handled somehow 
 		return (ERROR);
 	return (SUCCESS);
 }
