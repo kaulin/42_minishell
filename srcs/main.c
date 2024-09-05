@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 11:41:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:45:31 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	handle_input(t_data *data)
 {
 	add_history(data->input);
-	if ((parse(data->input, data) \
-		|| (data->cmd_list && execute_and_pipe(data))) \
-		&& !data->error_handled)
+	if (parse(data->input, data && !data->error_handled))
+		oops(data, 1, NULL, NULL);
+	if (data->cmd_list && execute_and_pipe(data) && !data->error_handled)
 		oops(data, 1, NULL, NULL);
 }
 
