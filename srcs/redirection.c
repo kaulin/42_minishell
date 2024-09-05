@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:25:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:30:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,26 +111,23 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 
 	cur_file = cur_cmd->outfiles;
-	if (cur_file->flag && !cur_file->file_str)
-		return (oops(data, 1, NULL, "file path missing"));
-	if (cur_file->file_str)
-	{
-		if (check_outfiles(data, cur_file) == 1)
-			return (ERROR);
-		while (cur_file->next)
-			cur_file = cur_file->next;
-		if (cur_file->flag)
-			cur_cmd->out_fd = open(cur_file->file_str, \
-			O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else
-			cur_cmd->out_fd = open(cur_file->file_str, \
-			O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (cur_cmd->out_fd == -1)
-			return (oops(data, 1, cur_file->file_str, "Permission denied"));
-		if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
-			return (oops(data, 1, NULL, "dup2 failed"), ERROR);
-		close(cur_cmd->out_fd);
-	}
+	if (cur_file->flag && !cur_file->file_str) // don't see when this will be true
+		return (oops(data, 1, NULL, "file_str missing"));
+	if (check_outfiles(data, cur_file) == 1)
+		return (ERROR);
+	while (cur_file->next)
+		cur_file = cur_file->next;
+	if (cur_file->flag)
+		cur_cmd->out_fd = open(cur_file->file_str, \
+		O_WRONLY | O_APPEND | O_CREAT, 0644);
+	else
+		cur_cmd->out_fd = open(cur_file->file_str, \
+		O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cur_cmd->out_fd == -1)
+		return (oops(data, 1, cur_file->file_str, "Permission denied"));
+	if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
+		return (oops(data, 1, NULL, "dup2 failed"), ERROR);
+	close(cur_cmd->out_fd);
 	return (SUCCESS);
 }
 
