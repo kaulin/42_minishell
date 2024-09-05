@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:28:03 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 09:26:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ How do we handle builtins failing?
 */
 int	execute_builtin(t_data *data, char **cmds)
 {
-	(void)data;
 	if (!cmds)
 		return (SUCCESS);
 	if (ft_strncmp("echo", cmds[0], 5) == 0)
@@ -46,13 +45,13 @@ int	execute_builtin(t_data *data, char **cmds)
 		return (cd_builtin(data, cmds));
 	if (ft_strncmp("env", cmds[0], 4) == 0)
 		return (env_builtin(data, cmds));
-	if (ft_strncmp("exit", cmds[0], 5) == 0)
-		return (exit_builtin(data));
 	if (ft_strncmp("export", cmds[0], 7) == 0)
 		return (export_builtin(data, cmds));
 	if (ft_strncmp("pwd", cmds[0], 4) == 0)
 		return (pwd_builtin(data, cmds));
 	if (ft_strncmp("unset", cmds[0], 6) == 0)
 		return (unset_builtin(data, cmds));
+	if (ft_strncmp("exit", cmds[0], 5) == 0)
+		exit_builtin(data);
 	return (SUCCESS);
 }
