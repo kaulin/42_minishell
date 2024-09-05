@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:26:14 by pik-kak           #+#    #+#             */
-/*   Updated: 2024/09/04 13:47:49 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 14:03:17 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,51 @@ char	*find_cmd_path(t_data *data, char *cur_cmd)
 }
 
 /*
-Parses paths from environment variable.
+Adds the backslash symbol to all elements of a paths array.
 */
-void	parse_paths(t_data *data)
+static int	complete_paths(char **paths)
 {
 	int		i;
 	char	*joined_path;
 
 	i = 0;
-	if (!data->envp_arr)
-		return ;
-	while (data->envp_arr[i] && ft_strncmp(data->envp_arr[i], "PATH=", 5))
-		i++;
-	if (!data->envp_arr[i] || !data->envp_arr[i][5])
-		return ;
-	data->paths = ft_split(&data->envp_arr[i][5], ":");
-	if (!*data->paths)
-		return ;
-	i = 0;
-	while (data->paths[i])
+	while (paths[i])
 	{
-		joined_path = ft_strjoin(data->paths[i], "/");
+		joined_path = ft_strjoin(paths[i], "/");
 		if (!joined_path)
-		{
-			clean_array(data->paths);
-			return ;
-		}
-		free(data->paths[i]);
-		data->paths[i++] = joined_path;
+			return (ERROR);
+		free(paths[i]);
+		paths[i] = joined_path;
+		i++;
 	}
+	return (SUCCESS);
+}
+
+/*
+Parses paths from environment variable and returns them as a null terminated 
+array.
+*/
+char	**parse_paths(t_data *data)
+{
+	char	*path;
+	char	**arr;
+
+	path = var_get_value(data->envp_list, "PATH");
+	if (!path)
+	{
+		arr = malloc(sizeof(char *));
+		if (!arr)
+			return (NULL);
+		*arr = NULL;
+		return (arr);
+	}
+	arr = ft_split(path, ":");
+	if (!arr)
+		return (ERROR);
+	if (complete_paths(arr))
+	{
+		clean_array(arr);
+		return (NULL);
+	}
+	return (arr);
 }

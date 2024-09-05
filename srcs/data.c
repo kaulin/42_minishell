@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 11:25:50 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:06:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ int	update_envp(t_data *data)
 	if (data->envp_arr)
 		clean_array(data->envp_arr);
 	data->envp_arr = temp;
+	if (data->envp_arr)
+	{
+		temp = parse_paths(data);
+		if (!temp)
+			return (ERROR);
+		if (data->paths)
+			clean_array(data->paths);
+		data->paths = temp;
+	}
 	return (SUCCESS);
 }
 
@@ -84,7 +93,13 @@ int	init_data(t_data *data, char **envp)
 	data->envp_list = NULL;
 	if (copy_envp(data, envp))
 		return (ERROR);
-	parse_paths(data);//where should this be? && error check?
+	data->paths = parse_paths(data);
+	if (!data->paths)
+	{
+		var_clear(data->envp_list);
+		clean_array(data->envp_arr);
+		return (ERROR);
+	}
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
 	data->error_handled = 0;

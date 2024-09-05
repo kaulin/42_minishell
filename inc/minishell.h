@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 11:54:34 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:03:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int		unset_builtin(t_data *data, char **cmds);
 int		export_builtin(t_data *data, char **cmds);
 
 // paths.c
-void	parse_paths(t_data *data);
+char	**parse_paths(t_data *data);
 char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
