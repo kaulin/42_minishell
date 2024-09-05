@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:12:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 14:50:14 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,3 @@ int	execute_and_pipe(t_data *data)
 	reset_io(data);
 	return (SUCCESS);
 }
-
-
