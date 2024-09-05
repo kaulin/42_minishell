@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 11:18:03 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:01:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-	{
-		data->error_msg = ft_strdup("Pipe failed\n");
-		return (ERROR);
-	}
+		return (oops(data, ERROR, NULL, "pipe failed"));
 	if (check_redirection(data, cur_cmd) != 0)
 		return (-1);
 	cur_cmd->pid = fork();
@@ -82,7 +79,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		return (data->error_msg = ft_strdup("Fork failed\n"), ERROR);
+		return (oops(data, ERROR, NULL, "fork failed"));
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
@@ -90,7 +87,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
-		return (data->error_msg = ft_strdup("Dup2 failed\n"), ERROR);
+		return (oops(data, ERROR, NULL, "dup2 failed"));
 	}
 	close(fd[0]);
 	return (SUCCESS);
@@ -105,10 +102,7 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	while (cur_cmd != failed_cmd && cur_cmd->pid)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
-		{
-			data->error_msg = ft_strdup("Waitpid failed\n");
-			return (ERROR);
-		}
+			return (oops(data, ERROR, NULL, "waitpid failed"));
 		if (WIFEXITED(status))
 			data->status = WEXITSTATUS(status);
 		cur_cmd = cur_cmd->next;
@@ -126,10 +120,9 @@ int	execute_and_pipe(t_data *data)
 	t_cmd	*cur_cmd;
 
 	cur_cmd = data->cmd_list;
-	//what if there is no cmd but there is a redirection?
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		if (check_redirection(data, cur_cmd) == 1 || execute_builtin(data, cur_cmd->cmd_arr) == 1)
+		if (check_redir(data, cur_cmd) || exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
 	}
 	else 

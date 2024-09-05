@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 09:26:38 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:54:57 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Commands that produce output can be redirected
 so we we need to check redirections before executing commands.
 How do we handle builtins failing?
 */
-int	execute_builtin(t_data *data, char **cmds)
+int	exec_builtin(t_data *data, char **cmds)
 {
 	if (!cmds)
 		return (SUCCESS);

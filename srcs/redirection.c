@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:23:52 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/05 12:03:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
 		if (heredoc_fd != -1)
 			close(heredoc_fd);
 		if (check_file(data, cur_file, 1) == 1)
-			return (1);
+			return (ERROR);
 		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
 		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
+			return (oops(data, 1, NULL, "dup2 failed\n"));
 		close(cur_cmd->in_fd);
 	}
 	return (SUCCESS);
@@ -89,7 +89,7 @@ static int	input_redirection(t_cmd *cur_cmd, t_data *data)
 	if (cur_file->flag && heredoc_fd != -1)
 	{
 		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup failed\n"), ERROR);
+			return (oops(data, 1, NULL, "dup2 failed\n"));
 		close(heredoc_fd);
 	}
 	return (SUCCESS);
@@ -112,7 +112,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 
 	cur_file = cur_cmd->outfiles;
 	if (cur_file->flag && !cur_file->file_str)
-		return (data->error_msg = ft_strdup("Error, append no file\n"), ERROR);
+		return (oops(data, 1, NULL, "file path missing"));
 	if (cur_file->file_str)
 	{
 		if (check_outfiles(data, cur_file) == 1)
@@ -126,9 +126,9 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 			cur_cmd->out_fd = open(cur_file->file_str, \
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (cur_cmd->out_fd == -1)
-			return (data->error_msg = ft_strdup("Permission denied\n"), ERROR);
+			return (oops(data, 1, cur_file->file_str, "Permission denied"));
 		if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
-			return (data->error_msg = ft_strdup("Dup2 error\n"), ERROR);
+			return (oops(data, 1, NULL, "dup2 failed"), ERROR);
 		close(cur_cmd->out_fd);
 	}
 	return (SUCCESS);
@@ -138,7 +138,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 Checks if there is a redirection and if it is in input or output.
 */
 
-int	check_redirection(t_data *data, t_cmd *cur_cmd)
+int	check_redir(t_data *data, t_cmd *cur_cmd)
 {
 	if (cur_cmd->infiles)
 		if (input_redirection(cur_cmd, data) != 0)

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 11:24:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:54:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	sigint_handler(int signal);
 
 // builtins
 int		check_if_builtin(char **cmds);
-int		execute_builtin(t_data *data, char **cmds);
+int		exec_builtin(t_data *data, char **cmds);
 int		cd_builtin(t_data *data, char **cmds);
 int		pwd_builtin(t_data *data, char **cmds);
 int		echo_builtin(char **cmd);
@@ -157,7 +157,7 @@ void	parse_paths(t_data *data);
 char	*find_cmd_path(t_data *data, char *cur_cmd);
 
 // redirection.c
-int		check_redirection(t_data *data, t_cmd *cur_cmd);
+int		check_redir(t_data *data, t_cmd *cur_cmd);
 
 // heredocs.c
 int		check_heredocs(t_data *data, t_cmd *cur_cmd);
