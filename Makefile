@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+         #
+#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/09/03 22:20:42 by pikkak           ###   ########.fr        #
+#    Updated: 2024/09/06 11:28:08 by jajuntti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ CFLAGS		:= -Wall -Wextra -Werror -g #-fsanitize=address
 SRC_DIR		:= srcs/
 MAIN_SRC	:= main.c \
 			error.c \
-			fail.c \
 			file_list.c \
 			cmd_list.c \
 			data.c \

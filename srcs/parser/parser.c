@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 08:33:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:31:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_tokens(t_token *token, t_data *data)
 {
 	if (token->type == PIPE_TOKEN)
 	{
-		return (oops(data, TOKEN_E, NULL, "|"));
+		return (oops(data, SYNTAX_E, NULL, "|"));
 	}
 	while (token)
 	{
@@ -46,11 +46,11 @@ int	check_tokens(t_token *token, t_data *data)
 			data->cmd_count++;
 		if ((token->type == REDIR_TOKEN && !token->next) \
 			|| (token->type == PIPE_TOKEN && !token->next))
-				return (oops(data, TOKEN_E, NULL, "newline"));
+				return (oops(data, SYNTAX_E, NULL, "newline"));
 		else if ((token->type == REDIR_TOKEN \
 			&& token->next->type != TEXT_TOKEN) || (token->type == PIPE_TOKEN \
 			&& token->next->type == PIPE_TOKEN))
-				return (oops(data, TOKEN_E, NULL, token->next->str));
+				return (oops(data, SYNTAX_E, NULL, token->next->str));
 		token = token->next;
 	}
 	return (SUCCESS);
@@ -62,7 +62,7 @@ int	parse(char *input, t_data *data)
 
 	parser_init(&parser);
 	if (check_quotes(input))
-		return (oops(data, QUOTE_E, NULL, NULL));
+		return (oops(data, SYNTAX_E, NULL, NULL));
 	while (*input)
 	{
 		skip_whitespace(&input);

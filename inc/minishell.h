@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:03:42 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:36:10 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@
 // Error codes
 # define SUCCESS 0
 # define ERROR 1
-# define QUOTE_E 266
-# define TOKEN_E 267
+# define SYNTAX_E 2
 # define IS_DIR_E 126
 # define NO_CMD_E 127
 
@@ -96,9 +95,6 @@ int		update_envp(t_data *data);
 void	reset_data(t_data *data);
 void	clean_data(t_data *data);
 int		init_data(t_data *data, char **envp);
-
-// fail.c
-void	fail(int exit_code, char *msg, t_data *data);
 
 // error.c
 int		oops(t_data *data, int e_code, char *e_file, char *e_str);

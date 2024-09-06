@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 15:01:56 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:27:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,41 @@ path. Calls execve with given path and command array and environment.
 int	do_cmd(t_data *data, t_cmd *cur_cmd)
 {
 	cur_cmd->path = find_cmd_path(data, cur_cmd->cmd_arr[0]);
-	if (!cur_cmd->path && access(cur_cmd->cmd_arr[0], F_OK) == 0 && ft_strchr(cur_cmd->cmd_arr[0], '/'))
-	{
-		cur_cmd->path = ft_strdup(cur_cmd->cmd_arr[0]);
-		free(cur_cmd->cmd_arr[0]);
-		cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
-	}
+	if (!cur_cmd->path && access(cur_cmd->cmd_arr[0], F_OK) == 0 \
+		&& ft_strchr(cur_cmd->cmd_arr[0], '/'))
+		{
+			cur_cmd->path = ft_strdup(cur_cmd->cmd_arr[0]);
+			free(cur_cmd->cmd_arr[0]);
+			cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
+		}
 	if (!cur_cmd->path)
 		return (127);
 	if (ft_strncmp(cur_cmd->cmd_arr[0], ".", 2) && is_directory(cur_cmd->path))
-		return (321);
+		return (oops(data, 127, cur_cmd->path, "Is a directory"));
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp_arr);
 	return (126);
 }
 
 /*
 Child process handles input and output redirection as well and calls do_cmd to actually 
-execute execve.*/
+execute execve.
+*/
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
-	int	err_code;
-
 	close(fd[0]);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
-		fail(1, "Dup2 failed\n", NULL);
+		exit(oops(data, 1, NULL, "dup2 failed"));
 	close(fd[1]);
 	//if (check_redirection(data, cur_cmd) != 0)
 	//{
 		//printf("%s\n", data->error_msg);
 	//	exit (1);
 	//}
-	if (check_if_builtin(cur_cmd->cmd_arr) == 1)
-	{
+	if (check_if_builtin(cur_cmd->cmd_arr))
 		exec_builtin(data, cur_cmd->cmd_arr);
-		exit (0);
-	}
 	else
-	{	
-		err_code = do_cmd(data, cur_cmd);
-		if (err_code != 0)
-			fail(err_code, "Error", data);
-	}
+		do_cmd(data, cur_cmd);
+	exit(data->status);
 }
 
 /*

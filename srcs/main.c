@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 09:06:49 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 10:25:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;//Ignore arguments
 	(void)argv;//Ignore arguments
 	if (init_data(&data, envp))
-	{
-		printf("minishell: error setting up shell environment");
-		return (ERROR);
-	}
+		return (oops(&data, 1, NULL, "error setting up shell environment"));
 	signal(SIGINT, sigint_handler); //Handle Ctr+C
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
 	while (1) 
@@ -51,5 +48,6 @@ int main(int argc, char **argv, char **envp)
 	clean_data(&data);
 	rl_clear_history();
 	printf("exit\n");
-	return (data.status);
+	exit(data.status);
+	return (ERROR);
 }

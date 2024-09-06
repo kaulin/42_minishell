@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:37:31 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/06 11:30:22 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ Should this be void?
 
 void	exit_builtin(t_data *data)
 {
-	fail(0, "exit\n", data);
+	clean_data(data);
+	exit(data->status);
 }
