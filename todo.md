@@ -1,4 +1,7 @@
 TODO
+- heredoc no cmd = segfault (might be something to do with dups, as there is some bubble gum)
+- unset PATH does not really unset the paths, though the env is removed
+- some multiple unsets result in segfault due to remove from alpha function
 - move fail functionality into error handler (fixing some error messages)
 - removing dir above current dir results in getcwd failure when trying to move up
 - File checker gives error for outfile that doesnt exist
