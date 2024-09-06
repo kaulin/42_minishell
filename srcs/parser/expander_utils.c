@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 12:37:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:55:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,14 @@ int	expand_strings(t_expander *expander, t_data *data)
 			if (var)
 				temp = ft_strdup(var->value);
 			else if (*(node->str + 1) == '?')
-				temp = ft_strdup(ft_itoa(data->prev_status));
+				temp = ft_itoa(data->prev_status);
 			else
 				temp = ft_strdup("");
 			if (!temp)
 				return (ERROR);
 			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
 				return (ERROR);
-			free (node->str);
+			free(node->str);
 			node->str = temp;
 		}
 		node = node->next;
