@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/04 13:54:20 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/06 08:09:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
 
 	delim = cur_file->file_str;
 	if (pipe(fd) == -1)
-		return (data->error_msg = ft_strdup("Pipe failed\n"), ERROR);
+		return (oops(data, 1, NULL, "pipe failed\n"));
 	read_input(fd, delim);
 	close(fd[1]);
 	cur_cmd->in_fd = fd[0];
@@ -67,8 +67,7 @@ int	check_heredocs(t_data *data, t_cmd *cur_cmd)
 		if (cur_file->flag)
 		{
 			if (get_input(cur_cmd, cur_file, data) != 0)
-				return (data->error_msg = \
-				ft_strdup("Error reading from heredoc\n"), ERROR);
+				return (oops(data, 1, NULL, "Error reading from heredoc\n"));
 			if (heredoc_fd != -1)
 				close(heredoc_fd);
 			heredoc_fd = cur_cmd->in_fd;

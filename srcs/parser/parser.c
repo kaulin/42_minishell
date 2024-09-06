@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 10:12:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 08:33:16 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	parse(char *input, t_data *data)
 	t_parser	parser;
 
 	parser_init(&parser);
-	if (check_quotes(input, data))
+	if (check_quotes(input))
 		return (oops(data, QUOTE_E, NULL, NULL));
 	while (*input)
 	{
