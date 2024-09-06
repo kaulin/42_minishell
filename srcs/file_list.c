@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:14:19 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/04 13:13:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:18:39 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_file	*file_new(char *content, int flag)
 	if (!new_file->file_str)
 	{
 		free(new_file);
-		return(NULL);
+		return (NULL);
 	}
 	new_file->flag = flag;
 	new_file->next = NULL;
@@ -35,8 +35,8 @@ t_file	*file_new(char *content, int flag)
 }
 
 /*
-Adds the new_file to the end of the file_list. If file_list is empty to start with, 
-file_list is set equal to the new_file.
+Adds the new_file to the end of the file_list. If file_list is empty to start 
+with, file_list is set equal to the new_file.
 */
 void	file_add_back(t_file **file_list, t_file *new_file)
 {

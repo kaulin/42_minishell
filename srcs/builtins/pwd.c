@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:12:34 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:13:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:26:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,8 @@ int	pwd_builtin(t_data *data, char **cmds)
 	char	*cwd;
 	char	buffer[PATH_MAX];
 
-/* Does bash do this?
 	if (cmds[1])
-	{
-		return (data->error_msg = ft_strdup("minishell: pwd: invalid option");
-		return (ERROR);
-	}
-*/
+		return (oops(data, 2, "pwd", "invalid option"));
 	(void)cmds;
 	cwd = getcwd(buffer, PATH_MAX);
 	if (!cwd)

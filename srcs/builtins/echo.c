@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:32:24 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/06 13:23:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 	-Problem with two words with a ' ' in the middle and no ""
 */
 
-void	print_cmd(char **cmds, int flag)//this prints the rest of the input
+/*
+This prints the rest of the input
+*/
+void	print_cmd(char **cmds, int flag)
 {
 	if (flag == 0)
 		cmds++;

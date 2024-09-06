@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 12:53:07 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:17:50 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 	cur_cmd->path = find_cmd_path(data, cur_cmd->cmd_arr[0]);
 	if (!cur_cmd->path && access(cur_cmd->cmd_arr[0], F_OK) == 0 \
 		&& ft_strchr(cur_cmd->cmd_arr[0], '/'))
-		{
-			cur_cmd->path = ft_strdup(cur_cmd->cmd_arr[0]);
-			free(cur_cmd->cmd_arr[0]);
-			cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
-		}
+	{
+		cur_cmd->path = ft_strdup(cur_cmd->cmd_arr[0]);
+		free(cur_cmd->cmd_arr[0]);
+		cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
+	}
 	if (!cur_cmd->path)
 		return (oops(data, 127, cur_cmd->cmd_arr[0], NULL));
 	if (ft_strncmp(cur_cmd->cmd_arr[0], ".", 2) && is_directory(cur_cmd->path))
@@ -35,20 +35,15 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 }
 
 /*
-Child process handles input and output redirection as well and calls do_cmd to actually 
-execute execve.
+Child process handles input and output redirection as well and calls do_cmd to 
+actually execute execve.
 */
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	close(fd[0]);
-	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)// if it's not the last command we make it write its output to the next one
+	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
 		exit(oops(data, 1, NULL, "dup2 failed"));
 	close(fd[1]);
-	//if (check_redirection(data, cur_cmd) != 0)
-	//{
-		//printf("%s\n", data->error_msg);
-	//	exit (1);
-	//}
 	if (check_if_builtin(cur_cmd->cmd_arr))
 		exec_builtin(data, cur_cmd->cmd_arr);
 	else
@@ -105,10 +100,9 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 }
 
 /*
-Goes through the linked list and calls the parent function for each node (cmd) of the list. Then waits for all the children to finish
+Goes through the linked list and calls the parent function for each node (cmd) 
+of the list. Then waits for all the children to finish
 */
-//add find_path to this function
-
 int	execute_and_pipe(t_data *data)
 {
 	t_cmd	*cur_cmd;
@@ -120,7 +114,7 @@ int	execute_and_pipe(t_data *data)
 			return (reset_io(data), ERROR);
 		return (SUCCESS);
 	}
-	else 
+	else
 	{
 		while (cur_cmd != NULL)
 		{

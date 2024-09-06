@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:01:18 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:14:07 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static int	cmd_not_found_error(char *e_file)
 
 static void	no_permissions_error(char *e_file)
 {
-		ft_putstr_fd("mini: ", 2);
-		ft_putstr_fd(e_file, 2);
-		ft_putendl_fd(": Permission denied", 2);
+	ft_putstr_fd("mini: ", 2);
+	ft_putstr_fd(e_file, 2);
+	ft_putendl_fd(": Permission denied", 2);
 }
 
 int	oops(t_data *data, int e_code, char *e_file, char *e_str)

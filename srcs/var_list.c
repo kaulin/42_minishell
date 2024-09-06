@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:13:37 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/30 16:36:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:13:17 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Returns a pointer to new, or NULL in the case of error.
 t_var	*var_new(char *key, char *value)
 {
 	t_var	*new;
-	
+
 	new = malloc(sizeof(t_var));
 	if (!new)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 12:36:39 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:21:56 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	reset_data(t_data *data)
 	data->prev_status = data->status;
 }
 
-void	clean_data(t_data *data)//need to add envp_clear
+void	clean_data(t_data *data)
 {
 	if (data->input)
 		free(data->input);

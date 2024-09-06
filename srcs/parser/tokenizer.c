@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/08/28 13:32:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:27:41 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static int	place_cmd_arr(t_cmd *cmd, t_token *token, int cmd_num, int i)
 	{
 		if (token->cmd_num == cmd_num && token->type == TEXT_TOKEN \
 			&& !token->placed_flag)
-			{
-				cmd->cmd_arr[i] = ft_strdup(token->str);
-				if (!cmd->cmd_arr[i])
-					return (ERROR);
-				i++;
-			}
+		{
+			cmd->cmd_arr[i] = ft_strdup(token->str);
+			if (!cmd->cmd_arr[i])
+				return (ERROR);
+			i++;
+		}
 		token = token->next;
 	}
 	cmd->cmd_arr[i] = NULL;
@@ -66,7 +66,7 @@ adding input/output files.
 static int	place_redirs(t_cmd *cmd, t_token *token, int cmd_num)
 {
 	t_file	*file;
-	
+
 	file = NULL;
 	while (token)
 	{
@@ -121,7 +121,7 @@ int	make_commands(t_parser *parser, t_data *data)
 char	*tokenize(char *input, t_parser *parser, t_data *data)
 {
 	t_token	*node;
-	
+
 	parser->start = input;
 	if (is_quote_char(*input))
 	{

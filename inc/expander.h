@@ -6,12 +6,12 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 14:58:06 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/03 12:01:23 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:34:25 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
-#define EXPANDER_H
+# define EXPANDER_H
 
 # include "parser.h"
 

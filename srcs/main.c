@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 12:59:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:19:24 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	handle_input(t_data *data)
 Function gives the prompt and reads the users input to string. 
 Readline allocates space for string automatically but doesn't free it.
 */
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
@@ -35,7 +35,7 @@ int main(int argc, char **argv, char **envp)
 		return (oops(&data, 1, NULL, "error setting up shell environment"));
 	signal(SIGINT, sigint_handler); //Handle Ctr+C
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
-	while (1) 
+	while (42)
 	{
 		data.status = 0;
 		data.input = readline("mini -> ");

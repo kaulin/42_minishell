@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:46:11 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/06 13:21:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,10 @@ void	sigint_handler(int signal)
 {
 	(void)signal;
 	struct termios handler; //This is used for handling terminal I/O (input/output) settings. Can be found from termios.h
-
 	if (tcgetattr(0, &handler) == -1) //This function gets the terminal attributes(initializes the handler)
-	{
 		perror("Error in retrieving the terminal attributes\n");
-	}
 	if (tcsetattr(0, 0, &handler) == -1) //Sets the attributes of the terminal associated with file descriptor 0 (standard input) using the values stored in handler
-	{
 		perror("Error in setting the terminal attributes\n");
-	}
 	write(1, "\n", 1); //Prints newline
 	rl_on_new_line(); // Moves readline to the newline
 	rl_replace_line("", 0); //Replaces the previous readline with the new one

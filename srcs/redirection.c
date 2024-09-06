@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:30:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:20:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	output_redirection(t_cmd *cur_cmd, t_data *data)
 	t_file	*cur_file;
 
 	cur_file = cur_cmd->outfiles;
-	if (cur_file->flag && !cur_file->file_str) // don't see when this will be true
+	if (cur_file->flag && !cur_file->file_str) // will this ever be true?
 		return (oops(data, 1, NULL, "file_str missing"));
 	if (check_outfiles(data, cur_file) == 1)
 		return (ERROR);

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:14:44 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 11:31:18 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:29:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	parser_clean(t_parser *parser, int return_value)
 {
 	if (parser->substring)
 		free(parser->substring);
-	if (parser->token_list) 
+	if (parser->token_list)
 		token_clear(&parser->token_list);
 	return (return_value);
 }
@@ -46,11 +46,11 @@ int	check_tokens(t_token *token, t_data *data)
 			data->cmd_count++;
 		if ((token->type == REDIR_TOKEN && !token->next) \
 			|| (token->type == PIPE_TOKEN && !token->next))
-				return (oops(data, SYNTAX_E, NULL, "newline"));
+			return (oops(data, SYNTAX_E, NULL, "newline"));
 		else if ((token->type == REDIR_TOKEN \
 			&& token->next->type != TEXT_TOKEN) || (token->type == PIPE_TOKEN \
 			&& token->next->type == PIPE_TOKEN))
-				return (oops(data, SYNTAX_E, NULL, token->next->str));
+			return (oops(data, SYNTAX_E, NULL, token->next->str));
 		token = token->next;
 	}
 	return (SUCCESS);
