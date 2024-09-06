@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 11:27:23 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:53:07 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	do_cmd(t_data *data, t_cmd *cur_cmd)
 			cur_cmd->cmd_arr[0] = ft_strdup(ft_strrchr(cur_cmd->path, '/') + 1);
 		}
 	if (!cur_cmd->path)
-		return (127);
+		return (oops(data, 127, cur_cmd->cmd_arr[0], NULL));
 	if (ft_strncmp(cur_cmd->cmd_arr[0], ".", 2) && is_directory(cur_cmd->path))
-		return (oops(data, 127, cur_cmd->path, "Is a directory"));
+		return (oops(data, 126, cur_cmd->cmd_arr[0], "Is a directory"));
 	execve(cur_cmd->path, cur_cmd->cmd_arr, data->envp_arr);
-	return (126);
+	return (oops(data, 126, cur_cmd->path, NULL));
 }
 
 /*

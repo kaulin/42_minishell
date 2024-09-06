@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 14:10:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:36:39 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	reset_data(t_data *data)
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
 	data->error_handled = 0;
+	data->prev_status = data->status;
 }
 
 void	clean_data(t_data *data)//need to add envp_clear

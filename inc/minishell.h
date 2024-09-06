@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 11:36:10 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:35:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define SYNTAX_E 2
-# define IS_DIR_E 126
+# define CANT_EXE_E 126
 # define NO_CMD_E 127
 
 typedef struct s_data
@@ -50,6 +50,7 @@ typedef struct s_data
 	int				cmd_count;
 	int				error_handled;
 	int				status;
+	int				prev_status;
 }	t_data;
 
 typedef struct s_cmd

@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 11:30:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 12:59:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ Should this be void?
 void	exit_builtin(t_data *data)
 {
 	clean_data(data);
-	exit(data->status);
+	exit(data->prev_status);
 }
