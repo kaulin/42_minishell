@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 08:29:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:28:28 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Sets the OLDPWD to the current working directory
 Sets the value of PWD to the new directory(new path)
 Calls check_key to change the variables
 */
+//do we need strinjoin?
 int	update_pwd(t_data *data)
 {
 	char	*new_pwd;
@@ -35,7 +36,7 @@ int	update_pwd(t_data *data)
 			return (ERROR);
 		var_old = var_get_var(data->envp_list, "OLDPWD");
 	}
-	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX)); //do we need strinjoin?
+	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));
 	if (!new_pwd)
 		return (ERROR);
 	if (var_old->value)
@@ -59,6 +60,10 @@ int	change_directory(t_data *data, char *path)
 		return (ERROR);
 	return (SUCCESS);
 }
+
+/*
+Returns a path that contains the parent directory of the directory we are in at the moment
+*/
 
 static char	*up_one(t_data *data)
 {

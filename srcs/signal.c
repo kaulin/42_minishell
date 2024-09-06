@@ -3,33 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 13:21:34 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:32:01 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-• Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
-• In interactive mode:
-◦ ctrl-C displays a new prompt on a new line.
-◦ ctrl-D exits the shell.
-◦ ctrl-\ does nothing.
+Handle ctrl-C, ctrl-D and ctrl
+ctrl-C displays a new prompt on a new line.
+ctrl-D exits the shell.
+ctrl-\ does nothing.
+Termios handles is used for handling terminal I/O (input/output) settings.
+Tcgetattr() gets the terminal attributes(initializes the handler)
+Tcsetattr sets attributes of the terminal associated with STDIN,
+using the values stored in handler.
 */
 
 void	sigint_handler(int signal)
 {
+	struct termios	handler;
+
 	(void)signal;
-	struct termios handler; //This is used for handling terminal I/O (input/output) settings. Can be found from termios.h
-	if (tcgetattr(0, &handler) == -1) //This function gets the terminal attributes(initializes the handler)
+	if (tcgetattr(0, &handler) == -1)
 		perror("Error in retrieving the terminal attributes\n");
-	if (tcsetattr(0, 0, &handler) == -1) //Sets the attributes of the terminal associated with file descriptor 0 (standard input) using the values stored in handler
+	if (tcsetattr(0, 0, &handler) == -1)
 		perror("Error in setting the terminal attributes\n");
-	write(1, "\n", 1); //Prints newline
-	rl_on_new_line(); // Moves readline to the newline
-	rl_replace_line("", 0); //Replaces the previous readline with the new one
-	rl_redisplay(); //Redisplays the prompt
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
