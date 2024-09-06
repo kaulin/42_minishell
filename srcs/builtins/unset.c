@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 13:19:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 15:01:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,16 @@ Readonly variables and functions may not be unset. Do we need to check?
 int	unset_builtin(t_data *data, char **cmds)
 {
 	t_var	*var;
-	int		flag;
 
-	flag = 0;
 	cmds++;
 	if (!*cmds)
 		return (SUCCESS);
 	while (*cmds)
 	{
 		var = var_get_var(data->envp_list, *cmds);
-		if (!var)
-			flag = 1;
-		else
+		if (var)
 			var_remove_key(&data->envp_list, *cmds);
 		cmds++;
 	}
-	if (flag) // Needs to be handled somehow 
-		return (ERROR);
 	return (SUCCESS);
 }
