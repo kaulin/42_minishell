@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/03 12:01:04 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:01:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*find_key_end(char *ptr)
 		while (*ptr && (ft_isalnum(*ptr) || *ptr == '_'))
 			ptr++;
 	}
-	else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '?')
+	else if (*ptr == '?' || (*ptr >= '0' && *ptr <= '9'))
 		ptr++;
 	return (ptr);
 }
@@ -80,7 +80,7 @@ int	expand_strings(t_expander *expander, t_data *data)
 			var = var_get_var(data->envp_list, node->str + 1);
 			if (var)
 				temp = ft_strdup(var->value);
-			else if (*node->str + 1 == '?')
+			else if (*(node->str + 1) == '?')
 				temp = ft_strdup(ft_itoa(data->status));
 			else
 				temp = ft_strdup("");

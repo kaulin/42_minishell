@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 14:08:25 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:06:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
 	while (1) 
 	{
+		data.status = 0;
 		data.input = readline("Minishell > ");
 		if (data.input == NULL) //In case of Ctrl+D (EOF)
 			break ;
@@ -50,5 +51,5 @@ int main(int argc, char **argv, char **envp)
 	clean_data(&data);
 	rl_clear_history();
 	printf("exit\n");
-	return 0;
+	return (data.status);
 }
