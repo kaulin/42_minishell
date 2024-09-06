@@ -1,6 +1,4 @@
 TODO
-
-- Make error handler work
 - File checker gives error for outfile that doesnt exist
 - Check builtin functionality thoroughly after migration, especially cd and unset.
 - Wrong error message for trying to cd into non-existing dir
@@ -11,6 +9,7 @@ TODO
 - Fix single memory leak in trim_n of expander_utils.c
 
 FIXED
+5.9. Make error handler work
 4.9. No space between tokens = failure
 30.8. Moves env to using linked list
 27.8. Tokenization should not separate linked and quoted arguments
