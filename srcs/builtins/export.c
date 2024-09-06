@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/04 13:38:09 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/06 15:12:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ int	export_builtin(t_data *data, char **cmds)
 	}
 	while (cmds[i])
 	{
-		if (var_add_var(&data->envp_list, cmds[i]))
+		if (ft_strchr(cmds[i], '=') == cmds[i])
+			return (oops(data, 1, "export: not a valid identifier", \
+			cmds[i]));
+		if (var_add_var(&data->envp_list, cmds[i]) || update_envp(data))
 			return (ERROR);
 		i++;
 	}
-	if (update_envp(data))
-		return (ERROR);
 	return (SUCCESS);
 }
