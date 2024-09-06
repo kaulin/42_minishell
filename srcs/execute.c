@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 13:17:50 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 14:21:14 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 		exec_builtin(data, cur_cmd->cmd_arr);
 	else
 		do_cmd(data, cur_cmd);
+	clean_data(data);
 	exit(data->status);
 }
 
@@ -112,7 +113,6 @@ int	execute_and_pipe(t_data *data)
 	{
 		if (check_redir(data, cur_cmd) || exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
-		return (SUCCESS);
 	}
 	else
 	{
