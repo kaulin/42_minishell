@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 14:21:14 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:16:26 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	execute_and_pipe(t_data *data)
 	t_cmd	*cur_cmd;
 
 	cur_cmd = data->cmd_list;
+	get_paths(data);
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		if (check_redir(data, cur_cmd) || exec_builtin(data, cur_cmd->cmd_arr))
@@ -121,8 +122,7 @@ int	execute_and_pipe(t_data *data)
 			if (parent(data, cur_cmd) > 0)
 			{
 				wait_for_the_kids(data, cur_cmd);
-				reset_io(data);
-				return (ERROR);
+				return (reset_io(data), ERROR);
 			}
 			cur_cmd = cur_cmd->next;
 		}

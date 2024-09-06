@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:26:14 by pik-kak           #+#    #+#             */
-/*   Updated: 2024/09/05 14:11:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:17:08 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,24 @@ char	**parse_paths(t_data *data)
 		return (NULL);
 	}
 	return (arr);
+}
+
+/*
+We already have the paths in the beginning.
+If the PATH variable has been unset after that we use the old paths.
+Else frees the old array and gets the new ones.
+*/
+int	get_paths(t_data *data)
+{
+	char	*path;
+
+	path = var_get_value(data->envp_list, "PATH");
+	if (!path)
+		return (SUCCESS);
+	else
+	{
+		clean_array(data->paths);
+		data->paths = parse_paths(data);
+	}
+	return (SUCCESS);
 }
