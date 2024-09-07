@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 15:01:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:18:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ int	unset_builtin(t_data *data, char **cmds)
 	{
 		var = var_get_var(data->envp_list, *cmds);
 		if (var)
+		{
 			var_remove_key(&data->envp_list, *cmds);
+			if (update_envp(data))
+				return (ERROR);
+		}
 		cmds++;
 	}
 	return (SUCCESS);
