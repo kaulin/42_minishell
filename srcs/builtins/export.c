@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 15:12:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:42:36 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,37 @@ Environmental variables normally contain only uppercase letters and '_'.
 Stick with that?
 */
 
+static void	print_variables(t_var *var)
+{
+	while (var)
+	{
+		if (var->value)
+			printf("declare -x %s=\"%s\"\n", var->key, var->value);
+		else
+			printf("declare -x %s\n", var->key);
+		var = var->anext;
+	}
+}
+
 int	export_builtin(t_data *data, char **cmds)
 {
-	int		i;
-	t_var	*var;
+	int	i;
+	int	flag;
 
 	i = 1;
+	flag = 0;
 	if (!cmds[i])
-	{
-		var = data->envp_list->alpha;
-		while (var)
-		{
-			if (var->value)
-				printf("declare -x %s=\"%s\"\n", var->key, var->value);
-			else
-				printf("declare -x %s\n", var->key);
-			var = var->anext;
-		}
-	}
+		print_variables(data->envp_list);
 	while (cmds[i])
 	{
 		if (ft_strchr(cmds[i], '=') == cmds[i])
-			return (oops(data, 1, "export: not a valid identifier", \
-			cmds[i]));
-		if (var_add_var(&data->envp_list, cmds[i]) || update_envp(data))
+		{
+			oops(data, 1, "export: not a valid identifier", cmds[i]);
+			flag = 1;
+		}
+		else if (var_add_var(&data->envp_list, cmds[i]) || update_envp(data))
 			return (ERROR);
 		i++;
 	}
-	return (SUCCESS);
+	return (flag);
 }
