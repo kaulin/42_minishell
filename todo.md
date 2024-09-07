@@ -1,8 +1,8 @@
 TODO
-- unset PATH does not really unset the paths, though the env is removed
-- removing dir above current dir results in getcwd failure when trying to move up
+- removing dir above current dir results in getcwd failure when trying to move up (can be argued that this is good enough, cd with full path works)
 
 FIXED
+- unset PATH does not really unset the paths, though the env is removed
 - var_list still small leak (didnt free key if var existed and input had no new value)
 - some multiple unsets result in segfault due to remove from alpha function
 - heredoc no cmd = segfault (check_builtin had no check for no cmds)
