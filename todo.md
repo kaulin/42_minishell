@@ -1,7 +1,11 @@
 TODO
+- order of operations: > a < a > b should give error for b not exisiting
 - removing dir above current dir results in getcwd failure when trying to move up (can be argued that this is good enough, cd with full path works)
+- ls | << A cat = pipe output is read into heredoc  (reuse of pipes?)
+- ctrl + c in heredoc should just cancel (not running command)
 
 FIXED
+- heredoc without command still gives invalid read (goes into do_cmd)
 - unset PATH does not really unset the paths, though the env is removed
 - var_list still small leak (didnt free key if var existed and input had no new value)
 - some multiple unsets result in segfault due to remove from alpha function
