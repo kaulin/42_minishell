@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 11:26:14 by pik-kak           #+#    #+#             */
-/*   Updated: 2024/09/06 18:17:08 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/07 17:05:45 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,18 @@ Else frees the old array and gets the new ones.
 int	get_paths(t_data *data)
 {
 	char	*path;
+	char	**temp;
 
 	path = var_get_value(data->envp_list, "PATH");
 	if (!path)
 		return (SUCCESS);
 	else
 	{
+		temp = parse_paths(data);
+		if (!temp)
+			return (ERROR);
 		clean_array(data->paths);
-		data->paths = parse_paths(data);
+		data->paths = temp;
 	}
 	return (SUCCESS);
 }
