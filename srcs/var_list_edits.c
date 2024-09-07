@@ -6,12 +6,16 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/07 16:33:35 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:01:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+Parses str content into key and value. If there is a = in the str, value is 
+created. If there is no =, whole str is used for key
+*/
 static int	var_set_key_and_value(char *str, char **key, char **value)
 {
 	*value = NULL;
@@ -57,6 +61,8 @@ int	var_add_var(t_var **var_list, char *str)
 		free(key);
 		var->value = value;
 	}
+	else if (var && !value)
+		free(key);
 	else if (!var)
 	{
 		var = var_new(key, value);
