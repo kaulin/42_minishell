@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 13:19:24 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:12:32 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ This checks if the command is one of the builtins
 
 int	check_if_builtin(char **cmds)
 {
+	if (!cmds)
+		return (0);
 	if (ft_strncmp("echo", cmds[0], 5) == 0
 		|| ft_strncmp("cd", cmds[0], 3) == 0
 		|| ft_strncmp("env", cmds[0], 4) == 0
