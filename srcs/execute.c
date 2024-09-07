@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/07 18:10:48 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/07 18:12:42 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (pipe(fd) == -1)
 		return (oops(data, ERROR, NULL, "pipe failed"));
 	if (check_redir(data, cur_cmd) != 0)
-		return (ERROR);
+		return (ERROR);  //Should piped fds be closed in this case?
 	if (!cur_cmd->cmd_arr)
 		return (-1);
 	cur_cmd->pid = fork();
