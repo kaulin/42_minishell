@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:27:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:54:03 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,24 @@ adding input/output files.
 */
 static int	place_redirs(t_cmd *cmd, t_token *token, int cmd_num)
 {
-	t_file	*file;
+	t_redir	*file;
 
 	file = NULL;
 	while (token)
 	{
 		if (token->cmd_num == cmd_num && token->type == REDIR_TOKEN)
 		{
-			if (ft_strlen(token->str) == 1)
-				file = file_new(token->next->str, 0);
+			if (!ft_strncmp(token->str, "<", 2))
+				file = redir_new(token->next->str, INFILE);
+			else if (!ft_strncmp(token->str, "<<", 3))
+				file = redir_new(token->next->str, HEREDOC);
+			else if (!ft_strncmp(token->str, ">", 2))
+				file = redir_new(token->next->str, OUTFILE);
 			else
-				file = file_new(token->next->str, 1);
+				file = redir_new(token->next->str, INFILE);
 			if (!file)
 				return (ERROR);
-			if (*token->str == '<')
-				file_add_back(&cmd->infiles, file);
-			else
-				file_add_back(&cmd->outfiles, file);
+			redir_add_back(&cmd->redirects, file);
 			token->next->placed_flag = 1;
 			token = token->next;
 		}

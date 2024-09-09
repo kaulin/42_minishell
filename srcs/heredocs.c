@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/09 10:09:24 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:29:15 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	read_input(int *fd, char *delim)
 	}
 }
 
-static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
+static int	get_input(t_cmd *cur_cmd, t_redir *cur_file, t_data *data)
 {
 	int		fd[2];
 	char	*delim;
@@ -59,14 +59,14 @@ static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
 
 int	check_heredocs(t_data *data, t_cmd *cur_cmd)
 {
-	t_file	*cur_file;
+	t_redir	*cur_file;
 	int		heredoc_fd;
 
-	cur_file = cur_cmd->infiles;
+	cur_file = cur_cmd->redirects;
 	heredoc_fd = -1;
 	while (cur_file)
 	{
-		if (cur_file->flag)
+		if (cur_file->type == HEREDOC)
 		{
 			if (get_input(cur_cmd, cur_file, data) != 0)
 				return (oops(data, 1, NULL, "Error reading from heredoc\n"));

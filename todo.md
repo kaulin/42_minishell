@@ -1,5 +1,5 @@
 TODO
-- order of operations: > a < a > b should give error for b not exisiting, since it creates a before trying to read from it
+- order of operations: > a < a < b should give error for b not exisiting, since it creates a before trying to read from it
 - ls | << A cat = pipe output is read into heredoc  (reuse of pipes?)
 - ctrl + c in heredoc should just cancel and return prompt (not running command)
 - If started with no environment, problems with cd, as $PWD and $OLDPWD dont exist. same if these are unset. Unsetting $OLDPWD results in really big issues at the moment. Running getcwd before any commands are run could be a solution.
@@ -26,4 +26,4 @@ FIXED
 - Rebuild parsing to handle connected arguments that should be placed in separate tokens
 - echo does not separate multiple agruments with a space
 - segfaults on empty input
-- echo "Hello' segfaults, gets into execute, should give syntax e-
+- echo "Hello' segfaults, gets into execute, should give syntax e-z 

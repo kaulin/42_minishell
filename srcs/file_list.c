@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 15:14:19 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:18:39 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:54:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 /*
 Creates a new file struct and initialises its file_str with the parameter sting. 
+
 A pointer to the new_file is returned, unless there is a malloc error.
 */
-t_file	*file_new(char *content, int flag)
+t_redir	*redir_new(char *content, int type)
 {
-	t_file	*new_file;
+	t_redir	*new_file;
 
-	new_file = malloc(sizeof(t_file));
+	new_file = malloc(sizeof(t_redir));
 	if (!new_file)
 		return (NULL);
 	new_file->file_str = ft_strdup(content);
@@ -29,7 +30,7 @@ t_file	*file_new(char *content, int flag)
 		free(new_file);
 		return (NULL);
 	}
-	new_file->flag = flag;
+	new_file->type = type;
 	new_file->next = NULL;
 	return (new_file);
 }
@@ -38,9 +39,9 @@ t_file	*file_new(char *content, int flag)
 Adds the new_file to the end of the file_list. If file_list is empty to start 
 with, file_list is set equal to the new_file.
 */
-void	file_add_back(t_file **file_list, t_file *new_file)
+void	redir_add_back(t_redir **file_list, t_redir *new_file)
 {
-	t_file	*temp;
+	t_redir	*temp;
 
 	if (*file_list == NULL)
 		*file_list = new_file;
@@ -56,7 +57,7 @@ void	file_add_back(t_file **file_list, t_file *new_file)
 /*
 Frees the contents of the given file struct and then frees the struct pointer.
 */
-void	file_delone(t_file *file)
+void	redir_delone(t_redir *file)
 {
 	if (file == NULL)
 		return ;
@@ -69,16 +70,16 @@ void	file_delone(t_file *file)
 /*
 Frees all the files and their contents in a file_list.
 */
-void	file_clear(t_file **file_list)
+void	redir_clear(t_redir **file_list)
 {
-	t_file	*next;
+	t_redir	*next;
 
 	if (file_list == NULL)
 		return ;
 	while (*file_list)
 	{
 		next = (*file_list)->next;
-		file_delone(*file_list);
+		redir_delone(*file_list);
 		*file_list = next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 17:34:43 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/09 13:27:57 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,15 @@ have the correct rights and are not directories.
 If the last file is an infile, closes the heredoc_fd and opens the file.
 */
 
-static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
+static int	redirect_input(t_data *data, t_cmd *cur_cmd, t_redir *redir, int heredoc_fd)
 {
-	t_file	*cur_file;
-
-	cur_file = cur_cmd->infiles;
-	while (cur_file->next)
-	{
-		if (!cur_file->flag)
-			if (check_file(data, cur_file, 1) == 1)
-				return (ERROR);
-		cur_file = cur_file->next;
-	}
-	if (!cur_file->flag)
+	if (redir->type == HEREDOC)
+		cur_cmd->in_fd = heredoc_fd;
+	else
 	{
 		if (heredoc_fd != -1)
 			close(heredoc_fd);
-		if (check_file(data, cur_file, 1) == 1)
-			return (ERROR);
-		cur_cmd->in_fd = open(cur_file->file_str, O_RDONLY);
+		cur_cmd->in_fd = open(redir->file_str, O_RDONLY);
 		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
 			return (oops(data, 1, NULL, "dup2 failed\n"));
 		close(cur_cmd->in_fd);
@@ -73,56 +63,16 @@ static int	check_infiles(t_data *data, t_cmd *cur_cmd, int heredoc_fd)
 	return (SUCCESS);
 }
 
-static int	input_redirection(t_cmd *cur_cmd, t_data *data)
+static int	redirect_output(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 {
-	int		heredoc_fd;
-	t_file	*cur_file;
-
-	cur_file = cur_cmd->infiles;
-	heredoc_fd = check_heredocs(data, cur_cmd);
-	if (heredoc_fd == 1)
-		return (ERROR);
-	if (check_infiles(data, cur_cmd, heredoc_fd) == 1)
-		return (ERROR);
-	while (cur_file->next)
-		cur_file = cur_file->next;
-	if (cur_file->flag && heredoc_fd != -1)
-	{
-		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
-			return (oops(data, 1, NULL, "dup2 failed\n"));
-		close(heredoc_fd);
-	}
-	return (SUCCESS);
-}
-
-static int	check_outfiles(t_data *data, t_file *cur_file)
-{
-	while (cur_file)
-	{
-		if (check_file(data, cur_file, 2) == 1)
-			return (ERROR);
-		cur_file = cur_file->next;
-	}
-	return (SUCCESS);
-}
-
-static int	output_redirection(t_cmd *cur_cmd, t_data *data)
-{
-	t_file	*cur_file;
-
-	cur_file = cur_cmd->outfiles;
-	if (check_outfiles(data, cur_file) == 1)
-		return (ERROR);
-	while (cur_file->next)
-		cur_file = cur_file->next;
-	if (cur_file->flag)
-		cur_cmd->out_fd = open(cur_file->file_str, \
+	if (redir->type == APPEND)
+		cur_cmd->out_fd = open(redir->file_str, \
 		O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else
-		cur_cmd->out_fd = open(cur_file->file_str, \
+		cur_cmd->out_fd = open(redir->file_str, \
 		O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (cur_cmd->out_fd == -1)
-		return (oops(data, 1, cur_file->file_str, "Permission denied"));
+		return (oops(data, 1, redir->file_str, "Permission denied"));
 	if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 		return (oops(data, 1, NULL, "dup2 failed"), ERROR);
 	close(cur_cmd->out_fd);
@@ -134,9 +84,30 @@ Checks if there is a redirection and if it is in input or output.
 */
 int	check_redir(t_data *data, t_cmd *cur_cmd)
 {
-	if (cur_cmd->infiles && input_redirection(cur_cmd, data))
-		return (ERROR);
-	if (cur_cmd->outfiles && output_redirection(cur_cmd, data))
-		return (ERROR);
+	t_redir	*redir;
+	t_redir	*last_in;
+	t_redir	*last_out;
+	int		heredoc_fd;
+
+
+	last_in = NULL;
+	last_out = NULL;
+	heredoc_fd = check_heredocs(data, cur_cmd);
+	if (heredoc_fd )
+	redir = cur_cmd->redirects;
+	while (redir)
+	{
+		if (check_file(data, redir))
+			return (ERROR);
+		if (redir->type == INFILE || redir->type == HEREDOC)
+			last_in = redir;
+		else if (redir->type == OUTFILE || redir->type == APPEND)
+			last_out = redir;
+		redir = redir->next;
+	}
+	if (last_in && redirect_input(data, cur_cmd, last_in, heredoc_fd))
+			return (ERROR);
+	if (last_out && redirect_output(data, cur_cmd, last_out))
+			return (ERROR);
 	return (SUCCESS);
 }

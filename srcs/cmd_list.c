@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 13:25:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:54:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ t_cmd	*cmd_new(void)
 		return (NULL);
 	new_cmd->cmd_arr = NULL;
 	new_cmd->path = NULL;
-	new_cmd->infiles = NULL;
-	new_cmd->outfiles = NULL;
+	new_cmd->redirects = NULL;
 	new_cmd->next = NULL;
 	new_cmd->pid = 0;
 	return (new_cmd);
@@ -62,10 +61,8 @@ void	cmd_delone(t_cmd *cmd)
 		free(cmd->path);
 	if (cmd->cmd_arr)
 		clean_array(cmd->cmd_arr);
-	if (cmd->infiles)
-		file_clear(&cmd->infiles);
-	if (cmd->outfiles)
-		file_clear(&cmd->outfiles);
+	if (cmd->redirects)
+		redir_clear(&cmd->redirects);
 	free(cmd);
 	cmd = NULL;
 }
@@ -92,8 +89,8 @@ int	cmd_print(t_cmd *cmd)
 {
 	int		i;
 	int		arg_i;
-	t_file 	*infile;
-	t_file 	*outfile;
+	t_redir 	*infile;
+	t_redir 	*outfile;
 
 	i = 1;
 	infile = NULL;

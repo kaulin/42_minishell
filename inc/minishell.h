@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 17:58:29 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/09 11:15:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,31 @@ typedef struct s_cmd
 {
 	char			*path; // path to command
 	char			**cmd_arr; // 0 term list of cmd and arguments
-	struct s_file	*infiles; // infiles for specific cmd, NULL if not set
-	struct s_file	*outfiles; // outfiles for specific cmd, NULL if not set
+	struct s_redir	*redirects;
 	int				in_fd;
 	int				out_fd;
 	pid_t			pid;
 	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
 
+// Redirection types
+# define INFILE 1
+# define HEREDOC 2
+# define OUTFILE 3
+# define APPEND 4
+
 /*
-Defines struct to store command in- and outfiles. Uses vary. For infiles, flag 
+Defines struct to store command redirects. Uses vary. For infiles, flag 
 indicates heredoc. If flagged, file_str is heredoc delimeter instead of file 
 path. For outfiles, flag indicates appending. If flagged, outfile is appended 
 on write, not overwritten.
 */
-typedef struct s_file
+typedef struct s_redir
 {
 	char			*file_str;
-	int				flag;
-	struct s_file	*next;
-}	t_file;
+	int				type;
+	struct s_redir	*next;
+}	t_redir;
 
 /*
 Defines struct to store environment variables in a linked list of key-value 
@@ -127,10 +132,10 @@ void	var_remove_key(t_var **var_list, char *key);
 void	var_remove_from_alpha(t_var *var, t_var *rmv);
 
 // file_list.c
-t_file	*file_new(char *content, int flag);
-void	file_add_back(t_file **file_list, t_file *new_file);
-void	file_delone(t_file *file);
-void	file_clear(t_file **file_list);
+t_redir	*redir_new(char *content, int flag);
+void	redir_add_back(t_redir **file_list, t_redir *new_file);
+void	redir_delone(t_redir *file);
+void	redir_clear(t_redir **file_list);
 
 // parser.c
 int		parse(char *input, t_data *data);
@@ -165,7 +170,7 @@ int		execute_and_pipe(t_data *data);
 
 //exec_utils.c
 void	reset_io(t_data *data);
-int		check_file(t_data *data, t_file *cur_file, int flag);
+int		check_file(t_data *data, t_redir *cur_file);
 
 // utils.c
 int		join_print_free(char *str1, char *str2, int fd);
