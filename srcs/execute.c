@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 13:48:28 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:40:18 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	close(fd[1]);
 	if (cur_cmd->out_fd != -1 && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 	{
-		exit(oops(data, 1, NULL, "dup2 failed"));	
+		exit(oops(data, 1, NULL, "dup2 failed"));
 		close(cur_cmd->out_fd);
 	}
 	if (check_if_builtin(cur_cmd->cmd_arr))
@@ -68,8 +68,8 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (pipe(fd) == -1)
 		return (oops(data, ERROR, NULL, "pipe failed"));
 	if (check_redir(data, cur_cmd) != 0)
-		return (ERROR);  //Should piped fds be closed in this case?
-	if (!cur_cmd->cmd_arr)
+		return (ERROR); //Should piped fds be closed in this case?
+	if (!cur_cmd->cmd_arr) //Should piped fds be closed in this case?
 		return (-1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)

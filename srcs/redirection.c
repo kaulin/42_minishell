@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 14:05:51 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:41:20 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 	t_redir	*last_out;
 	int		heredoc_fd;
 
-
 	last_in = NULL;
 	last_out = NULL;
 	if (check_heredocs(data, cur_cmd, &heredoc_fd))
@@ -103,8 +102,8 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 		redir = redir->next;
 	}
 	if (last_in && redirect_input(data, cur_cmd, last_in, heredoc_fd))
-			return (ERROR);
+		return (ERROR);
 	if (last_out && redirect_output(data, cur_cmd, last_out))
-			return (ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }

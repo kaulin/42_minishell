@@ -3,46 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 17:28:28 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/09 15:47:11 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Makes the new PWD and new OLDPWD
-Sets the OLDPWD to the current working directory
-Sets the value of PWD to the new directory(new path)
-Calls check_key to change the variables
+Sets the PWD and OLDPWD
+Gets the current working directory
+If PWD is unset sets OLDPWDs value as empty else sets it to PWDs value
+Sets PWDs value as current working directory
 */
-//do we need strinjoin?
+
 int	update_pwd(t_data *data)
 {
-	char	*new_pwd;
-	char	buffer[PATH_MAX];
-	t_var	*var_pwd;
-	t_var	*var_old;
+	char	pwd[PATH_MAX];
+	char	*temp;
 
-	var_pwd = var_get_var(data->envp_list, "PWD");
-	if (!var_pwd)
-		return (oops(data, 1, NULL, " cd: PWD not set"));
-	var_old = var_get_var(data->envp_list, "OLDPWD");
-	if (!var_old)
+	if (getcwd(pwd, sizeof(pwd)) == NULL)
 	{
-		if (var_add_var(&data->envp_list, "OLDPWD"))
-			return (ERROR);
-		var_old = var_get_var(data->envp_list, "OLDPWD");
-	}
-	new_pwd = ft_strjoin("", getcwd(buffer, PATH_MAX));
-	if (!new_pwd)
+		oops(data, 1, NULL, "getcwd failed");
 		return (ERROR);
-	if (var_old->value)
-		free(var_old->value);
-	var_old->value = var_pwd->value;
-	var_pwd->value = new_pwd;
+	}
+	if (var_get_var(data->envp_list, "PWD") == NULL)
+	{
+		temp = ft_strjoin("OLDPWD=", "");
+		var_add_var(&data->envp_list, temp);
+		free(temp);
+	}
+	else
+	{
+		temp = ft_strjoin("OLDPWD=", var_get_value(data->envp_list, "PWD"));
+		var_add_var(&data->envp_list, temp);
+		free(temp);
+	}
+	temp = ft_strjoin("PWD=", pwd);
+	var_add_var(&data->envp_list, temp);
+	free(temp);
 	return (SUCCESS);
 }
 
@@ -62,7 +63,8 @@ int	change_directory(t_data *data, char *path)
 }
 
 /*
-Returns a path that contains the parent directory of the directory we are in at the moment
+Returns a path that contains the parent directory
+of the directory we are in at the moment
 */
 
 static char	*up_one(t_data *data)
@@ -74,10 +76,7 @@ static char	*up_one(t_data *data)
 
 	i = 0;
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		oops(data, 1, NULL, "getcwd failed");
-		return (NULL);
-	}
+		return (oops(data, 1, NULL, "getcwd failed"), NULL);
 	pointer = ft_strrchr(cwd, '/');
 	if (pointer == cwd)
 		return (path = ft_strdup(cwd));
@@ -97,14 +96,14 @@ static char	*up_one(t_data *data)
 }
 
 /*
-Change directory to the previous directory(OLDPWD).
+Finds the path
 */
 static int	find_path(t_data *data, char **cmds, char **path, int *flag)
 {
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		*path = var_get_value(data->envp_list, "HOME");
-		if (!*path || **path == '\0' || **path == ' ' || **path == '	') // is this checking for whitespace or just space and tab?
+		if (!*path || **path == '\0' || **path == ' ' || **path == '	')// is this checking for whitespace or just space and tab?
 			return (oops(data, 1, NULL, "cd: HOME not set"));
 	}
 	else if (ft_strncmp(cmds[1], "-", 2) == 0)
