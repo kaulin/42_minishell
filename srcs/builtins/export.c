@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/07 16:42:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:42:57 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	export_builtin(t_data *data, char **cmds)
 	i = 1;
 	flag = 0;
 	if (!cmds[i])
-		print_variables(data->envp_list);
+		print_variables(data->envp_list->alpha);
 	while (cmds[i])
 	{
 		if (ft_strchr(cmds[i], '=') == cmds[i])

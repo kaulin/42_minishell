@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/07 17:01:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:42:47 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,6 @@ void	var_remove_from_alpha(t_var *var, t_var *rmv)
 	{
 		while (var->anext && var->anext != rmv)
 			var = var->anext;
-		var->anext = rmv->next;
+		var->anext = rmv->anext;
 	}
 }
