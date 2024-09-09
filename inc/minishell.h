@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 11:15:20 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:54:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int		get_paths(t_data *data);
 int		check_redir(t_data *data, t_cmd *cur_cmd);
 
 // heredocs.c
-int		check_heredocs(t_data *data, t_cmd *cur_cmd);
+int		check_heredocs(t_data *data, t_cmd *cur_cmd, int *heredoc_fd);
 
 //execute.c
 int		execute_and_pipe(t_data *data);

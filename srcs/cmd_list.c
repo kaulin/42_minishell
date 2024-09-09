@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/09 10:54:38 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:41:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_cmd	*cmd_new(void)
 	new_cmd->cmd_arr = NULL;
 	new_cmd->path = NULL;
 	new_cmd->redirects = NULL;
+	new_cmd->in_fd = -1;
+	new_cmd->out_fd = -1;
 	new_cmd->next = NULL;
 	new_cmd->pid = 0;
 	return (new_cmd);

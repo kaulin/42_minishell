@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 13:27:57 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:05:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static int	redirect_input(t_data *data, t_cmd *cur_cmd, t_redir *redir, int here
 		if (heredoc_fd != -1)
 			close(heredoc_fd);
 		cur_cmd->in_fd = open(redir->file_str, O_RDONLY);
-		if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
-			return (oops(data, 1, NULL, "dup2 failed\n"));
-		close(cur_cmd->in_fd);
 	}
+	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
+		return (oops(data, 1, NULL, "dup2 failed\n"));
+	close(cur_cmd->in_fd);
 	return (SUCCESS);
 }
 
@@ -73,9 +73,6 @@ static int	redirect_output(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 		O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (cur_cmd->out_fd == -1)
 		return (oops(data, 1, redir->file_str, "Permission denied"));
-	if (cur_cmd->cmd_arr && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
-		return (oops(data, 1, NULL, "dup2 failed"), ERROR);
-	close(cur_cmd->out_fd);
 	return (SUCCESS);
 }
 
@@ -92,8 +89,8 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 
 	last_in = NULL;
 	last_out = NULL;
-	heredoc_fd = check_heredocs(data, cur_cmd);
-	if (heredoc_fd )
+	if (check_heredocs(data, cur_cmd, &heredoc_fd))
+		return (ERROR);
 	redir = cur_cmd->redirects;
 	while (redir)
 	{

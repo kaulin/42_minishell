@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/09 13:29:15 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:55:37 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static void	read_input(int *fd, char *delim)
 	}
 }
 
-static int	get_input(t_cmd *cur_cmd, t_redir *cur_file, t_data *data)
+static int	get_input(t_cmd *cur_cmd, t_redir *redir, t_data *data)
 {
 	int		fd[2];
 	char	*delim;
 
-	delim = cur_file->file_str;
+	delim = redir->file_str;
 	if (dup2(data->o_stdin, STDIN_FILENO) == -1)
 		return (oops(data, 1, NULL, "dup2 failed\n"));
 	if (pipe(fd) == -1)
@@ -57,24 +57,23 @@ static int	get_input(t_cmd *cur_cmd, t_redir *cur_file, t_data *data)
 	return (SUCCESS);
 }
 
-int	check_heredocs(t_data *data, t_cmd *cur_cmd)
+int	check_heredocs(t_data *data, t_cmd *cur_cmd, int *heredoc_fd)
 {
-	t_redir	*cur_file;
-	int		heredoc_fd;
+	t_redir	*redir;
 
-	cur_file = cur_cmd->redirects;
-	heredoc_fd = -1;
-	while (cur_file)
+	redir = cur_cmd->redirects;
+	*heredoc_fd = -1;
+	while (redir)
 	{
-		if (cur_file->type == HEREDOC)
+		if (redir->type == HEREDOC)
 		{
-			if (get_input(cur_cmd, cur_file, data) != 0)
+			if (get_input(cur_cmd, redir, data) != 0)
 				return (oops(data, 1, NULL, "Error reading from heredoc\n"));
-			if (heredoc_fd != -1)
-				close(heredoc_fd);
-			heredoc_fd = cur_cmd->in_fd;
+			if (*heredoc_fd != -1)
+				close(*heredoc_fd);
+			*heredoc_fd = cur_cmd->in_fd;
 		}
-		cur_file = cur_file->next;
+		redir = redir->next;
 	}
-	return (heredoc_fd);
+	return (SUCCESS);
 }
