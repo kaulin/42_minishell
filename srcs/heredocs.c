@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/06 08:09:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:09:24 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	get_input(t_cmd *cur_cmd, t_file *cur_file, t_data *data)
 	char	*delim;
 
 	delim = cur_file->file_str;
+	if (dup2(data->o_stdin, STDIN_FILENO) == -1)
+		return (oops(data, 1, NULL, "dup2 failed\n"));
 	if (pipe(fd) == -1)
 		return (oops(data, 1, NULL, "pipe failed\n"));
 	read_input(fd, delim);
