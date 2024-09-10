@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 18:28:14 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:35:58 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void signal_handler(int sig)
 {
 	if (in_heredoc)
 	{
-		if (sig == SIGINT)//doesn't go here when it should.
+		if (sig == SIGINT)//doesn't go here when the signal comes from the child process
 		{
-			write(1, "\n", 1);
+			in_heredoc = 0;
+			close(STDIN_FILENO);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 		}
