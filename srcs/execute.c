@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 15:40:18 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:58:52 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ actually execute execve.
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	close(fd[0]);
+	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
+	{
+		close(fd[1]);
+		exit(data->status);
+	}
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
 		exit(oops(data, 1, NULL, "dup2 failed"));
 	close(fd[1]);
@@ -67,10 +72,10 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 		return (oops(data, ERROR, NULL, "pipe failed"));
-	if (check_redir(data, cur_cmd) != 0)
-		return (ERROR); //Should piped fds be closed in this case?
-	if (!cur_cmd->cmd_arr) //Should piped fds be closed in this case?
-		return (-1);
+	//if (check_redir(data, cur_cmd) != 0)
+	//	return (ERROR); //Should piped fds be closed in this case?
+	//if (!cur_cmd->cmd_arr) //Should piped fds be closed in this case?
+	//	return (-1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)
 	{
