@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 16:55:42 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:28:14 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,11 @@ void signal_handler(int sig)
 {
 	if (in_heredoc)
 	{
-		if (sig == SIGINT)
+		if (sig == SIGINT)//doesn't go here when it should.
 		{
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
-			//rl_redisplay();
 		}
 	}
 	else
@@ -48,12 +47,12 @@ void signal_handler(int sig)
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
-			rl_redisplay(); 
+			rl_redisplay();
 		}
 	}
 }
 
-void setup_signal_handling(void (*handler)(int))
+void setup_signal_handling(t_data *data, void (*handler)(int))
 {
 	struct sigaction sa;
 
@@ -65,10 +64,8 @@ void setup_signal_handling(void (*handler)(int))
 	sigemptyset(&sa.sa_mask);
 
 	sigaction(SIGINT, &sa, NULL);
-	//if (sigaction(SIGINT, &sa, NULL) == -1) {
-	//	perror("sigaction");
-	//	exit(EXIT_FAILURE);
-	//}
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		oops(data, 1, NULL, "sigaction failed");
 }
 
 

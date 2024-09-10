@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 17:05:47 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:23:33 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	redir_clear(t_redir **file_list);
 int		parse(char *input, t_data *data);
 
 // signal.c
-void 	setup_signal_handling(void (*handler)(int));
+void 	setup_signal_handling(t_data *data, void (*handler)(int));
 void 	child_signal_handler(int sig);
 void 	parent_signal_handler(int sig);
 
