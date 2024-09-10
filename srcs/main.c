@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 13:19:24 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:56:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//volatile sig_atomic_t my_signal;
+//void setup_signal_handling();
+volatile sig_atomic_t in_heredoc;
 
 static void	handle_input(t_data *data)
 {
@@ -33,8 +37,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;//Ignore arguments
 	if (init_data(&data, envp))
 		return (oops(&data, 1, NULL, "error setting up shell environment"));
-	signal(SIGINT, sigint_handler); //Handle Ctr+C
-	signal(SIGQUIT, SIG_IGN); //Ignore Ctr+'\'
+	in_heredoc = 0;
+	setup_signal_handling(NULL);
 	while (42)
 	{
 		data.status = 0;
