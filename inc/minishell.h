@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 13:54:49 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:05:47 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <fcntl.h>
 # include <limits.h>
 # include "libft.h"
+# include <errno.h>
+
 
 // Standard FDs
 # define STDIN 0
@@ -96,6 +98,8 @@ typedef struct s_var
 	struct s_var	*anext;
 }	t_var;
 
+extern volatile sig_atomic_t in_heredoc;
+
 // data.c
 int		update_envp(t_data *data);
 void	reset_data(t_data *data);
@@ -141,7 +145,9 @@ void	redir_clear(t_redir **file_list);
 int		parse(char *input, t_data *data);
 
 // signal.c
-void	sigint_handler(int signal);
+void 	setup_signal_handling(void (*handler)(int));
+void 	child_signal_handler(int sig);
+void 	parent_signal_handler(int sig);
 
 // builtins
 int		check_if_builtin(char **cmds);
