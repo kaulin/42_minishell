@@ -6,14 +6,12 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 16:56:08 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:57:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//volatile sig_atomic_t my_signal;
-//void setup_signal_handling();
 volatile sig_atomic_t in_heredoc;
 
 static void	handle_input(t_data *data)
@@ -38,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	if (init_data(&data, envp))
 		return (oops(&data, 1, NULL, "error setting up shell environment"));
 	in_heredoc = 0;
-	setup_signal_handling(NULL);
+	setup_signal_handling(&data, NULL);
 	while (42)
 	{
 		data.status = 0;

@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 16:44:21 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:06:51 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ actually execute execve.
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	close(fd[0]);
-	setup_signal_handling(child_signal_handler);
+	setup_signal_handling(data, child_signal_handler);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 	{
 		close(fd[1]);
@@ -107,13 +107,9 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
 			if (errno == EINTR)// Interrupted by a signal, continue waiting
-			{
 				continue;
-			}
 			else
-			{
 				return (oops(data, ERROR, NULL, "waitpid failed"));
-			}
 		}
 		if (WIFEXITED(status))
 			data->status = WEXITSTATUS(status);
