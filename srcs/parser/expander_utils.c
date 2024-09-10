@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 14:55:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:21:31 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,22 @@ int	cut_str(t_expander *expander)
 }
 
 /*
+Returns an allocated string consisting of:
+a. given var's value, if var exists
+b. previous commands exit status for $?
+c. "" empty string for anything else
+*/
+static char	*expand_var(t_var *var, int prev_status)
+{
+	if (var)
+		return (ft_strdup(var->value));
+	else if (*(var->value + 1) == '?')
+		return (ft_itoa(prev_status));
+	else
+		return (ft_strdup(""));
+}
+
+/*
 Expands any variable strings in the str_list. For variables not enclosed in 
 double quotes, any additional whitespace within the returned variable content 
 is condensed into single spaces.*/
@@ -78,12 +94,7 @@ int	expand_strings(t_expander *expander, t_data *data)
 		if (*node->str == '$' && *(node->str + 1))
 		{
 			var = var_get_var(data->envp_list, node->str + 1);
-			if (var)
-				temp = ft_strdup(var->value);
-			else if (*(node->str + 1) == '?')
-				temp = ft_itoa(data->prev_status);
-			else
-				temp = ft_strdup("");
+			temp = expand_var(var, data->prev_status);
 			if (!temp)
 				return (ERROR);
 			if (!expander->quote && splitjoin(&temp, " \t\v\n\r\f", " "))
