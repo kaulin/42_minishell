@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 12:06:08 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:15:16 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		return (oops(data, ERROR, NULL, "dup2 failed"));
 	}
 	close(fd[0]);
-	setup_signal_handling(data, basic_signal_handler);
 	return (SUCCESS);
 }
 
