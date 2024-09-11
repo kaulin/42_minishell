@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:46:36 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:06:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	}
 	if (g_in_heredoc == 2)
 	{
+		close(fd[1]);
 		kill(getppid(), SIGUSR1);
-		exit (data->status);
+		exit (130);
 	}
 	setup_signal_handling(data, child_signal_handler);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
@@ -95,6 +96,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		return (oops(data, ERROR, NULL, "dup2 failed"));
 	}
 	close(fd[0]);
+	setup_signal_handling(data, basic_signal_handler);
 	return (SUCCESS);
 }
 

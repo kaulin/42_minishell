@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:45:16 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:12:23 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ Exits child in case of SIGINT.
 void	child_signal_handler(int sig)
 {
 	(void)sig;
-	exit(EXIT_SUCCESS);
+	exit(130);
 }
 
 /*
