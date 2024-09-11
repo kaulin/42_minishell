@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 15:47:11 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 10:36:11 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@ to the function.
 
 int	change_directory(t_data *data, char *path)
 {
+	/*
+	if (access(path, F_OK) == -1)
+		return (oops(data, CD_E, path, "No such file or directory"));
+	if (is_directory(path) != 1)
+		return (oops(data, CD_E, path, "Not a directory"));*/
 	if (chdir(path) != 0)
-		return (oops(data, 1, path, "No such file or directory"));
+		return (oops(data, CD_E, path, NULL));
 	else if (update_pwd(data) || update_envp(data))
 		return (ERROR);
 	return (SUCCESS);
