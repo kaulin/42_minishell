@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:22:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:39:50 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_data
 	struct s_var	*envp_list;
 	char			**envp_arr;
 	char			**paths;
-	char			*cwd;
 	int				o_stdin;
 	int				o_stdout;
 	struct s_cmd	*cmd_list;
