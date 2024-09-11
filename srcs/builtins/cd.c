@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 16:34:00 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:46:08 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,9 @@ int	cd_builtin(t_data *data, char **cmds)
 		return (ERROR);
 	if (chdir(path))
 	{
-		oops(data, CD_E, path, NULL);
 		if (flag && path)
 			free(path);
-		return (ERROR);
+		return (oops(data, CD_E, cmds[1], NULL));
 	}
 	if (flag && path)
 		free(path);
