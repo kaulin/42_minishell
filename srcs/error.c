@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/11 13:19:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:29:28 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ static void	no_permissions_error(char *e_file)
 
 static int	cd_error(char *e_file)
 {
-		ft_putstr_fd("mini: cd: ", 2);
+	ft_putstr_fd("mini: cd: ", 2);
+	if (e_file)
 		perror(e_file);
-		return (1);
+	else
+		ft_putendl_fd("too many arguments", 2);
+	return (1);
 }
 
 int	oops(t_data *data, int e_code, char *e_file, char *e_str)
