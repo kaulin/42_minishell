@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 10:36:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 16:34:00 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,52 +18,42 @@ Gets the current working directory
 If PWD is unset sets OLDPWDs value as empty else sets it to PWDs value
 Sets PWDs value as current working directory
 */
-
-int	update_pwd(t_data *data)
+static int	update_cwd(t_data *data)
 {
-	char	pwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 	char	*temp;
 
-	if (getcwd(pwd, sizeof(pwd)) == NULL)
-	{
-		oops(data, 1, NULL, "getcwd failed");
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		return (oops(data, 1, NULL, "getcwd failed"));
+	if (!var_get_var(data->envp_list, "PWD") \
+		&& var_add_var(&data->envp_list, "OLDPWD="))
 		return (ERROR);
-	}
-	if (var_get_var(data->envp_list, "PWD") == NULL)
-	{
-		temp = ft_strjoin("OLDPWD=", "");
-		var_add_var(&data->envp_list, temp);
-		free(temp);
-	}
 	else
 	{
 		temp = ft_strjoin("OLDPWD=", var_get_value(data->envp_list, "PWD"));
-		var_add_var(&data->envp_list, temp);
+		if (!temp)
+			return (ERROR);
+		if (var_add_var(&data->envp_list, temp))
+		{
+			free(temp);
+			return (ERROR);
+		}
 		free(temp);
 	}
-	temp = ft_strjoin("PWD=", pwd);
-	var_add_var(&data->envp_list, temp);
-	free(temp);
-	return (SUCCESS);
-}
-
-/*
-Change the current working directory to directory given using chdir.
-Chdir changes the current working directory by passing the new path
-to the function. 
-*/
-
-int	change_directory(t_data *data, char *path)
-{
-	/*
-	if (access(path, F_OK) == -1)
-		return (oops(data, CD_E, path, "No such file or directory"));
-	if (is_directory(path) != 1)
-		return (oops(data, CD_E, path, "Not a directory"));*/
-	if (chdir(path) != 0)
-		return (oops(data, CD_E, path, NULL));
-	else if (update_pwd(data) || update_envp(data))
+	temp = ft_strjoin("PWD=", cwd);
+	if (!temp)
 		return (ERROR);
+	if (var_add_var(&data->envp_list, temp))
+	{
+		free(temp);
+		return (ERROR);
+	}
+	free(temp);
+	temp =ft_strdup(cwd);
+	if (!temp)
+		return (ERROR);
+	free(data->cwd);
+	data->cwd = temp;
 	return (SUCCESS);
 }
 
@@ -76,27 +66,23 @@ static char	*up_one(t_data *data)
 {
 	char	*path;
 	char	*pointer;
-	char	cwd[PATH_MAX];
-	int		i;
-
-	i = 0;
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		return (oops(data, 1, NULL, "getcwd failed"), NULL);
-	pointer = ft_strrchr(cwd, '/');
-	if (pointer == cwd)
-		return (path = ft_strdup(cwd));
-	while (&cwd[i] != pointer)
-		i++;
-	path = (char *)malloc(i + 1 * sizeof(char));
+	char	buffer[PATH_MAX];
+	
+	if (getcwd(buffer, sizeof(buffer)))
+		path = ft_strdup(buffer);
+	else if (var_get_value(data->envp_list, "PWD"))
+		path = ft_strdup(var_get_value(data->envp_list, "PWD"));
+	else if (data->cwd && *data->cwd)
+		path = ft_strdup(data->cwd);
+	else
+	{
+		oops(data, 1, NULL, "getcwd failed");
+		return (NULL);
+	}
 	if (!path)
 		return (NULL);
-	i = 0;
-	while (&cwd[i] != pointer)
-	{
-		path[i] = cwd[i];
-		i++;
-	}
-	path[i] = '\0';
+	pointer = ft_strrchr(path, '/');
+	*pointer = '\0';
 	return (path);
 }
 
@@ -143,16 +129,19 @@ int	cd_builtin(t_data *data, char **cmds)
 	while (cmds[i] != NULL)
 		i++;
 	if (i >= 3)
-		return (oops(data, 1, NULL, "cd: too many arguments"));
+		return (oops(data, CD_E, NULL, NULL));
 	if (find_path(data, cmds, &path, &flag) == 1 || !path)
 		return (ERROR);
-	if (change_directory(data, path) == 1)
+	if (chdir(path))
 	{
-		if (flag)
+		oops(data, CD_E, path, NULL);
+		if (flag && path)
 			free(path);
 		return (ERROR);
 	}
-	if (flag)
+	if (flag && path)
 		free(path);
+	if (update_cwd(data) || update_envp(data))
+		return (ERROR);
 	return (SUCCESS);
 }
