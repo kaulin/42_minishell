@@ -3,31 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/10 22:41:40 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/11 11:48:46 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Lets the user insert lines of input, until a line that contains only the 
-delimiter string. A forced EoF is caught and an error is printed to STDERROR. 
-Each line given is printed to the write end of the given pipe.
+Reads input, until delimiter'
+Each line is printed to the write end of the pipe.
+If SIGINT is caught a signal handler is called and function stops reading input.
+A forced EoF is caught and an error is printed to STDERROR.
 */
 
 static void	read_input(t_data *data, int *fd, char *delim)
 {
 	char	*input;
 
-	in_heredoc = 1;
-	setup_signal_handling(data, NULL);
+	g_in_heredoc = 1;
+	setup_signal_handling(data, hd_signal_handler);
 	while (1)
 	{
 		input = readline("> ");
-		if (in_heredoc == 0)
+		if (g_in_heredoc == 2)
 			break ;
 		if (!input)
 		{
@@ -44,7 +45,6 @@ static void	read_input(t_data *data, int *fd, char *delim)
 		ft_putstr_fd("\n", fd[1]);
 		free(input);
 	}
-	in_heredoc = 0;
 }
 
 static int	get_input(t_cmd *cur_cmd, t_redir *redir, t_data *data)

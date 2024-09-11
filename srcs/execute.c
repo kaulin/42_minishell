@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 18:06:51 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:46:36 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,17 @@ actually execute execve.
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	close(fd[0]);
-	setup_signal_handling(data, child_signal_handler);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 	{
 		close(fd[1]);
 		exit(data->status);
 	}
+	if (g_in_heredoc == 2)
+	{
+		kill(getppid(), SIGUSR1);
+		exit (data->status);
+	}
+	setup_signal_handling(data, child_signal_handler);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
 		exit(oops(data, 1, NULL, "dup2 failed"));
 	close(fd[1]);
@@ -73,10 +78,6 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 
 	if (pipe(fd) == -1)
 		return (oops(data, ERROR, NULL, "pipe failed"));
-	//if (check_redir(data, cur_cmd) != 0)
-	//	return (ERROR); //Should piped fds be closed in this case?
-	//if (!cur_cmd->cmd_arr) //Should piped fds be closed in this case?
-	//	return (-1);
 	cur_cmd->pid = fork();
 	if (cur_cmd->pid == -1)
 	{
@@ -84,6 +85,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		close(fd[1]);
 		return (oops(data, ERROR, NULL, "fork failed"));
 	}
+	setup_signal_handling(data, parent_signal_handler);
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
 	close(fd[1]);
@@ -106,8 +108,8 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
-			if (errno == EINTR)// Interrupted by a signal, continue waiting
-				continue;
+			if (errno == EINTR)
+				continue ;
 			else
 				return (oops(data, ERROR, NULL, "waitpid failed"));
 		}

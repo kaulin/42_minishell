@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 22:35:58 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/11 11:45:16 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,51 +23,62 @@ Tcsetattr sets attributes of the terminal associated with STDIN,
 using the values stored in handler.
 */
 
-void child_signal_handler(int sig)
+/*
+Handler for parent.
+Ignores SIGINT during child process execution.
+*/
+void	parent_signal_handler(int sig)
 {
-	if (sig == SIGINT)
-		exit(EXIT_SUCCESS);
+	(void)sig;
+	signal(SIGINT, SIG_IGN);
 }
 
-void signal_handler(int sig)
+/*
+Handler for child process.
+Exits child in case of SIGINT.
+*/
+void	child_signal_handler(int sig)
 {
-	if (in_heredoc)
+	(void)sig;
+	exit(EXIT_SUCCESS);
+}
+
+/*
+Handler for SIGINT during heredoc.
+Sets heredoc to 2 and closes STDIN to stop readline from reading.
+*/
+void	hd_signal_handler(int sig)
+{
+	(void)sig;
+	if (g_in_heredoc)
 	{
-		if (sig == SIGINT)//doesn't go here when the signal comes from the child process
-		{
-			in_heredoc = 0;
-			close(STDIN_FILENO);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-		}
-	}
-	else
-	{
-		if (sig == SIGINT)
-		{
-			write(1, "\n", 1);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
+		g_in_heredoc = 2;
+		close(STDIN_FILENO);
 	}
 }
 
-void setup_signal_handling(t_data *data, void (*handler)(int))
+/*
+Handler for SIGUSR1.
+Handles heredoc interruption by SIGINT as it should.
+Sets in_heredoc at 0 again.
+*/
+void	sigusr1_handler(int sig)
 {
-	struct sigaction sa;
-
-	if (!handler)
-		sa.sa_handler = signal_handler;
-	else
-		sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-
-	sigaction(SIGINT, &sa, NULL);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		oops(data, 1, NULL, "sigaction failed");
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	g_in_heredoc = 0;
 }
 
-
-
+/*
+Basic handler for SIGINT
+*/
+void	basic_signal_handler(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
