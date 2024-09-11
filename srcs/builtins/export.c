@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 09:08:43 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:01:46 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ Stick with that?
 
 static int	check_name(char *cmd)
 {
-	while (*cmd)
+	if (ft_isdigit(*cmd) || (!ft_isalpha(*cmd) && *cmd != '_'))
+		return (ERROR);
+	while (*cmd && *cmd != '=')
 	{
-		if (ft_isalpha(*cmd) == 1 || ft_isdigit(*cmd) == 1 || *cmd != '_')
+		if (!ft_isalnum(*cmd) && *cmd != '_')
 			return (ERROR);
 		cmd++;
 	}
@@ -58,7 +60,7 @@ int	export_builtin(t_data *data, char **cmds)
 		print_variables(data->envp_list->alpha);
 	while (cmds[i])
 	{
-		if (ft_strchr(cmds[i], '=') == cmds[i] || check_name(cmds[i]) == 1)
+		if (check_name(cmds[i]))
 		{
 			oops(data, 1, "export: not a valid identifier", cmds[i]);
 			flag = 1;
