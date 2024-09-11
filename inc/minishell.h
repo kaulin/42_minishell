@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:39:50 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:42:37 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ typedef struct s_var
 	struct s_var	*anext;
 }	t_var;
 
-extern volatile sig_atomic_t in_heredoc;
+extern volatile sig_atomic_t g_in_heredoc;
+
+//main.c
+void	setup_signal_handling(t_data *data, void (*handler)(int));
 
 // data.c
 int		update_envp(t_data *data);
@@ -146,9 +149,11 @@ void	redir_clear(t_redir **file_list);
 int		parse(char *input, t_data *data);
 
 // signal.c
-void 	setup_signal_handling(t_data *data, void (*handler)(int));
-void 	child_signal_handler(int sig);
-void 	parent_signal_handler(int sig);
+void	basic_signal_handler(int sig);
+void	sigusr1_handler(int sig);
+void	hd_signal_handler(int sig);
+void	child_signal_handler(int sig);
+void	parent_signal_handler(int sig);
 
 // builtins
 int		check_if_builtin(char **cmds);
@@ -185,3 +190,4 @@ void	clean_array(char **array);
 int		is_directory(char *filepath);
 
 #endif
+
