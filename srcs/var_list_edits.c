@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 14:42:39 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/09 14:42:47 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:52:49 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	var_add_var(t_var **var_list, char *str)
 	char	*key;
 	char	*value;
 
-	if (var_set_key_and_value(str, &key, &value))
+	if (!str || var_set_key_and_value(str, &key, &value))
 		return (ERROR);
 	var = var_get_var(*var_list, key);
 	if (var && value)
