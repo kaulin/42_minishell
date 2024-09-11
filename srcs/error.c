@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 08:24:58 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/11 10:38:30 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:19:54 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	oops(t_data *data, int e_code, char *e_file, char *e_str)
 	{
 		ft_putstr_fd("mini: ", 2);
 		ft_putendl_fd(e_str, 2);
+		if (!data)
+			exit (clean_data(data));
 	}
 	else
 		ft_putendl_fd("mini: memory allocation error", 2);

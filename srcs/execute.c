@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 13:15:16 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:26:21 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 		exec_builtin(data, cur_cmd->cmd_arr);
 	else
 		do_cmd(data, cur_cmd);
-	clean_data(data);
-	exit(data->status);
+	exit(clean_data(data));
 }
 
 /*

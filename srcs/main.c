@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:37:51 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:11:19 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,27 @@ Readline allocates space for string automatically but doesn't free it.
 */
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_data	*data;
 
 	(void)argc;
 	(void)argv;
-	if (init_data(&data, envp))
-		return (oops(&data, 1, NULL, "error setting up shell environment"));
+	data = malloc(sizeof(t_data));
+	if (!data || init_data(data, envp))
+		return (oops(data, 1, NULL, "error setting up shell environment"));
 	g_in_heredoc = 0;
 	while (42)
 	{
-		setup_signal_handling(&data, basic_signal_handler);
-		data.status = 0;
-		data.input = readline("mini -> ");
-		if (data.input == NULL)
+		setup_signal_handling(data, basic_signal_handler);
+		data->status = 0;
+		data->input = readline("mini -> ");
+		if (data->input == NULL)
 			break ;
-		if (*data.input)
-			handle_input(&data);
-		reset_data(&data);
+		if (*data->input)
+			handle_input(data);
+		reset_data(data);
 	}
-	clean_data(&data);
 	rl_clear_history();
 	printf("exit\n");
-	exit(data.prev_status);
+	exit(clean_data(data));
 	return (ERROR);
 }

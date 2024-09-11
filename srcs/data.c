@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 14:56:34 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:21:05 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,13 @@ void	reset_data(t_data *data)
 	data->prev_status = data->status;
 }
 
-void	clean_data(t_data *data)
+int	clean_data(t_data *data)
 {
+	int	exit_code;
+	
+	if (!data)
+		return (ERROR);
+	exit_code = data->prev_status;
 	if (data->input)
 		free(data->input);
 	if (data->cmd_list)
@@ -85,6 +90,10 @@ void	clean_data(t_data *data)
 		clean_array(data->envp_arr);
 	if (data->paths)
 		clean_array(data->paths);
+	if (data->cwd)
+		free(data->cwd);
+	free(data);
+	return (exit_code);
 }
 
 int	init_data(t_data *data, char **envp)
@@ -93,12 +102,15 @@ int	init_data(t_data *data, char **envp)
 	data->envp_arr = NULL;
 	data->envp_list = NULL;
 	if (copy_envp(data, envp))
-		return (ERROR);
-	data->paths = parse_paths(data);
-	if (!data->paths)
 	{
-		var_clear(&data->envp_list);
-		clean_array(data->envp_arr);
+		data->prev_status = 1;
+		return (ERROR);
+	}
+	data->paths = parse_paths(data);
+	data->cwd = ft_strdup(var_get_value(data->envp_list, "PWD"));
+	if (!data->paths || !data->cwd)
+	{
+		data->prev_status = 1;
 		return (ERROR);
 	}
 	data->o_stdin = dup(STDIN_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:42:37 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:11:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	struct s_var	*envp_list;
 	char			**envp_arr;
 	char			**paths;
+	char			*cwd;
 	int				o_stdin;
 	int				o_stdout;
 	struct s_cmd	*cmd_list;
@@ -107,7 +108,7 @@ void	setup_signal_handling(t_data *data, void (*handler)(int));
 // data.c
 int		update_envp(t_data *data);
 void	reset_data(t_data *data);
-void	clean_data(t_data *data);
+int		clean_data(t_data *data);
 int		init_data(t_data *data, char **envp);
 
 // error.c
