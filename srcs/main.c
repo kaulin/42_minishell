@@ -6,34 +6,21 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/12 09:57:10 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:07:09 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_in_heredoc;
+volatile sig_atomic_t	g_signal;
 
-/*
-Set up signal handlers for SIGINT and SIGUSR1.
-Calls the correct handlers.
-*/
-void	setup_signal_handling(t_data *data, void (*handler)(int))
+static void	setup_signal_handling(void)
 {
-	struct sigaction	sa;
-	struct sigaction	sa_usr;
-
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		oops(data, 1, NULL, "sigaction for SIGINT failed");
-	sa_usr.sa_handler = sigusr1_handler;
-	sigemptyset(&sa_usr.sa_mask);
-	sa_usr.sa_flags = 0;
-	if (sigaction(SIGUSR1, &sa_usr, NULL) == -1)
-		oops(data, 1, NULL, "sigaction for SIGUSR1 failed");
+	g_signal = 0;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_handler);
 }
+
 
 static void	handle_input(t_data *data)
 {
@@ -57,10 +44,9 @@ int	main(int argc, char **argv, char **envp)
 	data = malloc(sizeof(t_data));
 	if (!data || init_data(data, envp))
 		return (oops(data, 1, NULL, "error setting up shell environment"));
-	g_in_heredoc = 0;
 	while (42)
 	{
-		setup_signal_handling(data, basic_signal_handler);
+		setup_signal_handling();
 		data->status = 0;
 		data->input = readline("mini -> ");
 		if (data->input == NULL)

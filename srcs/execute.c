@@ -6,11 +6,37 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/12 10:02:35 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:01:32 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
+{
+	t_cmd	*cur_cmd;
+	int		status;
+
+	cur_cmd = data->cmd_list;
+	status = 0;
+	while (cur_cmd != failed_cmd && cur_cmd->pid)
+	{
+		if (cur_cmd->pid)
+		{
+			if (waitpid(cur_cmd->pid, &status, 0) == -1)
+			{
+				if (errno != EINTR)
+					return (oops(data, ERROR, NULL, "waitpid failed"));
+			}
+			if (WIFEXITED(status))
+				data->status = WEXITSTATUS(status);
+			if (WIFSIGNALED(status))
+				data->status = status + 128;
+		}
+		cur_cmd = cur_cmd->next;
+	}
+	return (SUCCESS);
+}
 
 /*
 If command not found from environment paths, tries to use the command itself as
@@ -40,19 +66,13 @@ actually execute execve.
 */
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
+	g_signal = 2;
 	close(fd[0]);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 	{
 		close(fd[1]);
 		exit(data->status);
 	}
-	if (g_in_heredoc == 2)
-	{
-		close(fd[1]);
-		kill(getppid(), SIGUSR1);
-		exit (130);
-	}
-	setup_signal_handling(data, child_signal_handler);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
 		exit(oops(data, 1, NULL, "dup2 failed"));
 	close(fd[1]);
@@ -85,9 +105,9 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		close(fd[1]);
 		return (oops(data, ERROR, NULL, "fork failed"));
 	}
-	setup_signal_handling(data, parent_signal_handler);
 	if (cur_cmd->pid == 0)
-		child(data, cur_cmd, fd);
+		child(data, cur_cmd, fd);//inherits basic signal handling
+	signal(SIGINT, SIG_IGN);
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
@@ -95,27 +115,6 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		return (oops(data, ERROR, NULL, "dup2 failed"));
 	}
 	close(fd[0]);
-	return (SUCCESS);
-}
-
-int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
-{
-	t_cmd	*cur_cmd;
-	int		status;
-
-	cur_cmd = data->cmd_list;
-	status = 0;
-	while (cur_cmd != failed_cmd && cur_cmd->pid)
-	{
-		if (waitpid(cur_cmd->pid, &status, 0) == -1)
-		{
-			if (errno != EINTR)
-				return (oops(data, ERROR, NULL, "waitpid failed"));
-		}
-		if (WIFEXITED(status))
-			data->status = WEXITSTATUS(status);
-		cur_cmd = cur_cmd->next;
-	}
 	return (SUCCESS);
 }
 
@@ -131,8 +130,10 @@ int	execute_and_pipe(t_data *data)
 	get_paths(data);
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		if (check_redir(data, cur_cmd) || exec_builtin(data, cur_cmd->cmd_arr))
+		if (check_redir(data, cur_cmd) > 0 || exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
+		if (g_signal == 42)
+			data->status = 130;
 	}
 	else
 	{

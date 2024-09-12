@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/10 12:09:27 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:56:00 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 	last_out = NULL;
 	if (check_heredocs(data, cur_cmd, &heredoc_fd))
 		return (ERROR);
+	if (g_signal == 42)
+		return (-1);
 	redir = cur_cmd->redirects;
 	while (redir)
 	{

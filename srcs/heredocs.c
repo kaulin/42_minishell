@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/11 11:48:46 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:58:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,14 @@ If SIGINT is caught a signal handler is called and function stops reading input.
 A forced EoF is caught and an error is printed to STDERROR.
 */
 
-static void	read_input(t_data *data, int *fd, char *delim)
+static void	read_input(int *fd, char *delim)
 {
 	char	*input;
 
-	g_in_heredoc = 1;
-	setup_signal_handling(data, hd_signal_handler);
+	g_signal++;
 	while (1)
 	{
 		input = readline("> ");
-		if (g_in_heredoc == 2)
-			break ;
 		if (!input)
 		{
 			printf("warning: here-document delimited by end-of-file\n");
@@ -45,6 +42,9 @@ static void	read_input(t_data *data, int *fd, char *delim)
 		ft_putstr_fd("\n", fd[1]);
 		free(input);
 	}
+	if (g_signal == 42)
+		return ;
+	g_signal--;
 }
 
 static int	get_input(t_cmd *cur_cmd, t_redir *redir, t_data *data)
@@ -57,7 +57,7 @@ static int	get_input(t_cmd *cur_cmd, t_redir *redir, t_data *data)
 		return (oops(data, 1, NULL, "dup2 failed\n"));
 	if (pipe(fd) == -1)
 		return (oops(data, 1, NULL, "pipe failed\n"));
-	read_input(data, fd, delim);
+	read_input(fd, delim);
 	close(fd[1]);
 	cur_cmd->in_fd = fd[0];
 	return (SUCCESS);
@@ -75,6 +75,8 @@ int	check_heredocs(t_data *data, t_cmd *cur_cmd, int *heredoc_fd)
 		{
 			if (get_input(cur_cmd, redir, data) == 1)
 				return (oops(data, 1, NULL, "Error reading from heredoc\n"));
+			if (g_signal == 42)
+				break ;
 			if (*heredoc_fd != -1)
 				close(*heredoc_fd);
 			*heredoc_fd = cur_cmd->in_fd;
