@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 13:26:21 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/12 10:02:35 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,12 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 	int		status;
 
 	cur_cmd = data->cmd_list;
+	status = 0;
 	while (cur_cmd != failed_cmd && cur_cmd->pid)
 	{
 		if (waitpid(cur_cmd->pid, &status, 0) == -1)
 		{
-			if (errno == EINTR)
-				continue ;
-			else
+			if (errno != EINTR)
 				return (oops(data, ERROR, NULL, "waitpid failed"));
 		}
 		if (WIFEXITED(status))

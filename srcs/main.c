@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 13:11:19 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/12 09:57:10 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ Calls the correct handlers.
 void	setup_signal_handling(t_data *data, void (*handler)(int))
 {
 	struct sigaction	sa;
+	struct sigaction	sa_usr;
 
 	sa.sa_handler = handler;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		oops(data, 1, NULL, "sigaction for SIGINT failed");
-	sa.sa_handler = sigusr1_handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+	sa_usr.sa_handler = sigusr1_handler;
+	sigemptyset(&sa_usr.sa_mask);
+	sa_usr.sa_flags = 0;
+	if (sigaction(SIGUSR1, &sa_usr, NULL) == -1)
 		oops(data, 1, NULL, "sigaction for SIGUSR1 failed");
 }
 
