@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/12 14:07:09 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:13:32 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	setup_signal_handling(void)
 {
 	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handler);
+	signal(SIGINT, basic_handler);
 }
 
 

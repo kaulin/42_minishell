@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/12 14:01:32 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:48:31 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ actually execute execve.
 */
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
-	g_signal = 2;
+	int	status;
+
+	signal(SIGINT, child_handler);
+	data->parent_process = 0;
 	close(fd[0]);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 	{
@@ -85,7 +88,9 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 		exec_builtin(data, cur_cmd->cmd_arr);
 	else
 		do_cmd(data, cur_cmd);
-	exit(clean_data(data));
+	status = data->status;
+	clean_data(data);
+	exit (status);
 }
 
 /*
@@ -107,7 +112,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);//inherits basic signal handling
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, parent_handler);
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
@@ -132,8 +137,6 @@ int	execute_and_pipe(t_data *data)
 	{
 		if (check_redir(data, cur_cmd) > 0 || exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
-		if (g_signal == 42)
-			data->status = 130;
 	}
 	else
 	{

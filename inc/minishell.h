@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/12 13:42:13 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/13 14:14:36 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	int				error_handled;
 	int				status;
 	int				prev_status;
+	int				parent_process;
 }	t_data;
 
 typedef struct s_cmd
@@ -147,7 +148,10 @@ void	redir_clear(t_redir **file_list);
 int		parse(char *input, t_data *data);
 
 // signal.c
-void	signal_handler(int sig);
+void	basic_handler(int sig);
+void	heredoc_handler(int sig);
+void	parent_handler(int sig);
+void	child_handler(int sig);
 
 // builtins
 int		check_if_builtin(char **cmds);

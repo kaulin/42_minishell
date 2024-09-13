@@ -56,3 +56,8 @@ minishell
 objs/*
 local/*
 .vscode/*
+*.sh
+valgrind_logs/*
+test_files/*
+*.txt
+valgrind.supressions
