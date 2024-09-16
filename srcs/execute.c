@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/13 14:48:31 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:22:07 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ int	execute_and_pipe(t_data *data)
 
 	cur_cmd = data->cmd_list;
 	get_paths(data);
+	if (check_heredocs(data, data->cmd_list) == ERROR)
+		return (reset_io(data), ERROR);
+	if (g_signal)
+		return (-1);
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
 		if (check_redir(data, cur_cmd) > 0 || exec_builtin(data, cur_cmd->cmd_arr))

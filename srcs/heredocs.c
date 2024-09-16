@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/13 14:27:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:22:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,15 @@ static void	read_input(t_data *data, int *fd, char *delim)
 			break ;
 		ft_putstr_fd(input, fd[1]);
 		ft_putstr_fd("\n", fd[1]);
+		free(input);
 	}
 	if (input)
 		free(input);
 	if (data->parent_process)
 		signal(SIGINT, basic_handler);
-	else
-		signal(SIGINT, child_handler);
 }
 
-static int	get_input(t_data *data, t_cmd *cur_cmd, t_redir *redir)
+static int	get_input(t_data *data, t_cmd *cmd, t_redir *redir)
 {
 	int		fd[2];
 	char	*delim;
@@ -60,35 +59,39 @@ static int	get_input(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 		return (oops(data, 1, NULL, "pipe failed\n"));
 	read_input(data, fd, delim);
 	close(fd[1]);
-	cur_cmd->in_fd = fd[0];
+	if (g_signal)
+	{
+		if (cmd->heredoc_fd != -1)
+			close(cmd->heredoc_fd);
+		close(fd[0]);
+		data->status = 130;
+		return (-1);
+	}
+	if (cmd->heredoc_fd != -1)
+		close(cmd->heredoc_fd);
+	cmd->heredoc_fd = fd[0];
 	return (SUCCESS);
 }
 
-int	check_heredocs(t_data *data, t_cmd *cur_cmd, int *heredoc_fd)
+int	check_heredocs(t_data *data, t_cmd *cmd)
 {
 	t_redir	*redir;
 
-	redir = cur_cmd->redirects;
-	*heredoc_fd = -1;
-	while (redir)
+	while (cmd)
 	{
-		if (redir->type == HEREDOC)
+		redir = cmd->redirects;
+		while (redir)
 		{
-			if (get_input(data, cur_cmd, redir) == 1)
-				return (oops(data, 1, NULL, "Error reading from heredoc\n"));
-			if (g_signal)
+			if (redir->type == HEREDOC)
 			{
-				data->status = 130;
-				if (data->parent_process)
-					break;
-				clean_data(data);
-				exit (130);
+				if (get_input(data, cmd, redir) == 1)
+					return (oops(data, 1, NULL, "Error reading from heredoc\n"));
+				if (g_signal)
+					return (-1);
 			}
-			if (*heredoc_fd != -1)
-				close(*heredoc_fd);
-			*heredoc_fd = cur_cmd->in_fd;
+			redir = redir->next;
 		}
-		redir = redir->next;
+		cmd = cmd->next;
 	}
 	return (SUCCESS);
 }

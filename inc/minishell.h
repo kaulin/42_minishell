@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/13 14:14:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:03:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	struct s_redir	*redirects;
 	int				in_fd;
 	int				out_fd;
+	int				heredoc_fd;
 	pid_t			pid;
 	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
 }	t_cmd;
@@ -173,7 +174,7 @@ int		get_paths(t_data *data);
 int		check_redir(t_data *data, t_cmd *cur_cmd);
 
 // heredocs.c
-int		check_heredocs(t_data *data, t_cmd *cur_cmd, int *heredoc_fd);
+int		check_heredocs(t_data *data, t_cmd *cur_cmd);
 
 //execute.c
 int		execute_and_pipe(t_data *data);

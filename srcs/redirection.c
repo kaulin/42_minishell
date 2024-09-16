@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/13 13:47:52 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:20:20 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ have the correct rights and are not directories.
 If the last file is an infile, closes the heredoc_fd and opens the file.
 */
 
-static int	redir_in(t_data *data, t_cmd *cur_cmd, t_redir *redir, int hd_fd)
+static int	redir_in(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 {
 	if (redir->type == HEREDOC)
-		cur_cmd->in_fd = hd_fd;
+	{
+		cur_cmd->in_fd = cur_cmd->heredoc_fd;
+	}
 	else
 	{
-		if (hd_fd != -1)
-			close(hd_fd);
+		if (cur_cmd->heredoc_fd != -1)
+			close(cur_cmd->heredoc_fd);
 		cur_cmd->in_fd = open(redir->file_str, O_RDONLY);
 	}
 	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
@@ -84,14 +86,9 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 	t_redir	*redir;
 	t_redir	*last_in;
 	t_redir	*last_out;
-	int		heredoc_fd;
 
 	last_in = NULL;
 	last_out = NULL;
-	if (check_heredocs(data, cur_cmd, &heredoc_fd))
-		return (ERROR);
-	if (g_signal)
-		return (-1);
 	redir = cur_cmd->redirects;
 	while (redir)
 	{
@@ -103,7 +100,7 @@ int	check_redir(t_data *data, t_cmd *cur_cmd)
 			last_out = redir;
 		redir = redir->next;
 	}
-	if (last_in && redir_in(data, cur_cmd, last_in, heredoc_fd))
+	if (last_in && redir_in(data, cur_cmd, last_in))
 		return (ERROR);
 	if (last_out && redir_out(data, cur_cmd, last_out))
 		return (ERROR);
