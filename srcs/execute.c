@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 12:22:07 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:34:29 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 	int	status;
 
 	signal(SIGINT, child_handler);
-	data->parent_process = 0;
 	close(fd[0]);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 	{

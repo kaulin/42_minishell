@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/13 14:01:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:34:23 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,5 @@ int	init_data(t_data *data, char **envp)
 	data->error_handled = 0;
 	data->status = 0;
 	data->prev_status = 0;
-	data->parent_process = 1;
 	return (SUCCESS);
 }

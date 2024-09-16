@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 12:03:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:34:18 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_data
 	int				error_handled;
 	int				status;
 	int				prev_status;
-	int				parent_process;
 }	t_data;
 
 typedef struct s_cmd

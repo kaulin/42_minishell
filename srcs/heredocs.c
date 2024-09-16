@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/16 12:22:34 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:38:10 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ If SIGINT is caught a signal handler is called and function stops reading input.
 A forced EoF is caught and an error is printed to STDERROR.
 */
 
-static void	read_input(t_data *data, int *fd, char *delim)
+static void	read_input(int *fd, char *delim)
 {
 	char	*input;
 
@@ -41,10 +41,9 @@ static void	read_input(t_data *data, int *fd, char *delim)
 		ft_putstr_fd("\n", fd[1]);
 		free(input);
 	}
+	signal(SIGINT, basic_handler);
 	if (input)
 		free(input);
-	if (data->parent_process)
-		signal(SIGINT, basic_handler);
 }
 
 static int	get_input(t_data *data, t_cmd *cmd, t_redir *redir)
@@ -57,7 +56,7 @@ static int	get_input(t_data *data, t_cmd *cmd, t_redir *redir)
 		return (oops(data, 1, NULL, "dup2 failed\n"));
 	if (pipe(fd) == -1)
 		return (oops(data, 1, NULL, "pipe failed\n"));
-	read_input(data, fd, delim);
+	read_input(fd, delim);
 	close(fd[1]);
 	if (g_signal)
 	{

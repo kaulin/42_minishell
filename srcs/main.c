@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 12:09:04 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:16:28 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ int	main(int argc, char **argv, char **envp)
 		data->input = readline("mini -> ");
 		if (data->input == NULL)
 			break ;
-		if (*data->input)
+		if (g_signal)
+			data->status = 130;
+		if (*data->input && !g_signal)
 			handle_input(data);
 		reset_data(data);
 	}
