@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/16 16:56:12 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/16 19:11:13 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	reset_data(t_data *data)
 		free(data->input);
 	if (data->cmd_list)
 		cmd_clear(&data->cmd_list);
-	data->o_stdin = dup(STDIN_FILENO);
-	data->o_stdout = dup(STDOUT_FILENO);
 	data->input = NULL;
 	data->cmd_list = NULL;
 	data->cmd_count = 1;
