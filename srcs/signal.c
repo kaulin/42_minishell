@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 12:32:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:52:44 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	basic_handler(int sig)
 {
 	(void)sig;
 	g_signal = 1;
-	write(1, "\n", 1);
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
 	rl_redisplay();
 }
 
@@ -44,9 +44,9 @@ void	parent_handler(int sig)
 {
 	(void)sig;
 	g_signal = 1;
-	write(1, "\n", 1);
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
 }
 
 void	child_handler(int sig)
