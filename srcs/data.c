@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/16 14:23:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 16:56:12 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	clean_data(t_data *data)
 		clean_array(data->paths);
 	if (data->cwd)
 		free(data->cwd);
+	close(data->o_stdin);
+	close(data->o_stdout);
 	free(data);
 	return (exit_code);
 }
