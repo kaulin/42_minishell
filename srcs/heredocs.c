@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/16 13:38:10 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:57:55 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int	get_input(t_data *data, t_cmd *cmd, t_redir *redir)
 			close(cmd->heredoc_fd);
 		close(fd[0]);
 		data->status = 130;
+		if (dup2(data->o_stdin, STDIN_FILENO) == -1)
+			return (oops(data, 1, NULL, "dup2 failed\n"));
 		return (-1);
 	}
 	if (cmd->heredoc_fd != -1)
