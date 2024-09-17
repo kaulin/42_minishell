@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:59:05 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/10 13:07:36 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:25:14 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ Expands any variable strings in the str_list. For variables not enclosed in
 double quotes, any additional whitespace within the returned variable content 
 is condensed into single spaces.*/
 int	expand_strings(t_expander *expander, t_data *data)
-{	
+{
 	char	*temp;
 	t_str	*node;
 	t_var	*var;

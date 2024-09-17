@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 13:34:18 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:24:51 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <limits.h>
 # include "libft.h"
 # include <errno.h>
-
 
 // Standard FDs
 # define STDIN 0
@@ -101,7 +100,7 @@ typedef struct s_var
 	struct s_var	*anext;
 }	t_var;
 
-extern volatile sig_atomic_t g_signal;
+extern volatile sig_atomic_t	g_signal;
 
 // data.c
 int		update_envp(t_data *data);
@@ -188,4 +187,3 @@ void	clean_array(char **array);
 int		is_directory(char *filepath);
 
 #endif
-
