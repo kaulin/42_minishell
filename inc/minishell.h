@@ -6,7 +6,7 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/17 23:24:51 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/17 23:57:24 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int		check_heredocs(t_data *data, t_cmd *cur_cmd);
 int		execute_and_pipe(t_data *data);
 
 //exec_utils.c
+int		wait_for_the_kids(t_data *data, t_cmd *failed_cmd);
 void	reset_io(t_data *data);
 int		check_file(t_data *data, t_redir *cur_file);
 

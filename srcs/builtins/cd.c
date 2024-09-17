@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 16:46:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 00:11:48 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	update_cwd(t_data *data)
 		return (ERROR);
 	}
 	free(temp);
-	temp =ft_strdup(cwd);
+	temp = ft_strdup(cwd);
 	if (!temp)
 		return (ERROR);
 	free(data->cwd);
@@ -67,7 +67,7 @@ static char	*up_one(t_data *data)
 	char	*path;
 	char	*pointer;
 	char	buffer[PATH_MAX];
-	
+
 	if (getcwd(buffer, sizeof(buffer)))
 		path = ft_strdup(buffer);
 	else if (var_get_value(data->envp_list, "PWD"))
@@ -89,12 +89,13 @@ static char	*up_one(t_data *data)
 /*
 Finds the path
 */
+//Shoul we check the path for all whitespace or just space and tab?
 static int	find_path(t_data *data, char **cmds, char **path, int *flag)
 {
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		*path = var_get_value(data->envp_list, "HOME");
-		if (!*path || **path == '\0' || **path == ' ' || **path == '	')// is this checking for whitespace or just space and tab?
+		if (!*path || **path == '\0' || **path == ' ' || **path == '	')
 			return (oops(data, 1, NULL, "cd: HOME not set"));
 	}
 	else if (ft_strncmp(cmds[1], "-", 2) == 0)
