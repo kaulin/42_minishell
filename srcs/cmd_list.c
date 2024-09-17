@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:30:34 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/16 11:54:31 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:00:44 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,56 +86,3 @@ void	cmd_clear(t_cmd **cmd_list)
 		*cmd_list = next;
 	}
 }
-
-/*
-int	cmd_print(t_cmd *cmd)
-{
-	int		i;
-	int		arg_i;
-	t_redir 	*infile;
-	t_redir 	*outfile;
-
-	i = 1;
-	infile = NULL;
-	outfile = NULL;
-	printf("Printing commands!\n");
-	while (cmd)
-	{
-		arg_i = 0;
-		printf("Command %d contains the following:\n", i);
-		if (cmd->cmd_arr)
-		{
-			while (cmd->cmd_arr[arg_i])
-			{
-				printf("	Arg %d = %s\n", arg_i, cmd->cmd_arr[arg_i]);
-				arg_i++;
-			}
-		}
-		infile = cmd->infiles;
-		if (infile)
-			printf("	Infile redirections are:\n");
-		while (infile)
-		{
-			if (infile->flag)
-				printf("		Heredoc with delimiter [%s]\n", infile->file_str);
-			else
-				printf("		File with path [%s]\n", infile->file_str);
-			infile = infile->next;
-		}
-		outfile = cmd->outfiles;		
-		if (outfile)
-			printf("	Outfile redirections are:\n");
-		while (outfile)
-		{
-			if (outfile->flag)
-				printf("		Append file with path [%s]\n", outfile->file_str);
-			else
-				printf("		File with path [%s]\n", outfile->file_str);
-			outfile = outfile->next;
-		}
-		i++;
-		cmd = cmd->next;
-	}
-	return (0);
-}
-*/

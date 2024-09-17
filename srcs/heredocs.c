@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/16 18:57:55 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/17 14:59:41 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	read_input(int *fd, char *delim)
 	{
 		input = readline("> ");
 		if (g_signal)
-			break;
+			break ;
 		if (!input)
 		{
 			printf("warning: here-document delimited by end-of-file\n");
@@ -86,7 +86,8 @@ int	check_heredocs(t_data *data, t_cmd *cmd)
 			if (redir->type == HEREDOC)
 			{
 				if (get_input(data, cmd, redir) == 1)
-					return (oops(data, 1, NULL, "Error reading from heredoc\n"));
+					return (oops(data, 1, NULL, \
+					"Error reading from heredoc\n"));
 				if (g_signal)
 					return (-1);
 			}
