@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:33:00 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:58:58 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_token	*token_new(char *content, char next)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (NULL);
+	if (!ft_strncmp(content, "$", 2) && is_quote_char(next))
+		*content = 0;
 	new_token->str = content;
 	new_token->next = NULL;
 	new_token->merge_flag = 0;
@@ -89,6 +91,10 @@ void	token_clear(t_token **token_list)
 	}
 }
 
+/*
+Counts the number of unused text tokens for a specific command, so that 
+the command array can be allocated properly.
+*/
 int	token_count_unused(t_token *token_list, int cmd_num)
 {
 	int	i;
