@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/09 11:17:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:21:22 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	reset_io(t_data *data)
 	if (dup2(data->o_stdin, STDIN_FILENO) == -1 || \
 		dup2(data->o_stdout, STDOUT_FILENO) == -1)
 		oops(data, 1, NULL, "dup2 failed");
-	close(data->o_stdin);
-	close(data->o_stdout);
 }
 
 /*
