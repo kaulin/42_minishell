@@ -3,46 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 13:34:29 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:58:31 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
-{
-	t_cmd	*cur_cmd;
-	int		status;
-
-	cur_cmd = data->cmd_list;
-	status = 0;
-	while (cur_cmd != failed_cmd && cur_cmd->pid)
-	{
-		if (cur_cmd->pid)
-		{
-			if (waitpid(cur_cmd->pid, &status, 0) == -1)
-			{
-				if (errno != EINTR)
-					return (oops(data, ERROR, NULL, "waitpid failed"));
-			}
-			if (WIFEXITED(status))
-				data->status = WEXITSTATUS(status);
-			if (WIFSIGNALED(status))
-				data->status = status + 128;
-		}
-		cur_cmd = cur_cmd->next;
-	}
-	return (SUCCESS);
-}
-
 /*
 If command not found from environment paths, tries to use the command itself as
 path. Calls execve with given path and command array and environment.
 */
-int	do_cmd(t_data *data, t_cmd *cur_cmd)
+static int	do_cmd(t_data *data, t_cmd *cur_cmd)
 {
 	cur_cmd->path = find_cmd_path(data, cur_cmd->cmd_arr[0]);
 	if (!cur_cmd->path && access(cur_cmd->cmd_arr[0], F_OK) == 0 \
@@ -110,7 +84,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		return (oops(data, ERROR, NULL, "fork failed"));
 	}
 	if (cur_cmd->pid == 0)
-		child(data, cur_cmd, fd);//inherits basic signal handling
+		child(data, cur_cmd, fd);
 	signal(SIGINT, parent_handler);
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -126,19 +100,12 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 Goes through the linked list and calls the parent function for each node (cmd) 
 of the list. Then waits for all the children to finish
 */
-int	execute_and_pipe(t_data *data)
+static int	go_through_cmds(t_data *data, t_cmd *cur_cmd)
 {
-	t_cmd	*cur_cmd;
-
-	cur_cmd = data->cmd_list;
-	get_paths(data);
-	if (check_heredocs(data, data->cmd_list) == ERROR)
-		return (reset_io(data), ERROR);
-	if (g_signal)
-		return (-1);
 	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
 	{
-		if (check_redir(data, cur_cmd) > 0 || exec_builtin(data, cur_cmd->cmd_arr))
+		if (check_redir(data, cur_cmd) > 0 || \
+			exec_builtin(data, cur_cmd->cmd_arr))
 			return (reset_io(data), ERROR);
 	}
 	else
@@ -157,4 +124,20 @@ int	execute_and_pipe(t_data *data)
 		return (ERROR);
 	reset_io(data);
 	return (SUCCESS);
+}
+
+/*
+Gets paths, checks heredocs and g_signal and calls go_through()
+*/
+int	execute_and_pipe(t_data *data)
+{
+	t_cmd	*cur_cmd;
+
+	cur_cmd = data->cmd_list;
+	get_paths(data);
+	if (check_heredocs(data, data->cmd_list) == ERROR)
+		return (reset_io(data), ERROR);
+	if (g_signal)
+		return (-1);
+	return (go_through_cmds(data, cur_cmd));
 }

@@ -6,11 +6,37 @@
 /*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/17 23:21:22 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/17 23:52:31 by pikkak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
+{
+	t_cmd	*cur_cmd;
+	int		status;
+
+	cur_cmd = data->cmd_list;
+	status = 0;
+	while (cur_cmd != failed_cmd && cur_cmd->pid)
+	{
+		if (cur_cmd->pid)
+		{
+			if (waitpid(cur_cmd->pid, &status, 0) == -1)
+			{
+				if (errno != EINTR)
+					return (oops(data, ERROR, NULL, "waitpid failed"));
+			}
+			if (WIFEXITED(status))
+				data->status = WEXITSTATUS(status);
+			if (WIFSIGNALED(status))
+				data->status = status + 128;
+		}
+		cur_cmd = cur_cmd->next;
+	}
+	return (SUCCESS);
+}
 
 /*
 Resets the original in/out filedescriptors
