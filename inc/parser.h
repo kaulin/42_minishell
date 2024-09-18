@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:33:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:26:30 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ typedef struct s_parser
 	char			*start;
 	t_token			*token_list;
 }	t_parser;
+
+// parser.c
+int		parse(char *input, t_data *data);
 
 // parser_utils.c
 int		is_quote_char(char c);

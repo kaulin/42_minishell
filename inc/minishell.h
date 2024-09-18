@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 10:10:17 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:24:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,6 @@ t_redir	*redir_new(char *content, int flag);
 void	redir_add_back(t_redir **file_list, t_redir *new_file);
 void	redir_delone(t_redir *file);
 void	redir_clear(t_redir **file_list);
-
-// parser.c
-int		parse(char *input, t_data *data);
 
 // signal.c
 void	basic_handler(int sig);
