@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 15:52:13 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:59:45 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ t_cmd	*cmd_new(void);
 void	cmd_add_back(t_cmd **cmd_list, t_cmd *new_cmd);
 void	cmd_delone(t_cmd *cmd);
 void	cmd_clear(t_cmd **cmd_list);
-int		cmd_print(t_cmd *cmd);
 
 // var_list.c
 t_var	*var_new(char *key, char *value);
