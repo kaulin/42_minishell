@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:24:53 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:30:43 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include <sys/ioctl.h>
 # include <sys/wait.h>
-# include <termios.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "libft.h"
 # include <errno.h>
+# include "libft.h"
 
 // Standard FDs
 # define STDIN 0
@@ -58,14 +56,14 @@ typedef struct s_data
 
 typedef struct s_cmd
 {
-	char			*path; // path to command
-	char			**cmd_arr; // 0 term list of cmd and arguments
+	char			*path;
+	char			**cmd_arr;
 	struct s_redir	*redirects;
 	int				in_fd;
 	int				out_fd;
 	int				heredoc_fd;
 	pid_t			pid;
-	struct s_cmd	*next; // pointer to next cmd in cmd_list, NULL if last
+	struct s_cmd	*next;
 }	t_cmd;
 
 // Redirection types
