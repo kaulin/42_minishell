@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+         #
+#    By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/10 15:32:02 by kkauhane          #+#    #+#              #
-#    Updated: 2024/09/09 14:11:21 by jajuntti         ###   ########.fr        #
+#    Updated: 2024/09/18 14:30:59 by kkauhane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
