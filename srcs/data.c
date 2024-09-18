@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/18 17:40:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:02:01 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,15 @@ void	reset_data(t_data *data)
 	data->prev_status = data->status;
 }
 
-int	clean_data(t_data *data)
+int	clean_data(t_data *data, int child_flag)
 {
 	int	exit_code;
 
 	if (!data)
 		return (ERROR);
 	exit_code = data->prev_status;
+	if (child_flag)
+		exit_code = data->status;
 	if (data->input)
 		free(data->input);
 	if (data->cmd_list)

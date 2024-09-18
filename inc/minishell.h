@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 17:13:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:02:28 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ extern volatile sig_atomic_t	g_signal;
 // data.c
 int		update_envp(t_data *data);
 void	reset_data(t_data *data);
-int		clean_data(t_data *data);
+int		clean_data(t_data *data, int child_flag);
 int		init_data(t_data *data, char **envp);
 
 // error.c

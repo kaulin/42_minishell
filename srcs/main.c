@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:39:36 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:25:08 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:04:34 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ int	main(int argc, char **argv, char **envp)
 		setup_signal_handling();
 	}
 	printf("exit\n");
-	exit(clean_data(data));
+	exit(clean_data(data, 0));
 	return (ERROR);
 }

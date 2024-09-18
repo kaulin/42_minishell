@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 17:40:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:07:11 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	close_clean_exit(t_data *data, int fd1, int fd2)
 		close(fd1);
 	if (fd2 != -1)
 		close(fd2);
-	exit(clean_data(data));
+	exit(clean_data(data, 1));
 }
 
 int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
