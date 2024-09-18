@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 17:01:28 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:40:51 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ actually execute execve.
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
 	signal(SIGINT, child_handler);
+	signal(SIGQUIT, SIG_DFL);
 	close(fd[0]);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
 		close_clean_exit(data, fd[1], cur_cmd->out_fd);
@@ -86,6 +87,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
 	signal(SIGINT, parent_handler);
+	signal(SIGQUIT, child_quitter);
 	close(fd[1]);
 	if (cur_cmd->heredoc_fd != -1)
 		close(cur_cmd->heredoc_fd);

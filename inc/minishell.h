@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 15:59:45 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:13:41 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void	redir_clear(t_redir **file_list);
 void	basic_handler(int sig);
 void	heredoc_handler(int sig);
 void	parent_handler(int sig);
+void	child_quitter(int sig);
 void	child_handler(int sig);
 
 // builtins

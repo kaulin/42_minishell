@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 15:51:59 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:40:12 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 		}
 		cur_cmd = cur_cmd->next;
 	}
+	signal(SIGQUIT, SIG_IGN);
 	return (SUCCESS);
 }
 
