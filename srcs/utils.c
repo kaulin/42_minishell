@@ -6,11 +6,25 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:51:56 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/08/27 14:48:44 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:33:40 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_quote_char(char c)
+{
+	if (ft_strchr("\'\"", c))
+		return (1);
+	return (0);
+}
+
+int	is_whitespace(char c)
+{
+	if (ft_strchr(" \t\v\n\r\f", c))
+		return (1);
+	return (0);
+}
 
 /*
 Joins the two sttrings given as parameters, prints joined string to given fd 

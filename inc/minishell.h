@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:30:43 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:34:22 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ int		dup_builtin(t_data *data, t_cmd *cmd);
 int		check_file(t_data *data, t_redir *cur_file);
 
 // utils.c
+int		is_whitespace(char c);
+int		is_quote_char(char c);
 int		join_print_free(char *str1, char *str2, int fd);
 void	clean_array(char **array);
 int		is_directory(char *filepath);

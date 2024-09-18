@@ -6,25 +6,11 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:27:52 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/05 14:13:50 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:33:35 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int	is_quote_char(char c)
-{
-	if (ft_strchr("\'\"", c))
-		return (1);
-	return (0);
-}
-
-int	is_whitespace(char c)
-{
-	if (ft_strchr(" \t\v\n\r\f", c))
-		return (1);
-	return (0);
-}
 
 void	skip_whitespace(char **ptr)
 {
