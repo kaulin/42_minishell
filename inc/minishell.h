@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:34:22 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:52:13 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ int		check_heredocs(t_data *data, t_cmd *cur_cmd);
 int		execute_and_pipe(t_data *data);
 
 //exec_utils.c
+void	close_clean_exit(t_data *data, int fd1, int fd2);
 int		wait_for_the_kids(t_data *data, t_cmd *failed_cmd);
 void	reset_io(t_data *data);
 int		dup_builtin(t_data *data, t_cmd *cmd);

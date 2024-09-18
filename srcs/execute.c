@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 10:35:02 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:51:53 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,26 @@ actually execute execve.
 */
 static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 {
-	int	status;
-
 	signal(SIGINT, child_handler);
 	close(fd[0]);
 	if (check_redir(data, cur_cmd) || !cur_cmd->cmd_arr)
-	{
-		close(fd[1]);
-		exit(data->status);
-	}
+		close_clean_exit(data, fd[1], cur_cmd->out_fd);
 	if (cur_cmd-> next != NULL && dup2(fd[1], STDOUT_FILENO) == -1)
-		exit(oops(data, 1, NULL, "dup2 failed"));
+	{
+		oops(data, 1, NULL, "dup2 failed");
+		close_clean_exit(data, fd[1], cur_cmd->out_fd);
+	}
 	close(fd[1]);
 	if (cur_cmd->out_fd != -1 && dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 	{
-		exit(oops(data, 1, NULL, "dup2 failed"));
-		close(cur_cmd->out_fd);
+		oops(data, 1, NULL, "dup2 failed");
+		close_clean_exit(data, -1, cur_cmd->out_fd);
 	}
 	if (check_if_builtin(cur_cmd->cmd_arr))
 		exec_builtin(data, cur_cmd->cmd_arr);
 	else
 		do_cmd(data, cur_cmd);
-	status = data->status;
-	clean_data(data);
-	exit (status);
+	exit(clean_data(data));
 }
 
 /*
