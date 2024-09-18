@@ -6,45 +6,14 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 11:35:37 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:33:50 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-Situations
-	- We do not have redirection
-	- With builtins we have eg. echo/pwd/env testing > test.txt or cat << LIMIT
-	IN
-	- We have infile (redirection), we read from infile
-	- We have several redirections/infiles
-		- If there are several infiles we need to go through them all and
-		 return error if some of them don't exist. 
-		- If they all exist we use the last one
-		- If one of them doesn't exist we give error message
-		"bash: not: No such file or directory"
-	- We have heredoc but no infile//we read from terminal
-	- We have heredoc and infile. We handle heredoc first
-	and then the infiles. Does this change according to the order of the things?
-	- We have several heredocs and/or infiles we handle heredocs first
-	from left to right and then the infiles
-	OUT
-	- We have outfile (redirection)
-	- We have serveral outfiles
-		- If the files do not exist we create them and use the last one,
-		by traversing a linked list and checking when files->next == NULL.
-		If there is some content in the files we emty them.
-	- We have append but no outfile
-	- We have append and outfile
-	- We have several appends/outfiles
-		- The last outfile is the one that is used. Files before that are either
-		emptied of content(redirection) or left as they are (append)
-*/
 
 /*
-Goes through the infiles and checks that they exist,
-have the correct rights and are not directories.
-If the last file is an infile, closes the heredoc_fd and opens the file.
+Handles input redirection
 */
 
 static int	redir_in(t_data *data, t_cmd *cur_cmd, t_redir *redir)
@@ -59,6 +28,9 @@ static int	redir_in(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 	return (SUCCESS);
 }
 
+/*
+Handles output redirection
+*/
 static int	redir_out(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 {
 	if (redir->type == APPEND)
