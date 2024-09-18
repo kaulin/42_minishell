@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:28:22 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/18 12:34:33 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:22:03 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		make_commands(t_parser *parser, t_data *data);
 char	*tokenize(char *input, t_parser *parser, t_data *data);
 
 // token_list.c
-t_token	*token_new(char *content, char next);
+t_token	*token_new(char *content, int quote_flag, char next);
 void	token_add_back(t_token **token_list, t_token *new_token);
 void	token_delone(t_token *token);
 void	token_clear(t_token **token_list);
@@ -67,6 +67,5 @@ int		token_count_unused(t_token *token_list, int cmd_num);
 int		is_redir_token(t_token *token);
 int		is_pipe_token(t_token *token);
 int		merge_tokens(t_token **token);
-int		print_tokens(t_token *token, char *command);
 
 #endif

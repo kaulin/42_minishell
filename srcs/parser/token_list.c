@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/18 09:50:34 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:23:16 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Creates a new token struct and initialises its str with the parameter sting. 
 A pointer to the new_token is returned, unless there is a malloc 
 */
-t_token	*token_new(char *content, char next)
+t_token	*token_new(char *content, int quote_flag, char next)
 {
 	t_token	*new_token;
 
@@ -37,7 +37,7 @@ t_token	*token_new(char *content, char next)
 		&& next != '|' && next != '<' && next != '>')
 			new_token->merge_flag = 1;
 	}
-	if (!ft_strncmp(content, "$", 2) && is_quote_char(next))
+	if (!ft_strncmp(content, "$", 2) && !quote_flag && is_quote_char(next))
 		*content = 0;
 	new_token->placed_flag = 0;
 	return (new_token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/18 09:53:47 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 16:22:38 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char	*tokenize(char *input, t_parser *parser, t_data *data)
 	parser->substring = ft_substr(parser->start, 0, input - parser->start);
 	if (!parser->substring || expand(&parser->substring, data))
 		return (NULL);
-	node = token_new(parser->substring, *input);
+	node = token_new(parser->substring, is_quote_char(*parser->start), *input);
 	if (!node)
 		return (NULL);
 	token_add_back(&parser->token_list, node);
