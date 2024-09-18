@@ -6,11 +6,12 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 11:08:27 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:26:17 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 /*
 Sets the PWD
@@ -99,13 +100,13 @@ static char	*up_one(t_data *data)
 /*
 Finds the path
 */
-//Shoul we check the path for all whitespace or just space and tab?
+//Should we check the path for all whitespace or just space and tab?
 static int	find_path(t_data *data, char **cmds, char **path, int *flag)
 {
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
 	{
 		*path = var_get_value(data->envp_list, "HOME");
-		if (!*path || **path == '\0' || **path == ' ' || **path == '	')
+		if (!*path || **path == '\0' || is_whitespace(**path))
 			return (oops(data, 1, NULL, "cd: HOME not set"));
 	}
 	else if (ft_strncmp(cmds[1], "-", 2) == 0)
