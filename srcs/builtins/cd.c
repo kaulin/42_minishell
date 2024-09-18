@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:41:00 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:44:03 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ static char	*up_one(t_data *data)
 	if (!path)
 		return (NULL);
 	pointer = ft_strrchr(path, '/');
-	*pointer = '\0';
+	if (pointer == &path[0])
+		*++pointer = '\0';
+	else
+		*pointer = '\0';
 	return (path);
 }
 
