@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:40:26 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/06 13:33:52 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:32:21 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,3 @@ int	merge_tokens(t_token **tokens)
 	return (0);
 }
 
-int	print_tokens(t_token *token, char *command)
-{
-	int	i;
-
-	i = 0;
-	printf("Printing tokens for command: %s\n", command);
-	while (token)
-	{
-		printf("%d - %s [type: %d][cmd_num: %d]\n", i, \
-		token->str, token->type, token->cmd_num);
-		token = token->next;
-		i++;
-	}
-	return (SUCCESS);
-}
