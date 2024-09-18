@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:26:17 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:29:00 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ static char	*up_one(t_data *data)
 /*
 Finds the path
 */
-//Should we check the path for all whitespace or just space and tab?
 static int	find_path(t_data *data, char **cmds, char **path, int *flag)
 {
 	if (!cmds[1] || ft_strncmp(cmds[1], "~", 2) == 0)
