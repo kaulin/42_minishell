@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 22:16:36 by pikkak            #+#    #+#             */
-/*   Updated: 2024/09/17 14:59:41 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:28:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	check_heredocs(t_data *data, t_cmd *cmd)
 				if (g_signal)
 					return (-1);
 			}
+			else if (redir->type == INFILE && cmd->heredoc_fd != -1)
+				close(cmd->heredoc_fd);
 			redir = redir->next;
 		}
 		cmd = cmd->next;

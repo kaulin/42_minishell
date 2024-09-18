@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/17 23:52:31 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/18 11:34:35 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,30 +48,51 @@ void	reset_io(t_data *data)
 		oops(data, 1, NULL, "dup2 failed");
 }
 
+int	dup_builtin(t_data *data, t_cmd *cmd)
+{
+	if (cmd->out_fd != -1 && dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+	{
+		close(cmd->out_fd);
+		return (oops(data, 1, NULL, "dup2 failed"));
+	}
+	return (SUCCESS);
+}
+
 /*
 Checks if a file is a directory.
 If it is an infile, checks if it exists and has the right to read
 if it is an outfile, checks if it has the rights to write,
 if the file exists empties it and if not creates it.
 */
+
 int	check_file(t_data *data, t_redir *redir)
 {
+	int	fd;
+
+	fd = -1;
 	if (is_directory(redir->file_str) == 1)
 		return (oops(data, 1, redir->file_str, "Is a directory"));
 	if (redir->type == INFILE && access(redir->file_str, F_OK) == -1)
 		return (oops(data, 1, redir->file_str, "No such file or directory"));
-	if (redir->type == INFILE && open(redir->file_str, O_RDONLY) == -1)
-		return (oops(data, 1, redir->file_str, "Permission denied"));
+	if (redir->type == INFILE)
+	{
+		fd = open(redir->file_str, O_RDONLY);
+		if (fd == -1)
+			return (oops(data, 1, redir->file_str, "Permission denied"));
+	}
 	if (redir->type == APPEND)
 	{
-		if (open(redir->file_str, O_WRONLY | O_CREAT, 0666) == -1)
+		fd = open(redir->file_str, O_WRONLY | O_CREAT, 0666);
+		if (fd == -1)
 			return (oops(data, 1, redir->file_str, "Permission denied"));
 	}
 	else if (redir->type == OUTFILE)
 	{
-		if (open(redir->file_str, \
-			O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1)
+		fd = open(redir->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		if (fd == -1)
 			return (oops(data, 1, redir->file_str, "Permission denied"));
 	}
+	if (fd != -1)
+		close(fd);
 	return (SUCCESS);
 }

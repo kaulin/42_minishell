@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 14:40:51 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/17 23:57:24 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/18 10:10:17 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ int		execute_and_pipe(t_data *data);
 //exec_utils.c
 int		wait_for_the_kids(t_data *data, t_cmd *failed_cmd);
 void	reset_io(t_data *data);
+int		dup_builtin(t_data *data, t_cmd *cmd);
 int		check_file(t_data *data, t_redir *cur_file);
 
 // utils.c

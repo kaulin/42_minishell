@@ -3,28 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:11:25 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 00:11:48 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/18 11:08:27 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Sets the PWD and OLDPWD
+Sets the PWD
 Gets the current working directory
-If PWD is unset sets OLDPWDs value as empty else sets it to PWDs value
 Sets PWDs value as current working directory
 */
-static int	update_cwd(t_data *data)
+static int	update_pwd(t_data *data)
 {
 	char	cwd[PATH_MAX];
 	char	*temp;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		return (oops(data, 1, NULL, "getcwd failed"));
+	temp = ft_strjoin("PWD=", cwd);
+	if (!temp)
+		return (ERROR);
+	if (var_add_var(&data->envp_list, temp))
+	{
+		free(temp);
+		return (ERROR);
+	}
+	free(temp);
+	temp = ft_strdup(cwd);
+	if (!temp)
+		return (ERROR);
+	free(data->cwd);
+	data->cwd = temp;
+	return (SUCCESS);
+}
+
+/*
+Sets the OLDPWD
+If PWD is unset sets OLDPWDs value as empty else sets it to PWDs value
+*/
+static int	update_oldpwd(t_data *data)
+{
+	char	*temp;
+
 	if (!var_get_var(data->envp_list, "PWD") \
 		&& var_add_var(&data->envp_list, "OLDPWD="))
 		return (ERROR);
@@ -40,20 +64,6 @@ static int	update_cwd(t_data *data)
 		}
 		free(temp);
 	}
-	temp = ft_strjoin("PWD=", cwd);
-	if (!temp)
-		return (ERROR);
-	if (var_add_var(&data->envp_list, temp))
-	{
-		free(temp);
-		return (ERROR);
-	}
-	free(temp);
-	temp = ft_strdup(cwd);
-	if (!temp)
-		return (ERROR);
-	free(data->cwd);
-	data->cwd = temp;
 	return (SUCCESS);
 }
 
@@ -141,7 +151,7 @@ int	cd_builtin(t_data *data, char **cmds)
 	}
 	if (flag && path)
 		free(path);
-	if (update_cwd(data) || update_envp(data))
+	if (update_oldpwd(data) || update_pwd(data) || update_envp(data))
 		return (ERROR);
 	return (SUCCESS);
 }

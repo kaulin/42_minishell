@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/17 13:58:58 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 09:50:34 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ t_token	*token_new(char *content, char next)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (NULL);
-	if (!ft_strncmp(content, "$", 2) && is_quote_char(next))
-		*content = 0;
 	new_token->str = content;
 	new_token->next = NULL;
 	new_token->merge_flag = 0;
@@ -39,6 +37,8 @@ t_token	*token_new(char *content, char next)
 		&& next != '|' && next != '<' && next != '>')
 			new_token->merge_flag = 1;
 	}
+	if (!ft_strncmp(content, "$", 2) && is_quote_char(next))
+		*content = 0;
 	new_token->placed_flag = 0;
 	return (new_token);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:31:52 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 12:20:20 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:35:37 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,9 @@ If the last file is an infile, closes the heredoc_fd and opens the file.
 static int	redir_in(t_data *data, t_cmd *cur_cmd, t_redir *redir)
 {
 	if (redir->type == HEREDOC)
-	{
 		cur_cmd->in_fd = cur_cmd->heredoc_fd;
-	}
 	else
-	{
-		if (cur_cmd->heredoc_fd != -1)
-			close(cur_cmd->heredoc_fd);
 		cur_cmd->in_fd = open(redir->file_str, O_RDONLY);
-	}
 	if (dup2(cur_cmd->in_fd, STDIN_FILENO) == -1)
 		return (oops(data, 1, NULL, "dup2 failed\n"));
 	close(cur_cmd->in_fd);

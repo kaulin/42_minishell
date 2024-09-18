@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pikkak <pikkak@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/17 23:58:31 by pikkak           ###   ########.fr       */
+/*   Updated: 2024/09/18 10:35:02 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		child(data, cur_cmd, fd);
 	signal(SIGINT, parent_handler);
 	close(fd[1]);
+	if (cur_cmd->heredoc_fd != -1)
+		close(cur_cmd->heredoc_fd);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		close(fd[0]);
@@ -102,23 +104,14 @@ of the list. Then waits for all the children to finish
 */
 static int	go_through_cmds(t_data *data, t_cmd *cur_cmd)
 {
-	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
+	while (cur_cmd != NULL)
 	{
-		if (check_redir(data, cur_cmd) > 0 || \
-			exec_builtin(data, cur_cmd->cmd_arr))
-			return (reset_io(data), ERROR);
-	}
-	else
-	{
-		while (cur_cmd != NULL)
+		if (parent(data, cur_cmd) > 0)
 		{
-			if (parent(data, cur_cmd) > 0)
-			{
-				wait_for_the_kids(data, cur_cmd);
-				return (reset_io(data), ERROR);
-			}
-			cur_cmd = cur_cmd->next;
+			wait_for_the_kids(data, cur_cmd);
+			return (reset_io(data), ERROR);
 		}
+		cur_cmd = cur_cmd->next;
 	}
 	if (wait_for_the_kids(data, cur_cmd))
 		return (ERROR);
@@ -139,5 +132,13 @@ int	execute_and_pipe(t_data *data)
 		return (reset_io(data), ERROR);
 	if (g_signal)
 		return (-1);
+	if (cur_cmd->next == NULL && check_if_builtin(cur_cmd->cmd_arr) == 1)
+	{
+		if (check_redir(data, cur_cmd) > 0 || dup_builtin(data, cur_cmd) \
+			|| exec_builtin(data, cur_cmd->cmd_arr))
+			return (reset_io(data), ERROR);
+		reset_io(data);
+		return (SUCCESS);
+	}
 	return (go_through_cmds(data, cur_cmd));
 }

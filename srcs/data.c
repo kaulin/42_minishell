@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 09:36:30 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/17 15:00:12 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:53:27 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	clean_data(t_data *data)
 	close(data->o_stdin);
 	close(data->o_stdout);
 	free(data);
+	rl_clear_history();
 	return (exit_code);
 }
 

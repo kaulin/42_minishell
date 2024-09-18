@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:35:10 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/09 10:54:03 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 09:53:47 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	place_redirs(t_cmd *cmd, t_token *token, int cmd_num)
 			else if (!ft_strncmp(token->str, ">", 2))
 				file = redir_new(token->next->str, OUTFILE);
 			else
-				file = redir_new(token->next->str, INFILE);
+				file = redir_new(token->next->str, APPEND);
 			if (!file)
 				return (ERROR);
 			redir_add_back(&cmd->redirects, file);
