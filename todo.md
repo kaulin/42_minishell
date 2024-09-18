@@ -1,9 +1,10 @@
 TODO
+- fix: echo "$""USER", $ should stay
+
+FIXED
 - exit status of last command not being set correctly
 - ctrl + c in heredoc should just cancel and return prompt (not running command)
 - ctrl + c while process is running (sleep, for example) returns error code 130 if that was the last command in pipeline
-
-FIXED
 - If started with no environment, problems with cd, as $PWD and $OLDPWD dont exist. same if these are unset. Unsetting $OLDPWD results in really big issues at the moment. Running getcwd before any commands are run could be a solution.
 - removing dir above current dir results in getcwd failure when trying to move up (can be argued that this is good enough, cd with full path works)
 - check var_list alphabetic pointers, sometimes list gets broken
