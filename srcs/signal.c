@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/16 14:52:44 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:43:54 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ Handle ctrl-C, ctrl-D and ctrl
 ctrl-C displays a new prompt on a new line.
 ctrl-D exits the shell.
 ctrl-\ does nothing.
-Termios handles is used for handling terminal I/O (input/output) settings.
-Tcgetattr() gets the terminal attributes(initializes the handler)
-Tcsetattr sets attributes of the terminal associated with STDIN,
-using the values stored in handler.
 */
 
 void	basic_handler(int sig)
