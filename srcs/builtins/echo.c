@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 16:24:02 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/06 13:23:40 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:41:32 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-◦ Echo with option -n
-    - Used to print text/variables to the terminal(syntax: echo 'sample text')
-	- If there is no text to print echo prints a new line
-    - With -n do not output a trailing newline.
-	-Can this command fail somehow?
-	-Problem with two words with a ' ' in the middle and no ""
-*/
 
 /*
 This prints the rest of the input

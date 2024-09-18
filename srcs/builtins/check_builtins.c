@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 10:05:05 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:40:55 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 This checks if the command is one of the builtins
 */
-
 int	check_if_builtin(char **cmds)
 {
 	if (!cmds)
@@ -33,9 +32,6 @@ int	check_if_builtin(char **cmds)
 
 /*
 Executes the builtin in question
-Commands that produce output can be redirected
-so we we need to check redirections before executing commands.
-How do we handle builtins failing?
 */
 int	exec_builtin(t_data *data, char **cmds)
 {

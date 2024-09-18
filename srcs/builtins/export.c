@@ -3,27 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:50:09 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/11 11:01:46 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:43:33 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /*
-Export with no options
-Is used to set environment variables(with or without values),
-making them available to child processes.
+Sets environment variables(with or without values).
 If a variable name is followed by =value,
 the value of the variable is set to value.
-Shell variable names must start with a letter (a-z, A-Z) or an underscore (_).
-They can contain letters, digits (0-9), or underscores.
-They cannot contain special characters such as @, #, !, -, or spaces. 
-Environmental variables normally contain only uppercase letters and '_'.
-Stick with that?
 */
-
 static int	check_name(char *cmd)
 {
 	if (ft_isdigit(*cmd) || (!ft_isalpha(*cmd) && *cmd != '_'))

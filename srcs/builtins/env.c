@@ -3,23 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:13:38 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/05 13:16:54 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:42:10 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Env with no options or arguments
-Env without any argument is used to print out a list
-of all environment variables.
+Prints out a list of all environment variables.
 */
-//this needs to print only the variables that have values(=)
-//we could transfer the argument count checks to the check builtin function?
-//error message? Do we need to do something if envp is unset?
 int	env_builtin(t_data *data, char **cmds)
 {
 	t_var	*var;
