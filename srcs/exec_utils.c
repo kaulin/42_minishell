@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 11:34:35 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:19:27 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,12 @@ int	check_file(t_data *data, t_redir *redir)
 		if (fd == -1)
 			return (oops(data, 1, redir->file_str, "Permission denied"));
 	}
-	if (redir->type == APPEND)
+	if (redir->type == APPEND || redir->type == OUTFILE)
 	{
-		fd = open(redir->file_str, O_WRONLY | O_CREAT, 0666);
-		if (fd == -1)
-			return (oops(data, 1, redir->file_str, "Permission denied"));
-	}
-	else if (redir->type == OUTFILE)
-	{
-		fd = open(redir->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		if (redir->type == APPEND)
+			fd = open(redir->file_str, O_WRONLY | O_CREAT, 0666);
+		if (redir->type == OUTFILE)
+			fd = open(redir->file_str, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (fd == -1)
 			return (oops(data, 1, redir->file_str, "Permission denied"));
 	}
