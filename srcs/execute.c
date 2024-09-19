@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/19 10:28:02 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:02:45 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
-	if (ft_strncmp(cur_cmd->cmd_arr[0], "./minishell", 11))
+	if (cur_cmd->cmd_arr && ft_strncmp(cur_cmd->cmd_arr[0], "./minishell", 11))
 		signal(SIGQUIT, child_quitter);
 	signal(SIGINT, parent_handler);
 	close(fd[1]);
