@@ -6,7 +6,7 @@
 /*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/19 10:26:10 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/19 10:28:02 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	child(t_data *data, t_cmd *cur_cmd, int *fd)
 		close_clean_exit(data, fd[1], cur_cmd->out_fd);
 	}
 	close(fd[1]);
-	if (cur_cmd->out_fd != -1 )
+	if (cur_cmd->out_fd != -1)
 	{
 		if (dup2(cur_cmd->out_fd, STDOUT_FILENO) == -1)
 		{
