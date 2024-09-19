@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:43:22 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 17:27:31 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:33:01 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ ctrl-\ does nothing.
 
 void	basic_handler(int sig)
 {
-	(void)sig;
-	g_signal = 1;
+	g_signal = sig;
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
@@ -31,15 +30,13 @@ void	basic_handler(int sig)
 
 void	heredoc_handler(int sig)
 {
-	(void)sig;
-	g_signal = 1;
+	g_signal = sig;
 	close(STDIN_FILENO);
 }
 
 void	parent_handler(int sig)
 {
-	(void)sig;
-	g_signal = 1;
+	g_signal = sig;
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
@@ -47,8 +44,7 @@ void	parent_handler(int sig)
 
 void	child_quitter(int sig)
 {
-	(void)sig;
-	g_signal = 1;
+	g_signal = sig;
 	write(2, "Quit (core dumped)", 18);
 	rl_replace_line("", 0);
 	write(STDOUT_FILENO, "\n", 1);
