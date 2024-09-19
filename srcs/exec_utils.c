@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:00:35 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 18:07:11 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:17:08 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	wait_for_the_kids(t_data *data, t_cmd *failed_cmd)
 		}
 		cur_cmd = cur_cmd->next;
 	}
+	signal(SIGINT, parent_handler);
 	signal(SIGQUIT, SIG_IGN);
 	return (SUCCESS);
 }
