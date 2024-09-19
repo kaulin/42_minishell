@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/19 09:31:32 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/19 09:56:39 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		close(fd[1]);
 		return (oops(data, ERROR, NULL, "fork failed"));
 	}
-	signal(SIGINT, SIG_IGN);
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
+	signal(SIGINT, parent_handler);
 	signal(SIGQUIT, child_quitter);
 	close(fd[1]);
 	if (cur_cmd->heredoc_fd != -1)
