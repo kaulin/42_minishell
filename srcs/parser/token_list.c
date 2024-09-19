@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:29:36 by jajuntti          #+#    #+#             */
-/*   Updated: 2024/09/18 16:23:16 by jajuntti         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:27:22 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ t_token	*token_new(char *content, int quote_flag, char next)
 		&& next != '|' && next != '<' && next != '>')
 			new_token->merge_flag = 1;
 	}
-	if (!ft_strncmp(content, "$", 2) && !quote_flag && is_quote_char(next))
+	printf("%s - %d - %c\n", content, quote_flag, next);
+	if (!ft_strncmp(content, "$", 2) && next \
+		&& !quote_flag && is_quote_char(next))
 		*content = 0;
 	new_token->placed_flag = 0;
 	return (new_token);
