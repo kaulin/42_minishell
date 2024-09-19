@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jajuntti <jajuntti@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:49:16 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/19 09:56:39 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/19 10:26:10 by jajuntti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 	}
 	if (cur_cmd->pid == 0)
 		child(data, cur_cmd, fd);
+	if (ft_strncmp(cur_cmd->cmd_arr[0], "./minishell", 11))
+		signal(SIGQUIT, child_quitter);
 	signal(SIGINT, parent_handler);
-	signal(SIGQUIT, child_quitter);
 	close(fd[1]);
 	if (cur_cmd->heredoc_fd != -1)
 		close(cur_cmd->heredoc_fd);
@@ -96,8 +97,7 @@ static int	parent(t_data *data, t_cmd *cur_cmd)
 		close(fd[0]);
 		return (oops(data, ERROR, NULL, "dup2 failed"));
 	}
-	close(fd[0]);
-	return (SUCCESS);
+	return (close(fd[0]));
 }
 
 /*
