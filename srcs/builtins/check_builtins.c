@@ -6,7 +6,7 @@
 /*   By: kkauhane <kkauhane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:12:13 by kkauhane          #+#    #+#             */
-/*   Updated: 2024/09/18 12:40:55 by kkauhane         ###   ########.fr       */
+/*   Updated: 2024/09/19 11:39:12 by kkauhane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_builtin(t_data *data, char **cmds)
 		return (pwd_builtin(data, cmds));
 	if (ft_strncmp("unset", cmds[0], 6) == 0)
 		return (unset_builtin(data, cmds));
-	if (ft_strncmp("exit", cmds[0], 5) == 0)
+	if (ft_strncmp("exit", cmds[0], 5) == 0 && data->cmd_count == 1)
 		exit_builtin(data);
 	return (SUCCESS);
 }
