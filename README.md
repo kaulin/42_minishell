@@ -17,7 +17,7 @@ Git clone the repository, move into it and run `make` to compile the program.
 Jaakko Junttila & Karoliina Kauhanen
 
 ## Acknowledgements
-- Peer evaluators: [Tim Campbell](https://github.com/tcampbel22), [Oliver Hertzberg](https://github.com/oliverhertzberg/), Elias Lahtinen
+- Peer evaluators: [Tim Campbell](https://github.com/tcampbel22), [Oliver Hertzberg](https://github.com/oliverhertzberg/), [Elias Salmela](https://github.com/eleekku)
 
 ## Resources
 - Bendersky E. (2012, August 2). Parsing expressions by precedence climbing. https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing
